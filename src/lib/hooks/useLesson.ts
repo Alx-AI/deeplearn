@@ -14,8 +14,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getLessonContent, type LessonContentData } from '@/content/lessons/index';
-import { getCardsForLesson, getQuizForLesson, getLesson } from '@/content';
+import { type LessonContentData } from '@/content/books/deep-learning-python/lessons/index';
+import { getCardsForLesson, getQuizForLesson, getLesson, getLessonContent } from '@/content';
 import type { Lesson, ReviewCard, QuizQuestion } from '@/lib/db/schema';
 
 // ---------------------------------------------------------------------------
@@ -41,15 +41,15 @@ export interface UseLessonReturn {
 // Hook implementation
 // ---------------------------------------------------------------------------
 
-export function useLesson(lessonId: string): UseLessonReturn {
+export function useLesson(lessonId: string, bookId?: string): UseLessonReturn {
   const [content, setContent] = useState<LessonContentData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   // Synchronous lookups -- these hit in-memory arrays and never suspend.
-  const lesson = getLesson(lessonId);
-  const reviewCards = getCardsForLesson(lessonId);
-  const quizQuestions = getQuizForLesson(lessonId);
+  const lesson = getLesson(lessonId, bookId);
+  const reviewCards = getCardsForLesson(lessonId, bookId);
+  const quizQuestions = getQuizForLesson(lessonId, bookId);
 
   useEffect(() => {
     let cancelled = false;
@@ -59,7 +59,9 @@ export function useLesson(lessonId: string): UseLessonReturn {
       setError(null);
 
       try {
-        const loaded = await getLessonContent(lessonId);
+        const loaded = bookId
+          ? await getLessonContent(bookId, lessonId)
+          : await getLessonContent(lessonId);
 
         if (cancelled) return;
 
@@ -86,7 +88,7 @@ export function useLesson(lessonId: string): UseLessonReturn {
     return () => {
       cancelled = true;
     };
-  }, [lessonId, lesson]);
+  }, [lessonId, bookId, lesson]);
 
   return {
     lesson,

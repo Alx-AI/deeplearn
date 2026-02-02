@@ -2,14 +2,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
-import { BookOpen, BarChart3, Settings, Zap, Menu, X, LogOut } from 'lucide-react';
+import { BookOpen, BarChart3, Settings, Zap, Menu, X, LogOut, ChevronDown } from 'lucide-react';
+import { books } from '@/content/books';
 
 // ---------------------------------------------------------------------------
-// LogoMark – minimal geometric mark suggesting layered nodes / depth.
-// Three offset circles connected by a hairline, evoking a neural-network
-// motif while staying true to Braun-era geometric simplicity.
+// LogoMark
 // ---------------------------------------------------------------------------
 
 function LogoMark() {
@@ -23,7 +22,6 @@ function LogoMark() {
       aria-hidden="true"
       className="shrink-0"
     >
-      {/* Connecting line between the two outer nodes */}
       <line
         x1="4.5"
         y1="13.5"
@@ -34,7 +32,6 @@ function LogoMark() {
         strokeLinecap="round"
         opacity="0.45"
       />
-      {/* Bottom-left node */}
       <circle
         cx="4.5"
         cy="13.5"
@@ -42,7 +39,6 @@ function LogoMark() {
         fill="var(--color-accent)"
         opacity="0.55"
       />
-      {/* Top-right node */}
       <circle
         cx="13.5"
         cy="4.5"
@@ -92,6 +88,86 @@ function NavLink({
 }
 
 // ---------------------------------------------------------------------------
+// Helper: extract bookId from pathname
+// ---------------------------------------------------------------------------
+
+function getBookIdFromPath(pathname: string): string | null {
+  const match = pathname.match(/^\/books\/([^/]+)/);
+  return match ? match[1] : null;
+}
+
+// ---------------------------------------------------------------------------
+// BookSwitcher dropdown
+// ---------------------------------------------------------------------------
+
+function BookSwitcher({
+  currentBookId,
+  onClose,
+}: {
+  currentBookId: string;
+  onClose?: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const currentBook = books.find((b) => b.id === currentBookId);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-sm font-medium text-primary hover:bg-surface transition-colors cursor-pointer border border-border/50"
+      >
+        <span className="max-w-[140px] truncate">{currentBook?.shortTitle ?? 'Select Book'}</span>
+        <ChevronDown className={`h-3.5 w-3.5 text-tertiary transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full mt-1.5 w-64 rounded-lg border border-border bg-elevated shadow-lg z-30">
+          <div className="p-1">
+            {books.map((book) => (
+              <button
+                key={book.id}
+                onClick={() => {
+                  router.push(`/books/${book.id}/learn`);
+                  setOpen(false);
+                  onClose?.();
+                }}
+                className={`flex w-full flex-col items-start rounded-md px-3 py-2.5 text-left transition-colors cursor-pointer ${
+                  book.id === currentBookId
+                    ? 'bg-accent-subtle'
+                    : 'hover:bg-surface'
+                }`}
+              >
+                <span className={`text-sm font-medium ${book.id === currentBookId ? 'text-accent' : 'text-primary'}`}>
+                  {book.shortTitle}
+                </span>
+                <span className="text-xs text-tertiary mt-0.5 line-clamp-1">
+                  {book.authors}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // NavHeader
 // ---------------------------------------------------------------------------
 
@@ -103,6 +179,10 @@ export function NavHeader() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
+  // Derive bookId from URL
+  const bookId = getBookIdFromPath(pathname) ?? 'deep-learning-python';
+  const bookPrefix = `/books/${bookId}`;
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -110,12 +190,10 @@ export function NavHeader() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Close user menu on click outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
@@ -129,9 +207,9 @@ export function NavHeader() {
   }, [userMenuOpen]);
 
   const navItems = [
-    { href: '/learn', icon: <BookOpen className="h-4 w-4" />, label: 'Learn', active: pathname.startsWith('/learn') },
-    { href: '/review', icon: <Zap className="h-4 w-4" />, label: 'Review', active: pathname === '/review' },
-    { href: '/progress', icon: <BarChart3 className="h-4 w-4" />, label: 'Progress', active: pathname === '/progress' },
+    { href: `${bookPrefix}/learn`, icon: <BookOpen className="h-4 w-4" />, label: 'Learn', active: pathname.startsWith(`${bookPrefix}/learn`) || pathname.startsWith('/learn') },
+    { href: `${bookPrefix}/review`, icon: <Zap className="h-4 w-4" />, label: 'Review', active: pathname.startsWith(`${bookPrefix}/review`) || pathname === '/review' },
+    { href: `${bookPrefix}/progress`, icon: <BarChart3 className="h-4 w-4" />, label: 'Progress', active: pathname.startsWith(`${bookPrefix}/progress`) || pathname === '/progress' },
     { href: '/settings', icon: <Settings className="h-4 w-4" />, label: 'Settings', active: pathname === '/settings' },
   ];
 
@@ -144,20 +222,28 @@ export function NavHeader() {
       }`}
     >
       <div className="container-wide flex h-14 items-center justify-between">
-        {/* ---- Logo ---- */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 no-underline"
-        >
-          <LogoMark />
-          <span
-            className="text-base leading-none text-primary"
-            style={{ letterSpacing: '-0.04em' }}
+        {/* ---- Logo + Book Switcher ---- */}
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="flex items-center gap-2 no-underline"
           >
-            <span className="font-semibold">Deep</span>
-            <span className="font-bold text-accent">Learn</span>
-          </span>
-        </Link>
+            <LogoMark />
+            <span
+              className="text-base leading-none text-primary"
+              style={{ letterSpacing: '-0.04em' }}
+            >
+              <span className="font-semibold">Deep</span>
+              <span className="font-bold text-accent">Learn</span>
+            </span>
+          </Link>
+
+          <span className="hidden sm:block h-4 w-px bg-border" />
+
+          <div className="hidden sm:block">
+            <BookSwitcher currentBookId={bookId} />
+          </div>
+        </div>
 
         {/* ---- Desktop Navigation ---- */}
         <nav className="hidden sm:flex items-center gap-1">
@@ -213,6 +299,9 @@ export function NavHeader() {
       {/* ---- Mobile Dropdown ---- */}
       {mobileOpen && (
         <nav className="sm:hidden border-t border-border bg-elevated px-4 py-2">
+          <div className="mb-2 px-3 py-2">
+            <BookSwitcher currentBookId={bookId} onClose={() => setMobileOpen(false)} />
+          </div>
           {navItems.map((item) => (
             <NavLink key={item.href} {...item} showLabel onClick={() => setMobileOpen(false)} />
           ))}

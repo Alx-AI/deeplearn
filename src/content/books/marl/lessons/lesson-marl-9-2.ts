@@ -1,0 +1,168 @@
+/**
+ * Lesson 9.2: Centralised Values, Decomposition, and Tips
+ *
+ * Covers: Implementing centralised critics, QMIX implementation tips,
+ * debugging MARL training
+ * Source sections: 10.3, 10.4, 10.5
+ */
+
+import type { LessonContentData } from '../../deep-learning-python/lessons/lesson-1-1';
+
+const lesson: LessonContentData = {
+  lessonId: 'marl-9.2',
+  title: 'Centralised Values, Decomposition, and Tips',
+  sections: [
+    {
+      id: 'marl-9.2.1',
+      title: 'Implementing Centralised Critics',
+      content: `
+The **CTDE paradigm** (centralised training, decentralised execution) allows us to use privileged information during training that is not available at execution time. The most common application is a **centralised critic** -- a value function conditioned on information from all agents, used to reduce variance during training while keeping each agent's policy conditioned only on its local observation.
+
+The simplest form of centralisation is **observation concatenation**. Instead of feeding agent i's observation alone into a value network, you concatenate the observations of all agents into a single vector and use that as input. In LBF with two agents, each having a 15-dimensional observation, the centralised input becomes a 30-dimensional vector. The critic then outputs a scalar state value for each agent.
+
+In PyTorch, this is straightforward: \`centr_obs = torch.cat([obs1, obs2])\` produces the concatenated input. You then create a \`MultiAgentFCNetwork([30, 30], [1, 1])\` -- note the input size is 30 (the concatenation) and the output is 1 (a scalar value) for each agent. During the forward pass, both agents receive the *same* centralised observation, so you pass \`critic(2 * [centr_obs])\`.
+
+The **actor** (policy network), however, remains decentralised. Each agent's policy is conditioned only on its own local observation. You initialise it as \`actor = MultiAgentFCNetwork([15, 15], [3, 3])\` and sample actions using a \`Categorical\` distribution over the network's logits. This separation is the essence of CTDE: the critic uses global information to compute better value estimates and lower-variance policy gradients, but at execution time, only the local-observation actor is needed.
+
+More sophisticated centralisation approaches condition the critic on the **global state** (if available) or on observations plus actions of all agents (as in MADDPG). The implementation pattern is the same -- increase the critic's input dimensionality to include the extra information, keep the actor local.
+`,
+      reviewCardIds: ['rc-marl-9.2-1', 'rc-marl-9.2-2'],
+      illustrations: [],
+      codeExamples: [
+        {
+          title: 'Centralised critic with observation concatenation',
+          language: 'python',
+          code: `import torch
+from torch.distributions import Categorical
+
+obs1 = torch.tensor([1., 0., 2., 3., 0.])
+obs2 = torch.tensor([0., 0., 0., 3., 0.])
+
+# Centralised critic: concatenate all observations
+centr_obs = torch.cat([obs1, obs2])
+print(centr_obs.shape)  # >> torch.Size([10])
+
+# Critic takes concatenated input (5+5=10), outputs scalar value per agent
+critic = MultiAgentFCNetwork([10, 10], [1, 1])
+values = critic(2 * [centr_obs])  # Same input for both agents
+
+# Decentralised actor: each agent only sees its own observation
+actor = MultiAgentFCNetwork([5, 5], [3, 3])
+actions = [Categorical(logits=y).sample() for y in actor([obs1, obs2])]`,
+        },
+      ],
+    },
+    {
+      id: 'marl-9.2.2',
+      title: 'Value Decomposition: VDN and QMIX in Practice',
+      content: `
+**Value decomposition** methods tackle the credit assignment problem in common-reward environments by factoring the joint action-value function into per-agent utilities. The two foundational methods are **VDN** (additive decomposition) and **QMIX** (monotonic mixing network).
+
+Implementing **VDN** is surprisingly simple. Each agent has its own Q-network that outputs per-action Q-values given that agent's observation. The joint Q-value is just the **sum** of the individual Q-values. In practice, this means the Bellman target computation includes a \`.sum(0)\` operation along the agent dimension. You stack the per-agent Q-values into a tensor with shape \`[n_agents, n_actions]\`, select the best next-state Q-values using the Double DQN trick, and sum them across agents to get the joint target.
+
+**QMIX** replaces the simple sum with a **mixing network** -- a feed-forward network whose weights are constrained to be **non-negative** (enforced by passing them through an absolute value or ReLU). This ensures the **monotonicity constraint**: the joint Q-value is monotonically increasing in each agent's individual Q-value. The mixing network takes the stacked per-agent Q-values as input and the **global state** as a conditioning variable (used to generate the mixing weights via hypernetworks).
+
+A critical implementation detail for QMIX is that the mixing network weights are generated by **hypernetworks** -- small neural networks that take the global state as input and output the weights and biases of the mixing network. This means the mixing function is state-dependent, allowing QMIX to represent a richer class of joint Q-functions than VDN while still satisfying monotonicity.
+
+When implementing VDN or QMIX, remember that the environment must provide a **common reward** (one scalar for the joint action). The per-agent Q-networks each approximate the utility of their individual actions, and the decomposition method combines them to approximate the true joint Q-function. The reward signal is *not* decomposed -- only the Q-function is.
+`,
+      reviewCardIds: ['rc-marl-9.2-3'],
+      illustrations: [],
+      codeExamples: [
+        {
+          title: 'VDN: summing per-agent Q-values for joint target',
+          language: 'python',
+          code: `import torch
+
+# critic and target are MultiAgentFCNetwork instances
+# obs, nobs: List[torch.Tensor] of per-agent observations
+
+with torch.no_grad():
+    q_tp1_values = torch.stack(critic(nobs))     # [n_agents, batch, n_actions]
+    q_next_states = torch.stack(target(nobs))
+
+all_q_states = torch.stack(critic(obs))
+
+# Double DQN: select best action from critic, evaluate with target
+_, a_prime = q_tp1_values.max(-1)
+
+# VDN key step: .sum(0) sums Q-values across agents
+target_next_states = q_next_states.gather(
+    2, a_prime.unsqueeze(-1)
+).sum(0)  # Sum across agent dimension
+
+# Standard Bellman target
+target_states = rewards + gamma * target_next_states * (1 - terminal_signal)`,
+        },
+      ],
+    },
+    {
+      id: 'marl-9.2.3',
+      title: 'Practical Tips for Debugging MARL Training',
+      content: `
+MARL implementations demand significant engineering effort, and debugging them is notoriously difficult. Here are practical tips drawn from Chapter 10 that can save hours of frustration.
+
+**Handling partial observability.** In POSGs, agents should ideally condition on their observation *history*, not just the current observation. You have three options: (1) **stack** the last k observations (e.g., concatenate o_{t-5:t}) as a fixed-length input, (2) use a **recurrent network** (LSTM or GRU) that maintains a hidden state across time steps, or (3) simply use the current observation alone, assuming it carries sufficient information. Recurrent networks are theoretically closest to the correct solution but suffer from vanishing gradients. Stacking is a good middle ground when the relevant history is short. Using only the current observation works well in near-fully-observable settings and is the simplest to debug.
+
+**Standardizing rewards.** Many MARL environments (especially MPE) have rewards spanning multiple orders of magnitude, which destabilises neural network training. **Reward standardization** -- zero mean, unit standard deviation -- often helps. You can standardize over the batch or maintain a running mean and variance. However, be aware that standardization can distort the problem: in environments with only negative rewards, it creates artificial positive rewards and may change the agent's incentive to end episodes quickly. Always understand the reward structure before applying standardization blindly.
+
+**Centralized optimization.** Rather than creating a separate \`torch.optim.Adam\` for each agent, collect all parameters into a **single optimizer**. Sum all per-agent losses into one scalar, call \`loss.backward()\`, then \`optimizer.step()\`. This is dramatically faster because it parallelises gradient computation and avoids redundant backward passes. The \`MultiAgentFCNetwork\` already bundles all agent parameters in one \`nn.Module\`, making this natural.
+
+**Hyperparameter sensitivity.** MARL is *especially* sensitive to hyperparameters because agents' learning processes interact. Always run multiple seeds and perform a **grid search** over key parameters -- particularly the learning rate and entropy coefficient, which control exploration. A comparison between algorithms is only fair if both received comparable hyperparameter search budgets.
+`,
+      reviewCardIds: ['rc-marl-9.2-4', 'rc-marl-9.2-5'],
+      illustrations: [],
+      codeExamples: [
+        {
+          title: 'Reward standardization with running statistics',
+          language: 'python',
+          code: `import torch
+
+# Maintain running statistics
+class RunningMeanStd:
+    def __init__(self):
+        self.mean = 0.0
+        self.var = 1.0
+        self.count = 1e-4
+
+    def update(self, x):
+        batch_mean = x.mean().item()
+        batch_var = x.var().item()
+        batch_count = x.numel()
+        # Welford's online algorithm
+        delta = batch_mean - self.mean
+        total = self.count + batch_count
+        self.mean += delta * batch_count / total
+        self.var += batch_var * batch_count  # simplified
+        self.count = total
+
+running_stats = RunningMeanStd()
+
+# Standardize returns before computing loss
+returns = (returns - running_stats.mean) / torch.sqrt(
+    torch.tensor(running_stats.var) + 1e-8
+)`,
+        },
+        {
+          title: 'Parallel hyperparameter search (bash)',
+          language: 'bash',
+          code: `# Launch parallel training runs across learning rates and seeds
+for s in {1..5}; do
+  for lr in $(seq 0.01 0.01 0.1); do
+    python train_marl.py --lr=$lr --seed=$s &
+  done
+done`,
+        },
+      ],
+    },
+  ],
+  summary: `**Key takeaways:**
+- Centralised critics concatenate all agents' observations into a single input, producing better value estimates during training while keeping actors decentralised.
+- VDN decomposes the joint Q-function as a simple sum of per-agent utilities, implemented with a .sum(0) across the agent dimension.
+- QMIX uses a monotonic mixing network with non-negative weights (generated by hypernetworks conditioned on global state) for richer decomposition.
+- Partial observability can be addressed by stacking observations, using recurrent networks, or assuming Markov observations -- the right choice depends on the environment.
+- Reward standardization helps training stability but can distort problem semantics in environments with only negative rewards.
+- A single centralized optimizer summing all agent losses is much faster than per-agent optimizers.`,
+};
+
+export default lesson;

@@ -1,112 +1,117 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
-  BarChart3,
+  BookOpen,
   ChevronRight,
-  Flame,
   Target,
+  Flame,
+  BarChart3,
   Zap,
 } from 'lucide-react';
 import { NavHeader } from '@/components/navigation/NavHeader';
 import { PageTransition } from '@/components/ui/PageTransition';
-import type { MasteryLevel } from '@/lib/srs/mastery';
-import { MASTERY_LABELS, MASTERY_COLORS, masteryToScore } from '@/lib/srs/mastery';
-import { modules, getLessonsForModule } from '@/content';
+import { books } from '@/content/books';
+import { getModulesForBook, getLessonsForBook, getTotalCardCount } from '@/content';
 import { useReviewDue } from '@/lib/hooks/useReviewDue';
 import { useReviewStats, useLessonProgress } from '@/lib/db/hooks';
 
 // ---------------------------------------------------------------------------
-// Mastery Badge
+// Book Card
 // ---------------------------------------------------------------------------
 
-function MasteryBadge({ level }: { level: MasteryLevel }) {
-  const colors = MASTERY_COLORS[level];
-  return (
-    <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${colors.bg} ${colors.text} ${colors.border}`}
-    >
-      {MASTERY_LABELS[level]}
-    </span>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Progress Bar
-// ---------------------------------------------------------------------------
-
-function ProgressBar({ value, className = '' }: { value: number; className?: string }) {
-  return (
-    <div className={`h-1.5 w-full overflow-hidden rounded-full bg-surface-tertiary ${className}`}>
-      <motion.div
-        className="h-full rounded-full bg-accent"
-        initial={{ width: 0 }}
-        animate={{ width: `${Math.min(100, Math.max(0, value))}%` }}
-        transition={{ duration: 0.6, ease: [0.2, 0, 0.38, 0.9] }}
-      />
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Module Card
-// ---------------------------------------------------------------------------
-
-interface ModuleCardData {
-  id: string;
-  title: string;
-  description: string;
-  order: number;
-  lessonCount: number;
-}
-
-function ModuleCard({
-  module,
-  mastery,
+function BookCard({
+  bookId,
+  title,
+  shortTitle,
+  authors,
+  description,
+  moduleCount,
+  lessonCount,
+  cardCount,
+  completedLessons,
   index,
 }: {
-  module: ModuleCardData;
-  mastery: MasteryLevel;
+  bookId: string;
+  title: string;
+  shortTitle: string;
+  authors: string;
+  description: string;
+  moduleCount: number;
+  lessonCount: number;
+  cardCount: number;
+  completedLessons: number;
   index: number;
 }) {
-  const score = masteryToScore(mastery);
+  const progressPct = lessonCount > 0 ? Math.round((completedLessons / lessonCount) * 100) : 0;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
-      transition={{ duration: 0.4, delay: index * 0.06, ease: [0.2, 0, 0.38, 0.9] }}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.4, delay: index * 0.1, ease: [0.2, 0, 0.38, 0.9] }}
     >
       <Link
-        href={`/learn?module=${module.id}`}
-        className="group block min-h-[180px] rounded-xl border border-border bg-elevated p-5 no-underline shadow-sm transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:bg-[color-mix(in_srgb,var(--color-bg-elevated)_97%,var(--color-accent)_3%)] cursor-pointer"
+        href={`/books/${bookId}/learn`}
+        className="group block rounded-xl border border-border bg-elevated p-6 no-underline shadow-sm transition-all duration-200 hover:border-accent/30 hover:shadow-lg hover:bg-[color-mix(in_srgb,var(--color-bg-elevated)_97%,var(--color-accent)_3%)] cursor-pointer"
       >
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface text-sm font-semibold text-secondary">
-            {module.order}
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent/10">
+            <BookOpen className="h-5 w-5 text-accent" />
           </div>
-          <MasteryBadge level={mastery} />
+          {progressPct > 0 && (
+            <span className="inline-flex items-center rounded-full border border-accent/20 bg-accent-subtle px-2.5 py-0.5 text-xs font-medium text-accent">
+              {progressPct}%
+            </span>
+          )}
         </div>
-        <h3 className="mt-3 text-lg font-semibold text-primary group-hover:text-accent transition-colors">
-          {module.title}
+
+        <h3 className="text-lg font-semibold text-primary group-hover:text-accent transition-colors">
+          {shortTitle}
         </h3>
-        <p className="mt-1 text-sm leading-relaxed text-secondary">
-          {module.description}
+        <p className="mt-0.5 text-xs text-tertiary">
+          {authors}
         </p>
-        <div className="mt-4 flex items-center justify-between text-xs text-tertiary">
-          <span>{module.lessonCount} lessons</span>
-          <span>{score}%</span>
+        <p className="mt-3 text-sm leading-relaxed text-secondary line-clamp-2">
+          {description}
+        </p>
+
+        <div className="mt-5 flex items-center gap-4 text-xs text-tertiary">
+          <span>{moduleCount} modules</span>
+          <span className="h-3 w-px bg-border" />
+          <span>{lessonCount} lessons</span>
+          <span className="h-3 w-px bg-border" />
+          <span>{cardCount} cards</span>
         </div>
-        <ProgressBar value={score} className="mt-2" />
+
+        {/* Progress bar */}
+        <div className="mt-3">
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-tertiary">
+            <motion.div
+              className="h-full rounded-full bg-accent"
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPct}%` }}
+              transition={{ duration: 0.6, ease: [0.2, 0, 0.38, 0.9] }}
+            />
+          </div>
+        </div>
+
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-sm font-medium text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+            {completedLessons > 0 ? 'Continue Learning' : 'Start Learning'}
+          </span>
+          <ChevronRight className="h-4 w-4 text-tertiary transition-transform group-hover:translate-x-1 group-hover:text-accent" />
+        </div>
       </Link>
     </motion.div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Stats Cards
+// Stat Card
 // ---------------------------------------------------------------------------
 
 function StatCard({
@@ -150,67 +155,36 @@ function StatCard({
 // ---------------------------------------------------------------------------
 
 export default function HomePage() {
-  // Real data from hooks
   const { dueCount } = useReviewDue();
   const { todayCount: reviewedToday } = useReviewStats();
-  const { allProgress, statusCounts } = useLessonProgress();
+  const { allProgress } = useLessonProgress();
 
-  // Derive module data from real content
-  const moduleData: ModuleCardData[] = useMemo(
-    () =>
-      modules.map((m) => ({
-        id: m.id,
-        title: m.title,
-        description: m.description,
-        order: m.order,
-        lessonCount: m.lessonIds.length,
-      })),
-    [],
-  );
+  // Compute per-book stats
+  const bookStats = useMemo(() => {
+    return books.map((book) => {
+      const bookModules = getModulesForBook(book.id);
+      const bookLessons = getLessonsForBook(book.id);
+      const cardCount = getTotalCardCount(book.id);
 
-  // Compute per-module mastery from lesson progress
-  const moduleMastery: Record<string, MasteryLevel> = useMemo(() => {
-    const result: Record<string, MasteryLevel> = {};
-    for (const mod of modules) {
-      const moduleLessons = getLessonsForModule(mod.id);
-      const completedCount = moduleLessons.filter((l) => {
+      const completedLessons = bookLessons.filter((l) => {
         const p = allProgress.find((ap) => ap.lessonId === l.id);
         return p && (p.status === 'completed' || p.status === 'mastered');
       }).length;
-      const startedCount = moduleLessons.filter((l) => {
-        const p = allProgress.find((ap) => ap.lessonId === l.id);
-        return p && p.status === 'in-progress';
-      }).length;
 
-      if (completedCount === moduleLessons.length && moduleLessons.length > 0) {
-        // All completed -- check if mastered
-        const masteredCount = moduleLessons.filter((l) => {
-          const p = allProgress.find((ap) => ap.lessonId === l.id);
-          return p && p.status === 'mastered';
-        }).length;
-        result[mod.id] = masteredCount >= moduleLessons.length * 0.9 ? 'mastered' : 'proficient';
-      } else if (completedCount >= moduleLessons.length * 0.5) {
-        result[mod.id] = 'familiar';
-      } else if (completedCount > 0 || startedCount > 0) {
-        result[mod.id] = 'learning';
-      } else {
-        result[mod.id] = 'new';
-      }
-    }
-    return result;
+      return {
+        ...book,
+        moduleCount: bookModules.length,
+        lessonCount: bookLessons.length,
+        cardCount,
+        completedLessons,
+      };
+    });
   }, [allProgress]);
 
-  // Compute overall mastery as percentage of completed lessons
-  const totalLessons = modules.reduce((sum, m) => sum + m.lessonIds.length, 0);
-  const overallMastery = useMemo(() => {
-    if (totalLessons === 0) return 0;
-    const completedOrMastered = allProgress.filter(
-      (p) => p.status === 'completed' || p.status === 'mastered',
-    ).length;
-    return Math.round((completedOrMastered / totalLessons) * 100);
-  }, [allProgress, totalLessons]);
-
-  const cardsDue = dueCount;
+  // Overall stats
+  const totalLessons = bookStats.reduce((sum, b) => sum + b.lessonCount, 0);
+  const totalCompleted = bookStats.reduce((sum, b) => sum + b.completedLessons, 0);
+  const overallMastery = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -229,7 +203,7 @@ export default function HomePage() {
               DeepLearn
             </h1>
             <p className="mt-2 text-lg text-secondary">
-              Deep Learning with Python, mastered through spaced repetition
+              Master deep learning and multi-agent RL through spaced repetition
             </p>
           </motion.div>
 
@@ -238,7 +212,7 @@ export default function HomePage() {
             <StatCard
               icon={<Target className="h-4.5 w-4.5" />}
               label="Cards Due"
-              value={cardsDue}
+              value={dueCount}
               accent
               index={0}
             />
@@ -256,55 +230,62 @@ export default function HomePage() {
             />
           </div>
 
-        {/* Review CTA */}
-        {cardsDue > 0 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            whileTap={{ scale: 0.985 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="mb-10"
-          >
-            <Link
-              href="/review"
-              className="group flex items-center justify-between rounded-xl border border-accent/25 bg-accent-subtle px-6 py-4 no-underline transition-all duration-200 hover:border-accent/40 hover:shadow-[0_0_20px_color-mix(in_srgb,var(--color-accent)_12%,transparent)] cursor-pointer"
+          {/* Review CTA */}
+          {dueCount > 0 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              whileTap={{ scale: 0.985 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="mb-10"
             >
-              <div className="flex items-center gap-3">
-                <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-accent">
-                  <span className="absolute inset-0 rounded-xl bg-accent animate-[cta-pulse_2.5s_ease-in-out_infinite] opacity-0" />
-                  <Zap className="relative h-5 w-5 text-inverse" />
+              <Link
+                href="/books/deep-learning-python/review"
+                className="group flex items-center justify-between rounded-xl border border-accent/25 bg-accent-subtle px-6 py-4 no-underline transition-all duration-200 hover:border-accent/40 hover:shadow-[0_0_20px_color-mix(in_srgb,var(--color-accent)_12%,transparent)] cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-accent">
+                    <span className="absolute inset-0 rounded-xl bg-accent animate-[cta-pulse_2.5s_ease-in-out_infinite] opacity-0" />
+                    <Zap className="relative h-5 w-5 text-inverse" />
+                  </div>
+                  <div>
+                    <p className="text-base font-semibold text-primary">
+                      Review Now
+                    </p>
+                    <p className="text-sm text-secondary">
+                      {dueCount} card{dueCount !== 1 ? 's' : ''} ready for review
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-base font-semibold text-primary">
-                    Review Now
-                  </p>
-                  <p className="text-sm text-secondary">
-                    {cardsDue} card{cardsDue !== 1 ? 's' : ''} ready for review
-                  </p>
-                </div>
-              </div>
-              <ChevronRight className="h-5 w-5 text-accent transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </motion.div>
-        )}
+                <ChevronRight className="h-5 w-5 text-accent transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </motion.div>
+          )}
 
-        {/* Module Grid */}
-        <div className="mb-4">
-          <h2 className="text-2xl font-semibold text-primary">Modules</h2>
-          <p className="mt-1 text-sm text-secondary">
-            {modules.length} modules, {totalLessons} lessons, covering the complete deep learning curriculum
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {moduleData.map((mod, i) => (
-            <ModuleCard
-              key={mod.id}
-              module={mod}
-              mastery={moduleMastery[mod.id] || 'new'}
-              index={i}
-            />
-          ))}
-        </div>
+          {/* Book Selector Grid */}
+          <div className="mb-4">
+            <h2 className="text-2xl font-semibold text-primary">Books</h2>
+            <p className="mt-1 text-sm text-secondary">
+              {books.length} learning sources, {totalLessons} total lessons
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {bookStats.map((book, i) => (
+              <BookCard
+                key={book.id}
+                bookId={book.id}
+                title={book.title}
+                shortTitle={book.shortTitle}
+                authors={book.authors}
+                description={book.description}
+                moduleCount={book.moduleCount}
+                lessonCount={book.lessonCount}
+                cardCount={book.cardCount}
+                completedLessons={book.completedLessons}
+                index={i}
+              />
+            ))}
+          </div>
         </div>
       </PageTransition>
     </div>

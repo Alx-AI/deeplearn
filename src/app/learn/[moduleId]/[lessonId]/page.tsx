@@ -22,124 +22,9 @@ import {
 import { NavHeader } from '@/components/navigation/NavHeader';
 import { useLesson } from '@/lib/hooks/useLesson';
 import { useUserProgress } from '@/lib/db/hooks';
+import { useBookId } from '@/components/providers/BookProvider';
 import { PageTransition } from '@/components/ui/PageTransition';
-import {
-  // Module 1
-  ConcentricCirclesDiagram,
-  ParadigmShiftDiagram,
-  AITimelineDiagram,
-  ThreeIngredientsCard,
-  SelfSupervisedLearningDiagram,
-  CoordinateTransformDiagram,
-  TrainingLoopDiagram,
-  DLRevolutionDiagram,
-  HypeCycleDiagram,
-  MNISTNetworkDiagram,
-  TensorRankDiagram,
-  HigherRankTensorsDiagram,
-  DataBatchDiagram,
-  BroadcastingDiagram,
-  ElementWiseOpsDiagram,
-  TensorProductDiagram,
-  GeometricInterpretationDiagram,
-  GradientDescentDiagram,
-  DerivativeSlopeDiagram,
-  SgdVariantsDiagram,
-  BackpropagationFlowDiagram,
-  LayeredRepresentationsDiagram,
-  HypothesisSpaceDiagram,
-  // Module 2
-  FrameworkStackDiagram,
-  TFvsPyTorchDiagram,
-  GradientTapeFlowDiagram,
-  LinearClassifierDiagram,
-  PyTorchModuleDiagram,
-  JAXTransformsDiagram,
-  KerasWorkflowDiagram,
-  OverfittingDiagram,
-  MultiHotEncodingDiagram,
-  BinaryClassifierArchDiagram,
-  SoftmaxDiagram,
-  OneHotEncodingDiagram,
-  RegressionDiagram,
-  // Module 3
-  LossLandscapeDiagram,
-  ManifoldHypothesisDiagram,
-  ManifoldInterpolationDiagram,
-  KFoldValidationDiagram,
-  ThreeWayDataSplitDiagram,
-  EvaluationPitfallsDiagram,
-  EarlyStoppingDiagram,
-  ArchitecturePriorsDiagram,
-  ModelCapacitySpectrumDiagram,
-  ScaleUpToOverfitDiagram,
-  DatasetCurationDiagram,
-  FeatureEngineeringDiagram,
-  RegularizationDiagram,
-  WeightRegularizationDiagram,
-  UnderfittingOverfittingDiagram,
-  HyperparamSearchDiagram,
-  MLWorkflowDiagram,
-  MlLifecycleDiagram,
-  // Module 4
-  KerasAPIsDiagram,
-  CallbacksDiagram,
-  ConvolutionDiagram,
-  MaxPoolingDiagram,
-  SpatialHierarchyDiagram,
-  ConvNetPyramidDiagram,
-  DataAugmentationDiagram,
-  TransferLearningDiagram,
-  FineTuningDiagram,
-  ResidualConnectionDiagram,
-  BatchNormDiagram,
-  DepthwiseSeparableConvDiagram,
-  VisionTransformerPatchDiagram,
-  // Module 5
-  FeatureExtractionDiagram,
-  GradCAMDiagram,
-  EncoderDecoderDiagram,
-  SegmentationTypesDiagram,
-  YOLODiagram,
-  NonMaxSuppressionDiagram,
-  TimeseriesBaselineDiagram,
-  ReceptiveFieldGrowthDiagram,
-  CyclicalEncodingDiagram,
-  RNNUnrolledDiagram,
-  ReturnSequencesDiagram,
-  BidirectionalRNNDiagram,
-  RecurrentDropoutDiagram,
-  // Module 6
-  TokenizationPipelineDiagram,
-  BpeMergingDiagram,
-  WordEmbeddingDiagram,
-  BagOfWordsVsSequenceDiagram,
-  NextTokenPredictionDiagram,
-  AutoregressiveGenDiagram,
-  AttentionMechanismDiagram,
-  PositionalEncodingDiagram,
-  TransformerBlockDiagram,
-  BERTvsGPTDiagram,
-  NlpFineTuningDiagram,
-  SamplingStrategiesDiagram,
-  GPTArchitectureDiagram,
-  LlmTrainingPipelineDiagram,
-  MultimodalLlmDiagram,
-  LoRADiagram,
-  RAGDiagram,
-  VAELatentSpaceDiagram,
-  VaeLossDiagram,
-  DiffusionProcessDiagram,
-  IterativeDenoisingDiagram,
-  TextToImageDiagram,
-  // Module 7
-  ModelEnsemblingDiagram,
-  DataParallelismDiagram,
-  QuantizationDiagram,
-  QuantizationMemoryDiagram,
-  DLLimitationsDiagram,
-  LocalVsExtremeGenDiagram,
-} from '@/components/illustrations';
+import type { IllustrationMap } from '@/content/books/deep-learning-python/illustration-map';
 import {
   getModule,
   getNextLesson,
@@ -402,128 +287,31 @@ function InlineCard({ card }: { card: ReviewCard }) {
 // (RatingButton removed -- replaced by simplified two-button inline cards)
 
 // ---------------------------------------------------------------------------
-// Illustration renderer
+// Illustration renderer — dynamically loads per-book illustration map
 // ---------------------------------------------------------------------------
 
-const illustrationMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  // Module 1
-  'concentric-circles': ConcentricCirclesDiagram,
-  'paradigm-shift': ParadigmShiftDiagram,
-  'ai-timeline': AITimelineDiagram,
-  'three-ingredients': ThreeIngredientsCard,
-  'self-supervised-learning': SelfSupervisedLearningDiagram,
-  'coordinate-transform': CoordinateTransformDiagram,
-  'training-loop': TrainingLoopDiagram,
-  'dl-revolution': DLRevolutionDiagram,
-  'hype-cycle': HypeCycleDiagram,
-  'mnist-network': MNISTNetworkDiagram,
-  'tensor-rank': TensorRankDiagram,
-  'higher-rank-tensors': HigherRankTensorsDiagram,
-  'data-batch': DataBatchDiagram,
-  'broadcasting': BroadcastingDiagram,
-  'element-wise-ops': ElementWiseOpsDiagram,
-  'tensor-product': TensorProductDiagram,
-  'geometric-interpretation': GeometricInterpretationDiagram,
-  'gradient-descent': GradientDescentDiagram,
-  'derivative-slope': DerivativeSlopeDiagram,
-  'sgd-variants': SgdVariantsDiagram,
-  'backpropagation-flow': BackpropagationFlowDiagram,
-  'layered-representations': LayeredRepresentationsDiagram,
-  'hypothesis-space': HypothesisSpaceDiagram,
-  // Module 2
-  'framework-stack': FrameworkStackDiagram,
-  'tf-vs-pytorch': TFvsPyTorchDiagram,
-  'gradient-tape-flow': GradientTapeFlowDiagram,
-  'linear-classifier': LinearClassifierDiagram,
-  'pytorch-module': PyTorchModuleDiagram,
-  'jax-transforms': JAXTransformsDiagram,
-  'keras-workflow': KerasWorkflowDiagram,
-  'overfitting': OverfittingDiagram,
-  'multi-hot-encoding': MultiHotEncodingDiagram,
-  'binary-classifier-arch': BinaryClassifierArchDiagram,
-  'softmax': SoftmaxDiagram,
-  'one-hot-encoding': OneHotEncodingDiagram,
-  'regression': RegressionDiagram,
-  // Module 3
-  'loss-landscape': LossLandscapeDiagram,
-  'manifold-hypothesis': ManifoldHypothesisDiagram,
-  'manifold-interpolation': ManifoldInterpolationDiagram,
-  'k-fold-validation': KFoldValidationDiagram,
-  'three-way-data-split': ThreeWayDataSplitDiagram,
-  'evaluation-pitfalls': EvaluationPitfallsDiagram,
-  'early-stopping': EarlyStoppingDiagram,
-  'architecture-priors': ArchitecturePriorsDiagram,
-  'model-capacity-spectrum': ModelCapacitySpectrumDiagram,
-  'scale-up-to-overfit': ScaleUpToOverfitDiagram,
-  'dataset-curation': DatasetCurationDiagram,
-  'feature-engineering': FeatureEngineeringDiagram,
-  'regularization': RegularizationDiagram,
-  'weight-regularization': WeightRegularizationDiagram,
-  'underfitting-overfitting': UnderfittingOverfittingDiagram,
-  'hyperparam-search': HyperparamSearchDiagram,
-  'ml-workflow': MLWorkflowDiagram,
-  'ml-lifecycle': MlLifecycleDiagram,
-  // Module 4
-  'keras-apis': KerasAPIsDiagram,
-  'callbacks': CallbacksDiagram,
-  'convolution': ConvolutionDiagram,
-  'max-pooling': MaxPoolingDiagram,
-  'spatial-hierarchy': SpatialHierarchyDiagram,
-  'convnet-pyramid': ConvNetPyramidDiagram,
-  'data-augmentation': DataAugmentationDiagram,
-  'transfer-learning': TransferLearningDiagram,
-  'fine-tuning': FineTuningDiagram,
-  'residual-connection': ResidualConnectionDiagram,
-  'batch-norm': BatchNormDiagram,
-  'depthwise-separable-conv': DepthwiseSeparableConvDiagram,
-  'vision-transformer-patch': VisionTransformerPatchDiagram,
-  // Module 5
-  'feature-extraction': FeatureExtractionDiagram,
-  'grad-cam': GradCAMDiagram,
-  'encoder-decoder': EncoderDecoderDiagram,
-  'segmentation-types': SegmentationTypesDiagram,
-  'yolo': YOLODiagram,
-  'non-max-suppression': NonMaxSuppressionDiagram,
-  'timeseries-baseline': TimeseriesBaselineDiagram,
-  'receptive-field-growth': ReceptiveFieldGrowthDiagram,
-  'cyclical-encoding': CyclicalEncodingDiagram,
-  'rnn-unrolled': RNNUnrolledDiagram,
-  'return-sequences': ReturnSequencesDiagram,
-  'bidirectional-rnn': BidirectionalRNNDiagram,
-  'recurrent-dropout': RecurrentDropoutDiagram,
-  // Module 6
-  'tokenization-pipeline': TokenizationPipelineDiagram,
-  'bpe-merging': BpeMergingDiagram,
-  'word-embedding': WordEmbeddingDiagram,
-  'bag-of-words-vs-sequence': BagOfWordsVsSequenceDiagram,
-  'next-token-prediction': NextTokenPredictionDiagram,
-  'autoregressive-gen': AutoregressiveGenDiagram,
-  'attention-mechanism': AttentionMechanismDiagram,
-  'positional-encoding': PositionalEncodingDiagram,
-  'transformer-block': TransformerBlockDiagram,
-  'bert-vs-gpt': BERTvsGPTDiagram,
-  'nlp-fine-tuning': NlpFineTuningDiagram,
-  'sampling-strategies': SamplingStrategiesDiagram,
-  'gpt-architecture': GPTArchitectureDiagram,
-  'llm-training-pipeline': LlmTrainingPipelineDiagram,
-  'multimodal-llm': MultimodalLlmDiagram,
-  'lora': LoRADiagram,
-  'rag': RAGDiagram,
-  'vae-latent-space': VAELatentSpaceDiagram,
-  'vae-loss': VaeLossDiagram,
-  'diffusion-process': DiffusionProcessDiagram,
-  'iterative-denoising': IterativeDenoisingDiagram,
-  'text-to-image': TextToImageDiagram,
-  // Module 7
-  'model-ensembling': ModelEnsemblingDiagram,
-  'data-parallelism': DataParallelismDiagram,
-  'quantization': QuantizationDiagram,
-  'quantization-memory': QuantizationMemoryDiagram,
-  'dl-limitations': DLLimitationsDiagram,
-  'local-vs-extreme-gen': LocalVsExtremeGenDiagram,
+const illustrationMapImporters: Record<string, () => Promise<{ default: IllustrationMap }>> = {
+  'deep-learning-python': () => import('@/content/books/deep-learning-python/illustration-map'),
+  'marl': () => import('@/content/books/marl/illustration-map'),
 };
 
-function SectionIllustrations({ ids }: { ids?: string[] }) {
+function useIllustrationMap(bookId: string): IllustrationMap {
+  const [map, setMap] = useState<IllustrationMap>({});
+
+  useEffect(() => {
+    const importer = illustrationMapImporters[bookId];
+    if (!importer) return;
+    let cancelled = false;
+    importer().then((mod) => {
+      if (!cancelled) setMap(mod.default);
+    });
+    return () => { cancelled = true; };
+  }, [bookId]);
+
+  return map;
+}
+
+function SectionIllustrations({ ids, illustrationMap }: { ids?: string[]; illustrationMap: IllustrationMap }) {
   if (!ids || ids.length === 0) return null;
   return (
     <div className="my-8 space-y-6">
@@ -602,10 +390,17 @@ export default function LessonPage() {
   const params = useParams();
   const lessonId = params.lessonId as string;
   const moduleId = params.moduleId as string;
+  const bookId = useBookId();
+
+  // Build link prefix based on whether we're in a book route
+  const linkPrefix = bookId !== 'deep-learning-python' ? `/books/${bookId}` : '';
+
+  // Load per-book illustration map
+  const illustrationMap = useIllustrationMap(bookId);
 
   // Load real lesson data
   const { lesson, content, reviewCards, quizQuestions, isLoading, error } =
-    useLesson(lessonId);
+    useLesson(lessonId, bookId);
 
   // User progress tracking
   const {
@@ -616,9 +411,9 @@ export default function LessonPage() {
   } = useUserProgress(lessonId);
 
   // Real module and navigation
-  const mod = useMemo(() => getModule(moduleId), [moduleId]);
-  const nextLesson = useMemo(() => getNextLesson(lessonId), [lessonId]);
-  const prevLesson = useMemo(() => getPreviousLesson(lessonId), [lessonId]);
+  const mod = useMemo(() => getModule(moduleId, bookId), [moduleId, bookId]);
+  const nextLesson = useMemo(() => getNextLesson(lessonId, bookId), [lessonId, bookId]);
+  const prevLesson = useMemo(() => getPreviousLesson(lessonId, bookId), [lessonId, bookId]);
 
   // Local UI state
   const [activeSection, setActiveSection] = useState<string>('');
@@ -784,11 +579,11 @@ export default function LessonPage() {
           <div className="min-w-0 flex-1" ref={contentRef}>
             {/* Breadcrumb */}
             <nav className="mb-6 flex items-center gap-2 text-sm text-secondary">
-              <Link href="/learn" className="no-underline text-secondary hover:text-primary transition-colors">
+              <Link href={`${linkPrefix}/learn`} className="no-underline text-secondary hover:text-primary transition-colors">
                 Learn
               </Link>
               <ChevronRight className="h-3.5 w-3.5 text-tertiary" />
-              <Link href={`/learn?module=${moduleId}`} className="no-underline text-secondary hover:text-primary transition-colors">
+              <Link href={`${linkPrefix}/learn?module=${moduleId}`} className="no-underline text-secondary hover:text-primary transition-colors">
                 {moduleTitle}
               </Link>
               <ChevronRight className="h-3.5 w-3.5 text-tertiary" />
@@ -899,7 +694,7 @@ export default function LessonPage() {
                     </motion.section>
 
                     {/* Illustrations for this section */}
-                    <SectionIllustrations ids={section.illustrations} />
+                    <SectionIllustrations ids={section.illustrations} illustrationMap={illustrationMap} />
 
                     {/* Code examples for this section */}
                     {section.codeExamples && section.codeExamples.length > 0 && (
@@ -1006,7 +801,7 @@ export default function LessonPage() {
               </div>
               {nextLesson ? (
                 <Link
-                  href={`/learn/${getModule(nextLesson.moduleId)?.id ?? moduleId}/${nextLesson.id}`}
+                  href={`${linkPrefix}/learn/${getModule(nextLesson.moduleId, bookId)?.id ?? moduleId}/${nextLesson.id}`}
                   className="flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-inverse no-underline transition-colors hover:bg-accent-hover"
                 >
                   Continue
@@ -1014,7 +809,7 @@ export default function LessonPage() {
                 </Link>
               ) : (
                 <Link
-                  href="/review"
+                  href={`${linkPrefix}/review`}
                   className="flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-inverse no-underline transition-colors hover:bg-accent-hover"
                 >
                   Review Cards
@@ -1027,7 +822,7 @@ export default function LessonPage() {
             {prevLesson && (
               <div className="mb-8">
                 <Link
-                  href={`/learn/${getModule(prevLesson.moduleId)?.id ?? moduleId}/${prevLesson.id}`}
+                  href={`${linkPrefix}/learn/${getModule(prevLesson.moduleId, bookId)?.id ?? moduleId}/${prevLesson.id}`}
                   className="inline-flex items-center gap-2 text-sm text-secondary no-underline hover:text-primary transition-colors"
                 >
                   <ChevronLeft className="h-4 w-4" />

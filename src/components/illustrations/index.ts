@@ -127,3 +127,7 @@ export { default as QuantizationDiagram } from './QuantizationDiagram';
 export { default as QuantizationMemoryDiagram } from './QuantizationMemoryDiagram';
 export { default as DLLimitationsDiagram } from './DLLimitationsDiagram';
 export { default as LocalVsExtremeGenDiagram } from './LocalVsExtremeGenDiagram';
+
+// MARL (Multi-Agent Reinforcement Learning)
+export { default as LBFGridDiagram } from './LBFGridDiagram';
+export { default as MARLTrainingLoopDiagram } from './MARLTrainingLoopDiagram';
