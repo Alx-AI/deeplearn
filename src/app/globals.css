@@ -1,26 +1,784 @@
+/* ==========================================================================
+   DeepLearn Design System
+   Inspired by Dieter Rams' principles: "Less, but better."
+
+   Color palette derived from Braun product designs:
+   warm off-whites, calibrated grays, iconic Braun orange #E07014.
+   ========================================================================== */
+
 @import "tailwindcss";
+@import "tailwindcss/theme" layer(theme);
+
+@plugin "@tailwindcss/typography";
+
+/* ==========================================================================
+   Custom Font Faces
+
+   Fonts are loaded via next/font/google in layout.tsx and injected as
+   CSS variables on the body element. The @theme block below maps these
+   to Tailwind utilities.
+   ========================================================================== */
+
+/* ==========================================================================
+   Design Tokens: Light Mode (Default)
+   ========================================================================== */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Color: Backgrounds --- */
+  --color-bg-primary:       #FAFAF8;
+  --color-bg-secondary:     #F0EFEB;
+  --color-bg-tertiary:      #E8E6E1;
+  --color-bg-elevated:      #FFFFFF;
+
+  /* --- Color: Text --- */
+  --color-text-primary:     #1A1A18;
+  --color-text-secondary:   #6B6B63;
+  --color-text-tertiary:    #8A8A86;
+  --color-text-disabled:    #B8B8B4;
+  --color-text-inverse:     #FAFAF8;
+
+  /* --- Color: Accent (Braun Orange) --- */
+  --color-accent:           #E07014;
+  --color-accent-hover:     #C46012;
+  --color-accent-active:    #A84D0A;
+  --color-accent-subtle:    #FDF0E4;
+
+  /* --- Color: Borders --- */
+  --color-border-primary:   #D4D3CF;
+  --color-border-secondary: #E8E6E1;
+  --color-border-focus:     #E07014;
+
+  /* --- Color: Semantic States --- */
+  --color-success:          #4A7C59;
+  --color-success-subtle:   #EDF5EE;
+  --color-error:            #C4463A;
+  --color-error-subtle:     #FCEEED;
+  --color-warning:          #B8860B;
+  --color-warning-subtle:   #FEF8E7;
+  --color-info:             #3B6E8F;
+  --color-info-subtle:      #EDF3F7;
+
+  /* --- Color: Mastery Levels --- */
+  --color-mastery-new-bg:       #F4F4F5;
+  --color-mastery-new-text:     #52525B;
+  --color-mastery-new-border:   #E4E4E7;
+  --color-mastery-new-fill:     #A1A1AA;
+  --color-mastery-learning-bg:     #FFFBEB;
+  --color-mastery-learning-text:   #B45309;
+  --color-mastery-learning-border: #FDE68A;
+  --color-mastery-learning-fill:   #F59E0B;
+  --color-mastery-familiar-bg:     #EFF6FF;
+  --color-mastery-familiar-text:   #1D4ED8;
+  --color-mastery-familiar-border: #BFDBFE;
+  --color-mastery-familiar-fill:   #3B82F6;
+  --color-mastery-proficient-bg:     #ECFDF5;
+  --color-mastery-proficient-text:   #047857;
+  --color-mastery-proficient-border: #A7F3D0;
+  --color-mastery-proficient-fill:   #10B981;
+  --color-mastery-mastered-bg:     #F5F3FF;
+  --color-mastery-mastered-text:   #6D28D9;
+  --color-mastery-mastered-border: #DDD6FE;
+  --color-mastery-mastered-fill:   #8B5CF6;
+
+  /* --- Typography: Font Families --- */
+  --font-sans:     var(--font-inter), -apple-system, BlinkMacSystemFont,
+                   'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-reading:  var(--font-ibm-plex-sans), var(--font-inter), -apple-system,
+                   BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:     var(--font-ibm-plex-mono), 'SF Mono', 'Cascadia Code',
+                   'Fira Code', Consolas, monospace;
+
+  /* --- Typography: Scale --- */
+  --text-xs:       0.75rem;
+  --text-sm:       0.875rem;
+  --text-base:     1rem;
+  --text-lg:       1.125rem;
+  --text-xl:       1.25rem;
+  --text-2xl:      1.5rem;
+  --text-3xl:      1.875rem;
+  --text-4xl:      2.25rem;
+  --text-5xl:      3rem;
+
+  /* --- Typography: Line Heights --- */
+  --leading-none:     1;
+  --leading-tight:    1.25;
+  --leading-snug:     1.375;
+  --leading-normal:   1.5;
+  --leading-relaxed:  1.625;
+  --leading-loose:    1.75;
+
+  /* --- Typography: Letter Spacing --- */
+  --tracking-tight:   -0.025em;
+  --tracking-snug:    -0.015em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.025em;
+  --tracking-wider:    0.05em;
+
+  /* --- Typography: Weights --- */
+  --weight-regular:   400;
+  --weight-medium:    500;
+  --weight-semibold:  600;
+  --weight-bold:      700;
+
+  /* --- Spacing (4px base grid) --- */
+  --space-0:     0;
+  --space-px:    1px;
+  --space-0-5:   0.125rem;   /* 2px  */
+  --space-1:     0.25rem;    /* 4px  */
+  --space-1-5:   0.375rem;   /* 6px  */
+  --space-2:     0.5rem;     /* 8px  */
+  --space-3:     0.75rem;    /* 12px */
+  --space-4:     1rem;       /* 16px */
+  --space-5:     1.25rem;    /* 20px */
+  --space-6:     1.5rem;     /* 24px */
+  --space-8:     2rem;       /* 32px */
+  --space-10:    2.5rem;     /* 40px */
+  --space-12:    3rem;       /* 48px */
+  --space-16:    4rem;       /* 64px */
+  --space-20:    5rem;       /* 80px */
+  --space-24:    6rem;       /* 96px */
+
+  /* --- Layout --- */
+  --width-reading:   65ch;
+  --width-content:   48rem;
+  --width-wide:      64rem;
+  --width-max:       80rem;
+  --grid-gutter:     1.5rem;
+  --grid-margin:     1.5rem;
+
+  /* --- Animation --- */
+  --duration-instant:  75ms;
+  --duration-fast:     150ms;
+  --duration-normal:   250ms;
+  --duration-slow:     400ms;
+  --ease-default:      cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-in:           cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:          cubic-bezier(0, 0, 0.38, 0.9);
+  --ease-spring:       cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Z-Index --- */
+  --z-base:       0;
+  --z-dropdown:   10;
+  --z-sticky:     20;
+  --z-overlay:    30;
+  --z-modal:      40;
+  --z-toast:      50;
+
+  /* --- Border Radius --- */
+  --radius-sm:    4px;
+  --radius-md:    6px;
+  --radius-lg:    8px;
+  --radius-xl:    12px;
+  --radius-full:  9999px;
+
+  /* --- Shadows (minimal, warm-tinted) --- */
+  --shadow-sm:    0 1px 2px rgba(26, 26, 24, 0.05);
+  --shadow-md:    0 2px 8px rgba(26, 26, 24, 0.08);
+  --shadow-lg:    0 4px 16px rgba(26, 26, 24, 0.10);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ==========================================================================
+   Design Tokens: Dark Mode
+
+   Activated by OS preference OR data-theme="dark" on <html>.
+   ========================================================================== */
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --color-bg-primary:       #1A1A18;
+    --color-bg-secondary:     #2A2A26;
+    --color-bg-tertiary:      #333330;
+    --color-bg-elevated:      #242422;
+
+    --color-text-primary:     #EDECEA;
+    --color-text-secondary:   #9B9B93;
+    --color-text-tertiary:    #6E6E6A;
+    --color-text-disabled:    #4A4A48;
+    --color-text-inverse:     #1A1A18;
+
+    --color-accent:           #F0882E;
+    --color-accent-hover:     #F49A4A;
+    --color-accent-active:    #E07014;
+    --color-accent-subtle:    #2A2018;
+
+    --color-border-primary:   #3A3A36;
+    --color-border-secondary: #2A2A28;
+    --color-border-focus:     #F0882E;
+
+    --color-success:          #5AAF66;
+    --color-success-subtle:   #1A2E1C;
+    --color-error:            #E05A44;
+    --color-error-subtle:     #2E1A18;
+    --color-warning:          #D4A024;
+    --color-warning-subtle:   #2E2818;
+    --color-info:             #5A9ABF;
+    --color-info-subtle:      #1A2430;
+
+    --color-mastery-new-bg:       #27272A;
+    --color-mastery-new-text:     #A1A1AA;
+    --color-mastery-new-border:   #3F3F46;
+    --color-mastery-new-fill:     #71717A;
+    --color-mastery-learning-bg:     #1C1105;
+    --color-mastery-learning-text:   #FBBF24;
+    --color-mastery-learning-border: #78350F;
+    --color-mastery-learning-fill:   #F59E0B;
+    --color-mastery-familiar-bg:     #0C1629;
+    --color-mastery-familiar-text:   #60A5FA;
+    --color-mastery-familiar-border: #1E3A5F;
+    --color-mastery-familiar-fill:   #3B82F6;
+    --color-mastery-proficient-bg:     #052E16;
+    --color-mastery-proficient-text:   #34D399;
+    --color-mastery-proficient-border: #064E3B;
+    --color-mastery-proficient-fill:   #10B981;
+    --color-mastery-mastered-bg:     #1E1338;
+    --color-mastery-mastered-text:   #A78BFA;
+    --color-mastery-mastered-border: #3B2778;
+    --color-mastery-mastered-fill:   #8B5CF6;
+
+    --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.20);
+    --shadow-md:    0 2px 8px rgba(0, 0, 0, 0.25);
+    --shadow-lg:    0 4px 16px rgba(0, 0, 0, 0.30);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Manual dark mode override via data attribute */
+[data-theme="dark"] {
+  --color-bg-primary:       #1A1A18;
+  --color-bg-secondary:     #2A2A26;
+  --color-bg-tertiary:      #333330;
+  --color-bg-elevated:      #242422;
+
+  --color-text-primary:     #EDECEA;
+  --color-text-secondary:   #9B9B93;
+  --color-text-tertiary:    #6E6E6A;
+  --color-text-disabled:    #4A4A48;
+  --color-text-inverse:     #1A1A18;
+
+  --color-accent:           #F0882E;
+  --color-accent-hover:     #F49A4A;
+  --color-accent-active:    #E07014;
+  --color-accent-subtle:    #2A2018;
+
+  --color-border-primary:   #3A3A36;
+  --color-border-secondary: #2A2A28;
+  --color-border-focus:     #F0882E;
+
+  --color-success:          #5AAF66;
+  --color-success-subtle:   #1A2E1C;
+  --color-error:            #E05A44;
+  --color-error-subtle:     #2E1A18;
+  --color-warning:          #D4A024;
+  --color-warning-subtle:   #2E2818;
+  --color-info:             #5A9ABF;
+  --color-info-subtle:      #1A2430;
+
+  --color-mastery-new-bg:       #27272A;
+  --color-mastery-new-text:     #A1A1AA;
+  --color-mastery-new-border:   #3F3F46;
+  --color-mastery-new-fill:     #71717A;
+  --color-mastery-learning-bg:     #1C1105;
+  --color-mastery-learning-text:   #FBBF24;
+  --color-mastery-learning-border: #78350F;
+  --color-mastery-learning-fill:   #F59E0B;
+  --color-mastery-familiar-bg:     #0C1629;
+  --color-mastery-familiar-text:   #60A5FA;
+  --color-mastery-familiar-border: #1E3A5F;
+  --color-mastery-familiar-fill:   #3B82F6;
+  --color-mastery-proficient-bg:     #052E16;
+  --color-mastery-proficient-text:   #34D399;
+  --color-mastery-proficient-border: #064E3B;
+  --color-mastery-proficient-fill:   #10B981;
+  --color-mastery-mastered-bg:     #1E1338;
+  --color-mastery-mastered-text:   #A78BFA;
+  --color-mastery-mastered-border: #3B2778;
+  --color-mastery-mastered-fill:   #8B5CF6;
+
+  --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.20);
+  --shadow-md:    0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg:    0 4px 16px rgba(0, 0, 0, 0.30);
+}
+
+/* ==========================================================================
+   Tailwind v4 Theme Extension
+
+   Maps CSS custom properties into Tailwind utility classes so you can
+   write classes like bg-surface, text-primary, text-accent, etc.
+   ========================================================================== */
+
+@theme inline {
+  /* --- Colors --- */
+  --color-background:       var(--color-bg-primary);
+  --color-foreground:       var(--color-text-primary);
+  --color-surface:          var(--color-bg-secondary);
+  --color-surface-tertiary: var(--color-bg-tertiary);
+  --color-elevated:         var(--color-bg-elevated);
+
+  --color-primary:          var(--color-text-primary);
+  --color-secondary:        var(--color-text-secondary);
+  --color-tertiary:         var(--color-text-tertiary);
+  --color-disabled:         var(--color-text-disabled);
+  --color-inverse:          var(--color-text-inverse);
+
+  --color-accent:           var(--color-accent);
+  --color-accent-hover:     var(--color-accent-hover);
+  --color-accent-active:    var(--color-accent-active);
+  --color-accent-subtle:    var(--color-accent-subtle);
+
+  --color-border:           var(--color-border-primary);
+  --color-border-secondary: var(--color-border-secondary);
+  --color-border-focus:     var(--color-border-focus);
+
+  --color-success:          var(--color-success);
+  --color-success-subtle:   var(--color-success-subtle);
+  --color-error:            var(--color-error);
+  --color-error-subtle:     var(--color-error-subtle);
+  --color-warning:          var(--color-warning);
+  --color-warning-subtle:   var(--color-warning-subtle);
+  --color-info:             var(--color-info);
+  --color-info-subtle:      var(--color-info-subtle);
+
+  /* --- Font Families --- */
+  --font-sans:              var(--font-sans);
+  --font-reading:           var(--font-reading);
+  --font-mono:              var(--font-mono);
+
+  /* --- Shadows --- */
+  --shadow-sm:              var(--shadow-sm);
+  --shadow-md:              var(--shadow-md);
+  --shadow-lg:              var(--shadow-lg);
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    tab-size: 4;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-primary);
+    min-height: 100dvh;
+  }
+
+  /* --- Headings --- */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-snug);
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-snug);
+  }
+
+  h3 {
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  h4 {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  /* --- Links --- */
+  a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color var(--duration-instant) ease;
+  }
+
+  a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  /* --- Code --- */
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-bg-tertiary);
+    padding: 0.15em 0.35em;
+    border-radius: var(--radius-sm);
+  }
+
+  pre {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    background: var(--color-bg-tertiary);
+    padding: var(--space-4) var(--space-6);
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    tab-size: 2;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: inherit;
+  }
+
+  /* --- Selection --- */
+  ::selection {
+    background-color: var(--color-accent-subtle);
+    color: var(--color-text-primary);
+  }
+
+  /* --- Scrollbar (minimal) --- */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border-primary);
+    border-radius: var(--radius-full);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-tertiary);
+  }
+}
+
+/* ==========================================================================
+   Focus Styles (Accessibility)
+
+   Visible focus ring for keyboard users. Hidden for mouse/touch users.
+   Uses the accent color for consistency with the design system.
+   ========================================================================== */
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Skip link -- first focusable element for keyboard navigation */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: var(--space-4);
+    z-index: var(--z-toast);
+    padding: var(--space-3) var(--space-6);
+    background: var(--color-accent);
+    color: var(--color-text-inverse);
+    font-weight: var(--weight-medium);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: top var(--duration-fast) var(--ease-out);
+  }
+
+  .skip-link:focus {
+    top: var(--space-4);
+  }
+}
+
+/* ==========================================================================
+   Prose / Reading Content Styles
+
+   Optimized for sustained reading of educational content.
+   65ch measure, IBM Plex Sans, generous line height.
+   ========================================================================== */
+
+@layer components {
+  .prose-reading {
+    font-family: var(--font-reading);
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-primary);
+    max-width: var(--width-reading);
+    word-spacing: 0.05em;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  }
+
+  .prose-reading p + p {
+    margin-top: 1.5em;
+  }
+
+  .prose-reading h1 {
+    font-family: var(--font-sans);
+    font-size: var(--text-4xl);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-snug);
+    margin-top: 0;
+    margin-bottom: 1em;
+  }
+
+  .prose-reading h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-snug);
+    margin-top: 3em;
+    margin-bottom: 1em;
+  }
+
+  .prose-reading h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+  }
+
+  .prose-reading h4 {
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  .prose-reading ul,
+  .prose-reading ol {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+  }
+
+  .prose-reading li {
+    margin-top: 0.5em;
+  }
+
+  .prose-reading li::marker {
+    color: var(--color-text-tertiary);
+  }
+
+  .prose-reading blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: var(--space-6);
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    color: var(--color-text-secondary);
+    font-style: normal;
+  }
+
+  .prose-reading a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  .prose-reading a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .prose-reading img {
+    border-radius: var(--radius-lg);
+    margin-top: 2em;
+    margin-bottom: 2em;
+  }
+
+  .prose-reading hr {
+    border: none;
+    border-top: 1px solid var(--color-border-primary);
+    margin-top: 3em;
+    margin-bottom: 3em;
+  }
+
+  .prose-reading strong {
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .prose-reading code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-bg-tertiary);
+    padding: 0.15em 0.35em;
+    border-radius: var(--radius-sm);
+  }
+
+  .prose-reading pre {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+  .prose-reading pre code {
+    background: none;
+    padding: 0;
+  }
+
+  /* --- Tables within prose --- */
+  .prose-reading table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    font-size: var(--text-base);
+  }
+
+  .prose-reading th {
+    font-weight: var(--weight-semibold);
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 2px solid var(--color-border-primary);
+    color: var(--color-text-primary);
+  }
+
+  .prose-reading td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border-secondary);
+  }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+@layer utilities {
+  /* Overline / label text */
+  .text-overline {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-normal);
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+  }
+
+  /* Caption text */
+  .text-caption {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+  }
+
+  /* Layout containers */
+  .container-reading {
+    max-width: var(--width-reading);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--grid-margin);
+    padding-right: var(--grid-margin);
+  }
+
+  .container-content {
+    max-width: var(--width-content);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--grid-margin);
+    padding-right: var(--grid-margin);
+  }
+
+  .container-wide {
+    max-width: var(--width-wide);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--grid-margin);
+    padding-right: var(--grid-margin);
+  }
+
+  .container-max {
+    max-width: var(--width-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--grid-margin);
+    padding-right: var(--grid-margin);
+  }
+}
+
+/* ==========================================================================
+   Interactive Elements
+   ========================================================================== */
+
+@layer utilities {
+  /* Subtle press feedback for interactive elements */
+  .press-scale {
+    transition: transform var(--duration-instant) var(--ease-default);
+  }
+
+  .press-scale:active {
+    transform: scale(0.98);
+  }
+}
+
+/* ==========================================================================
+   Reduced Motion
+
+   Respects user preferences. Preserves opacity-only transitions as they
+   do not trigger vestibular responses.
+   ========================================================================== */
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes cta-pulse {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(1.35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Responsive Grid Margins
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  :root {
+    --grid-margin: 1rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --grid-margin: 2rem;
+  }
 }
