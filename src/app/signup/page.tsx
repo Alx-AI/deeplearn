@@ -6,26 +6,47 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
+
+    if (password !== confirm) {
+      setError('Passwords do not match');
+      return;
+    }
+
     setLoading(true);
 
-    const res = await signIn('credentials', {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error ?? 'Something went wrong');
+      setLoading(false);
+      return;
+    }
+
+    // Auto sign-in after successful signup
+    const signInRes = await signIn('credentials', {
       username,
       password,
       redirect: false,
     });
 
-    if (res?.error) {
-      setError('Invalid username or password');
+    if (signInRes?.error) {
+      setError('Account created but sign-in failed. Please sign in manually.');
       setLoading(false);
     } else {
       router.push('/');
@@ -72,10 +93,10 @@ export default function SignInPage() {
         {/* Card */}
         <div className="rounded-xl border border-border bg-elevated p-6 shadow-sm">
           <h1 className="text-lg font-semibold text-primary text-center mb-1">
-            Sign in to continue
+            Create an account
           </h1>
           <p className="text-sm text-secondary text-center mb-6">
-            Your progress is saved to your account
+            Start tracking your learning progress
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -87,10 +108,11 @@ export default function SignInPage() {
                 id="username"
                 type="text"
                 required
+                minLength={3}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-primary placeholder:text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent/40"
-                placeholder="Enter your username"
+                placeholder="Choose a username"
                 autoComplete="username"
               />
             </div>
@@ -103,11 +125,29 @@ export default function SignInPage() {
                 id="password"
                 type="password"
                 required
+                minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-primary placeholder:text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent/40"
-                placeholder="Enter your password"
-                autoComplete="current-password"
+                placeholder="At least 8 characters"
+                autoComplete="new-password"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="confirm" className="block text-sm font-medium text-primary mb-1">
+                Confirm password
+              </label>
+              <input
+                id="confirm"
+                type="password"
+                required
+                minLength={8}
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-primary placeholder:text-secondary/50 focus:outline-none focus:ring-2 focus:ring-accent/40"
+                placeholder="Re-enter your password"
+                autoComplete="new-password"
               />
             </div>
 
@@ -120,14 +160,14 @@ export default function SignInPage() {
               disabled={loading}
               className="flex w-full items-center justify-center rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent/90 disabled:opacity-50 cursor-pointer"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? 'Creating account...' : 'Create account'}
             </button>
           </form>
 
           <p className="mt-4 text-center text-sm text-secondary">
-            Don&apos;t have an account?{' '}
-            <Link href="/signup" className="text-accent hover:underline">
-              Sign up
+            Already have an account?{' '}
+            <Link href="/signin" className="text-accent hover:underline">
+              Sign in
             </Link>
           </p>
         </div>

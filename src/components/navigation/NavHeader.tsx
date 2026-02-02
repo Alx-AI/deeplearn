@@ -175,27 +175,15 @@ export function NavHeader() {
                 className="flex h-8 w-8 items-center justify-center rounded-full overflow-hidden border border-border hover:border-accent/50 transition-colors cursor-pointer"
                 aria-label="User menu"
               >
-                {session.user.image ? (
-                  <img
-                    src={session.user.image}
-                    alt=""
-                    className="h-full w-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <span className="text-xs font-semibold text-secondary">
-                    {session.user.name?.[0]?.toUpperCase() ?? '?'}
-                  </span>
-                )}
+                <span className="text-xs font-semibold text-secondary">
+                  {session.user.name?.[0]?.toUpperCase() ?? '?'}
+                </span>
               </button>
               {userMenuOpen && (
                 <div className="absolute right-0 top-full mt-2 w-56 rounded-lg border border-border bg-elevated shadow-lg z-30">
                   <div className="border-b border-border px-4 py-3">
                     <p className="text-sm font-medium text-primary truncate">
                       {session.user.name}
-                    </p>
-                    <p className="text-xs text-secondary truncate">
-                      {session.user.email}
                     </p>
                   </div>
                   <div className="p-1">
