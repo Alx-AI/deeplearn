@@ -419,7 +419,6 @@ export default function LessonPage() {
   const [activeSection, setActiveSection] = useState<string>('');
   const [readSections, setReadSections] = useState<Set<string>>(new Set());
   const previousSectionRef = useRef<string>('');
-  const contentRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll();
 
@@ -576,7 +575,7 @@ export default function LessonPage() {
       <div className="container-wide py-6 sm:py-10">
         <div className="flex gap-12">
           {/* Main Content */}
-          <div className="min-w-0 flex-1" ref={contentRef}>
+          <div className="min-w-0 flex-1">
             {/* Breadcrumb */}
             <nav className="mb-6 flex items-center gap-2 text-sm text-secondary">
               <Link href={`${linkPrefix}/learn`} className="no-underline text-secondary hover:text-primary transition-colors">

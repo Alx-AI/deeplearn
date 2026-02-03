@@ -3,7 +3,7 @@
    Inspired by Dieter Rams' principles: "Less, but better."
 
    Color palette derived from Braun product designs:
-   warm off-whites, calibrated grays, iconic Braun orange #E07014.
+   warm off-whites, calibrated grays, refined gold #B5911E.
    ========================================================================== */
 
 @import "tailwindcss";
@@ -37,16 +37,16 @@
   --color-text-disabled:    #B8B8B4;
   --color-text-inverse:     #FAFAF8;
 
-  /* --- Color: Accent (Braun Orange) --- */
-  --color-accent:           #E07014;
-  --color-accent-hover:     #C46012;
-  --color-accent-active:    #A84D0A;
-  --color-accent-subtle:    #FDF0E4;
+  /* --- Color: Accent (Warm Gold) --- */
+  --color-accent:           #B5911E;
+  --color-accent-hover:     #997A18;
+  --color-accent-active:    #7D6413;
+  --color-accent-subtle:    #FBF4E0;
 
   /* --- Color: Borders --- */
   --color-border-primary:   #D4D3CF;
   --color-border-secondary: #E8E6E1;
-  --color-border-focus:     #E07014;
+  --color-border-focus:     #B5911E;
 
   /* --- Color: Semantic States --- */
   --color-success:          #4A7C59;
@@ -196,14 +196,14 @@
     --color-text-disabled:    #4A4A48;
     --color-text-inverse:     #1A1A18;
 
-    --color-accent:           #F0882E;
-    --color-accent-hover:     #F49A4A;
-    --color-accent-active:    #E07014;
-    --color-accent-subtle:    #2A2018;
+    --color-accent:           #D4AE48;
+    --color-accent-hover:     #E0C060;
+    --color-accent-active:    #B5911E;
+    --color-accent-subtle:    #2A2210;
 
     --color-border-primary:   #3A3A36;
     --color-border-secondary: #2A2A28;
-    --color-border-focus:     #F0882E;
+    --color-border-focus:     #D4AE48;
 
     --color-success:          #5AAF66;
     --color-success-subtle:   #1A2E1C;
@@ -254,14 +254,14 @@
   --color-text-disabled:    #4A4A48;
   --color-text-inverse:     #1A1A18;
 
-  --color-accent:           #F0882E;
-  --color-accent-hover:     #F49A4A;
-  --color-accent-active:    #E07014;
-  --color-accent-subtle:    #2A2018;
+  --color-accent:           #D4AE48;
+  --color-accent-hover:     #E0C060;
+  --color-accent-active:    #B5911E;
+  --color-accent-subtle:    #2A2210;
 
   --color-border-primary:   #3A3A36;
   --color-border-secondary: #2A2A28;
-  --color-border-focus:     #F0882E;
+  --color-border-focus:     #D4AE48;
 
   --color-success:          #5AAF66;
   --color-success-subtle:   #1A2E1C;

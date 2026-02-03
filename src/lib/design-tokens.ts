@@ -29,15 +29,15 @@ export const colors = {
       inverse: "#FAFAF8",
     },
     accent: {
-      DEFAULT: "#E07014",
-      hover: "#C46012",
-      active: "#A84D0A",
-      subtle: "#FDF0E4",
+      DEFAULT: "#B5911E",
+      hover: "#997A18",
+      active: "#7D6413",
+      subtle: "#FBF4E0",
     },
     border: {
       primary: "#D4D3CF",
       secondary: "#E8E6E1",
-      focus: "#E07014",
+      focus: "#B5911E",
     },
     success: {
       DEFAULT: "#4A7C59",
@@ -71,15 +71,15 @@ export const colors = {
       inverse: "#1A1A18",
     },
     accent: {
-      DEFAULT: "#F0882E",
-      hover: "#F49A4A",
-      active: "#E07014",
-      subtle: "#2A2018",
+      DEFAULT: "#D4AE48",
+      hover: "#E0C060",
+      active: "#B5911E",
+      subtle: "#2A2210",
     },
     border: {
       primary: "#3A3A36",
       secondary: "#2A2A28",
-      focus: "#F0882E",
+      focus: "#D4AE48",
     },
     success: {
       DEFAULT: "#5AAF66",
