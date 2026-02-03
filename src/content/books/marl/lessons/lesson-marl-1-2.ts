@@ -18,9 +18,9 @@ const lesson: LessonContentData = {
       content: `
 Now that we know what a multi-agent system looks like, how do we actually get agents to learn good behavior? The answer is **multi-agent reinforcement learning** (MARL) -- the extension of RL to settings with multiple simultaneously learning agents.
 
-Recall the single-agent RL loop: an agent observes the state, picks an action, receives a reward, transitions to a new state, and repeats. MARL extends this loop to *n* agents. At each time step, every agent *i* receives its own observation and independently selects an action a_i. The collection of all individual actions (a_1, a_2, ..., a_n) is called the **joint action**. This joint action changes the environment state according to the environment's dynamics, and each agent receives its own scalar reward and a new observation. The loop continues until a terminal condition (like all items collected) or indefinitely.
+Recall the single-agent RL loop: an agent observes the state, picks an action, receives a reward, transitions to a new state, and repeats. MARL extends this loop to $n$ agents. At each time step, every agent $i$ receives its own observation and independently selects an action $a_i$. The collection of all individual actions $(a_1, a_2, \\ldots, a_n)$ is called the **joint action**. This joint action changes the environment state according to the environment's dynamics, and each agent receives its own scalar reward and a new observation. The loop continues until a terminal condition (like all items collected) or indefinitely.
 
-In Level-Based Foraging, each agent *i* in {1, 2, 3} observes the full state and picks an action a_i from {up, down, left, right, collect, noop}. Given the joint action (a_1, a_2, a_3), the environment updates robot positions and item existence variables. Each agent then receives a reward -- for instance, +1 if any item was collected -- and sees the new state. A complete run from the initial grid configuration to all items collected (or a time limit) is called an **episode**. Data from many episodes is used to improve each agent's **policy** -- the function mapping observations to actions.
+In Level-Based Foraging, each agent $i \\in \\{1, 2, 3\\}$ observes the full state and picks an action $a_i$ from $\\{$up, down, left, right, collect, noop$\\}$. Given the joint action $(a_1, a_2, a_3)$, the environment updates robot positions and item existence variables. Each agent then receives a reward -- for instance, +1 if any item was collected -- and sees the new state. A complete run from the initial grid configuration to all items collected (or a time limit) is called an **episode**. Data from many episodes is used to improve each agent's **policy** -- the function mapping observations to actions.
 
 The key insight is that each agent starts with a random policy and, through trial and error across many episodes, gradually shifts toward actions that maximize its cumulative reward. But unlike single-agent RL, each agent's reward depends not just on its own actions but on *everyone's* actions. That interdependence is what makes MARL fundamentally different.
 `,
@@ -67,7 +67,7 @@ MARL algorithms also differ along other dimensions summarized in the textbook's 
     },
   ],
   summary: `**Key takeaways:**
-- The MARL training loop extends single-agent RL to *n* agents choosing actions simultaneously; their combined actions form a joint action that drives state transitions.
+- The MARL training loop extends single-agent RL to $n$ agents choosing actions simultaneously; their combined actions form a joint action that drives state transitions.
 - Multi-agent reward structures fall into three categories: cooperative (shared reward), competitive (zero-sum), and mixed-motive (general-sum).
 - Centralized training with decentralized execution (CTDE) is the dominant modern paradigm: use global information during training, but deploy policies that act on local observations only.
 - An episode is a complete run from initial state to terminal state; data from many episodes is used to improve agent policies.

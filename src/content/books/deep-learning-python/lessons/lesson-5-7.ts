@@ -17,7 +17,7 @@ const lesson: LessonContentData = {
       content: `
 **Timeseries forecasting** predicts future values based on historical patterns. Applications range from weather prediction and stock prices to energy demand and server load forecasting.
 
-The standard setup uses a **sliding window**: take the last N timesteps as input and predict the value at some future horizon. For example, use the last 120 hours of temperature data to predict the temperature 24 hours ahead:
+The standard setup uses a **sliding window**: take the last $N$ timesteps as input and predict the value at some future horizon. For example, use the last 120 hours of temperature data to predict the temperature 24 hours ahead:
 
 \`\`\`python
 # Each sample: input = last 120 hours, target = temp at hour 144

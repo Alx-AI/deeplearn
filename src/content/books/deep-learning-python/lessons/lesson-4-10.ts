@@ -18,9 +18,9 @@ const lesson: LessonContentData = {
       content: `
 Deep networks are powerful because more layers can learn more complex representations. But there is a limit: as you stack more layers, the gradient signal used for training degrades as it propagates backward through the chain. This is the **vanishing gradient problem**.
 
-Think of the game of telephone: a message whispered through many people becomes garbled. Similarly, in a chain \`y = f4(f3(f2(f1(x))))\`, the gradient for updating f1 must pass through f2, f3, and f4. Each step introduces noise that can shrink the gradient toward zero. A 50-layer network without countermeasures may train poorly because the earliest layers receive almost no useful gradient signal.
+Think of the game of telephone: a message whispered through many people becomes garbled. Similarly, in a chain $y = f_4(f_3(f_2(f_1(x))))$, the gradient for updating $f_1$ must pass through $f_2$, $f_3$, and $f_4$. Each step introduces noise that can shrink the gradient toward zero. A 50-layer network without countermeasures may train poorly because the earliest layers receive almost no useful gradient signal.
 
-The solution is elegantly simple: **residual connections** (also called skip connections). Instead of computing \`output = block(x)\`, you compute \`output = block(x) + x\`. You add the input directly to the output.
+The solution is elegantly simple: **residual connections** (also called skip connections). Instead of computing $\\text{output} = \\text{block}(x)$, you compute $\\text{output} = \\text{block}(x) + x$. You add the input directly to the output.
 
 \`\`\`python
 residual = x
@@ -29,7 +29,7 @@ x = layers.Conv2D(64, 3, activation="relu", padding="same")(x)
 x = layers.add([x, residual])   # Skip connection
 \`\`\`
 
-This creates an **information shortcut** around each block. Even if the block's computations are noisy or destructive, the original information is preserved in the shortcut. The gradient of \`block(x) + x\` with respect to x includes a "+1" term that guarantees gradient flow regardless of what the block does.
+This creates an **information shortcut** around each block. Even if the block's computations are noisy or destructive, the original information is preserved in the shortcut. The gradient of $\\text{block}(x) + x$ with respect to $x$ includes a "$+1$" term that guarantees gradient flow regardless of what the block does.
 
 This innovation, introduced by He et al. in 2015 with the **ResNet** family, made it possible to train networks with 50, 100, or even 1,000+ layers.
 `,
@@ -64,7 +64,7 @@ x = layers.ReLU()(x)`,
       id: '4.10.2',
       title: 'Implementing Residual Blocks',
       content: `
-There is one practical constraint: adding the input to the output requires both to have the same shape. When the number of filters changes or spatial dimensions are reduced by pooling, you need a **projection shortcut** -- a 1x1 convolution that matches the residual to the new shape:
+There is one practical constraint: adding the input to the output requires both to have the same shape. When the number of filters changes or spatial dimensions are reduced by pooling, you need a **projection shortcut** -- a $1 \\times 1$ convolution that matches the residual to the new shape:
 
 \`\`\`python
 def residual_block(x, filters, pooling=False):
@@ -80,9 +80,9 @@ def residual_block(x, filters, pooling=False):
     return x
 \`\`\`
 
-This utility function handles both cases: when pooling is used (match with strided 1x1 conv) and when only the filter count changes (match with 1x1 conv).
+This utility function handles both cases: when pooling is used (match with strided $1 \\times 1$ conv) and when only the filter count changes (match with $1 \\times 1$ conv).
 
-A crucial insight: if \`block(x)\` learns to output all zeros, then \`output = 0 + x = x\`. The layer becomes an identity function. This means residual connections make it easy for layers that have nothing useful to add to simply pass data through unchanged. A deeper network can never be worse than a shallower one because unnecessary layers can learn to be identities.
+A crucial insight: if $\\text{block}(x)$ learns to output all zeros, then $\\text{output} = 0 + x = x$. The layer becomes an identity function. This means residual connections make it easy for layers that have nothing useful to add to simply pass data through unchanged. A deeper network can never be worse than a shallower one because unnecessary layers can learn to be identities.
 
 Modern architectures universally use residual connections. Whether you are working with ConvNets, Transformers, or any deep model, skip connections are an essential architectural pattern you will encounter everywhere.
 `,
@@ -121,8 +121,8 @@ model = keras.Model(inputs, outputs)`,
   ],
   summary: `**Key takeaways:**
 - Vanishing gradients prevent very deep networks from training: gradient signals degrade through many layers.
-- Residual connections add the input directly to the output: output = block(x) + x, creating a gradient highway.
-- When shapes differ, a 1x1 projection convolution matches the residual to the block's output dimensions.
+- Residual connections add the input directly to the output: $\\text{output} = \\text{block}(x) + x$, creating a gradient highway.
+- When shapes differ, a $1 \\times 1$ projection convolution matches the residual to the block's output dimensions.
 - Layers with residual connections can learn the identity function (pass data through unchanged), ensuring depth never hurts.
 - Introduced by ResNet in 2015, residual connections are now universal in deep architectures.`,
 };

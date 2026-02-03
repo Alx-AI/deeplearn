@@ -17,19 +17,19 @@ const lesson: LessonContentData = {
       content: `
 We've seen that training adjusts weights to reduce the loss. But *how* does the optimizer know which direction to adjust each weight? The answer lies in one of the most powerful ideas in mathematics: the **derivative**.
 
-Consider a smooth, continuous function \`f(x) = y\`. If you nudge \`x\` by a tiny amount \`epsilon\`, the output \`y\` changes by some proportional amount. The derivative tells you the *ratio* -- how much \`y\` changes per unit change in \`x\`. Geometrically, it's the **slope** of the curve at that point.
+Consider a smooth, continuous function $f(x) = y$. If you nudge $x$ by a tiny amount $\\epsilon$, the output $y$ changes by some proportional amount. The derivative tells you the *ratio* -- how much $y$ changes per unit change in $x$. Geometrically, it's the **slope** of the curve at that point.
 
-If the derivative is positive at some point, increasing \`x\` will increase \`f(x)\`. If it's negative, increasing \`x\` will *decrease* \`f(x)\`. And the magnitude tells you how fast: a derivative of 3 means \`y\` changes 3 times as fast as \`x\`.
+If the derivative is positive at some point, increasing $x$ will increase $f(x)$. If it's negative, increasing $x$ will *decrease* $f(x)$. And the magnitude tells you how fast: a derivative of 3 means $y$ changes 3 times as fast as $x$.
 
-This is immediately useful for **optimization** -- finding the input that minimizes the output. If you want to make \`f(x)\` smaller:
+This is immediately useful for **optimization** -- finding the input that minimizes the output. If you want to make $f(x)$ smaller:
 - Check the derivative at the current point
-- If the derivative is positive, move \`x\` a little to the *left* (decrease it)
-- If the derivative is negative, move \`x\` a little to the *right* (increase it)
+- If the derivative is positive, move $x$ a little to the *left* (decrease it)
+- If the derivative is negative, move $x$ a little to the *right* (increase it)
 - In both cases, you're moving *against* the derivative
 
 You're walking downhill on the curve of the function. That's the core intuition behind **gradient descent**.
 
-Now, our neural network doesn't have a single number \`x\` -- it has millions of weights. Each weight is like a separate dial that affects the loss. We need to know the slope of the loss with respect to *every single weight simultaneously*. That generalization of the derivative to multiple inputs is called the **gradient**.
+Now, our neural network doesn't have a single number $x$ -- it has millions of weights. Each weight is like a separate dial that affects the loss. We need to know the slope of the loss with respect to *every single weight simultaneously*. That generalization of the derivative to multiple inputs is called the **gradient**.
 `,
       reviewCardIds: ['rc-1.10-1', 'rc-1.10-2'],
       illustrations: ['derivative-slope'],
@@ -77,7 +77,7 @@ loss_value = loss(y_pred, y_true)         # Compute the loss
 gradient = grad(loss_value, W)            # Gradient: same shape as W
 \`\`\`
 
-The gradient \`grad(loss_value, W)\` is a tensor where each entry \`[i, j]\` tells you the direction and magnitude of the loss change when you modify \`W[i, j]\`. It points in the direction of **steepest increase** of the loss.
+The gradient $\\nabla_W \\text{loss}$ is a tensor where each entry $[i, j]$ tells you the direction and magnitude of the loss change when you modify $W[i, j]$. It points in the direction of **steepest increase** of the loss.
 
 Since we want to *decrease* the loss, we move in the **opposite** direction:
 
@@ -91,7 +91,7 @@ This is **gradient descent** in a nutshell: compute the gradient, then step in t
 - **Too small:** You barely move each step. Training takes forever and might get stuck in a local minimum.
 - **Just right:** Steady, reliable progress toward lower loss.
 
-Could we find the exact minimum analytically (by solving \`gradient = 0\`)? In theory, yes. In practice, this means solving a polynomial equation with millions or billions of variables -- completely intractable. Gradient descent gives us a practical alternative: instead of solving for the exact minimum, we walk toward it one small step at a time.
+Could we find the exact minimum analytically (by solving $\\nabla = 0$)? In theory, yes. In practice, this means solving a polynomial equation with millions or billions of variables -- completely intractable. Gradient descent gives us a practical alternative: instead of solving for the exact minimum, we walk toward it one small step at a time.
 `,
       reviewCardIds: ['rc-1.10-3', 'rc-1.10-4', 'rc-1.10-5'],
       illustrations: ['gradient-descent'],
@@ -145,7 +145,7 @@ The full SGD algorithm:
 2. **Forward pass:** run the model on the batch to get predictions
 3. **Compute loss:** measure how wrong the predictions are
 4. **Backward pass:** compute the gradient of the loss with respect to all weights
-5. **Update weights:** \`W -= learning_rate * gradient\`
+5. **Update weights:** $W \\leftarrow W - \\text{learning\\_rate} \\times \\text{gradient}$
 6. **Repeat** until the loss is sufficiently low
 
 Each pass through the entire training set is called an **epoch**. With 60,000 samples and a batch size of 128, one epoch has 469 batches (and 469 weight updates). Training for 5 epochs means 2,345 total updates.
@@ -211,7 +211,7 @@ One question remains: how do we actually *compute* the gradient for a network wi
 
 The answer is the **chain rule** from calculus, applied in an algorithm called **backpropagation**.
 
-The chain rule says: if you have composed functions like \`y = f(g(x))\`, then the derivative of \`y\` with respect to \`x\` is the product of the individual derivatives: \`grad(y, x) = grad(y, g(x)) * grad(g(x), x)\`.
+The chain rule says: if you have composed functions like $y = f(g(x))$, then the derivative of $y$ with respect to $x$ is the product of the individual derivatives: $\\frac{dy}{dx} = \\frac{dy}{dg} \\cdot \\frac{dg}{dx}$.
 
 A neural network is exactly a chain of composed functions. Our MNIST model computes:
 

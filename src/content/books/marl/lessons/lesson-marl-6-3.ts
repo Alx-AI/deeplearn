@@ -15,9 +15,9 @@ const lesson: LessonContentData = {
       id: 'marl-6.3.1',
       title: 'Minimax Q-Learning',
       content: `
-**Minimax Q-learning** (Littman 1994) is the most straightforward instantiation of the JAL-GT framework. It plugs the **minimax solution concept** into the Value_j operator, solving each stage game Gamma_s via linear programming. The algorithm applies to **two-agent zero-sum** stochastic games.
+**Minimax Q-learning** (Littman 1994) is the most straightforward instantiation of the JAL-GT framework. It plugs the **minimax solution concept** into the $\\text{Value}_j$ operator, solving each stage game $\\Gamma_s$ via linear programming. The algorithm applies to **two-agent zero-sum** stochastic games.
 
-Convergence is guaranteed under standard conditions: all state-joint-action pairs must be visited infinitely often, and the learning rate must satisfy the usual Robbins-Monro conditions (sum of alpha_t diverges, sum of alpha_t^2 converges). Since the minimax value is unique in zero-sum games, there is no equilibrium selection problem.
+Convergence is guaranteed under standard conditions: all state-joint-action pairs must be visited infinitely often, and the learning rate must satisfy the usual Robbins-Monro conditions ($\\sum \\alpha_t$ diverges, $\\sum \\alpha_t^2$ converges). Since the minimax value is unique in zero-sum games, there is no equilibrium selection problem.
 
 Littman (1994) evaluated Minimax-Q in a **simplified soccer game** -- a 4x5 grid where two agents try to carry a ball into the opponent's goal. The results are illuminating:
 
@@ -40,11 +40,11 @@ The lesson: Minimax-Q learns **robust** policies that cannot be exploited, at th
       content: `
 What if the game is not zero-sum? **Nash Q-learning** (Hu and Wellman 2003) replaces the minimax solver with a **Nash equilibrium** solver, making it applicable to general-sum stochastic games with any number of agents. But its convergence guarantees come with severe restrictions.
 
-Nash-Q converges to a Nash equilibrium of the stochastic game only if **every** encountered stage game Gamma_s satisfies one of two conditions: (a) all games have a **global optimum** -- a joint policy where every agent simultaneously achieves its maximum possible return, or (b) all games have a **saddle point** -- an equilibrium where any unilateral deviation benefits all other agents. Either condition ensures a unique equilibrium value, sidestepping the equilibrium selection problem.
+Nash-Q converges to a Nash equilibrium of the stochastic game only if **every** encountered stage game $\\Gamma_s$ satisfies one of two conditions: (a) all games have a **global optimum** -- a joint policy where every agent simultaneously achieves its maximum possible return, or (b) all games have a **saddle point** -- an equilibrium where any unilateral deviation benefits all other agents. Either condition ensures a unique equilibrium value, sidestepping the equilibrium selection problem.
 
 These conditions are extremely restrictive. A global optimum is even stronger than Pareto optimality. Consider the Prisoner's Dilemma: there is no joint policy that simultaneously maximizes both agents' returns (agent 1's maximum requires agent 2 to cooperate while agent 1 defects, and vice versa). In practice, these assumptions are almost never met in interesting general-sum games.
 
-**Correlated Q-learning** (Greenwald and Hall 2003) takes a different approach: it solves Gamma_s using **correlated equilibrium** instead of Nash equilibrium. This has two advantages. First, correlated equilibria can be computed efficiently via **linear programming** (whereas Nash equilibria require quadratic programming). Second, the correlated equilibrium set is a superset of the Nash equilibrium set, potentially offering solutions with higher returns.
+**Correlated Q-learning** (Greenwald and Hall 2003) takes a different approach: it solves $\\Gamma_s$ using **correlated equilibrium** instead of Nash equilibrium. This has two advantages. First, correlated equilibria can be computed efficiently via **linear programming** (whereas Nash equilibria require quadratic programming). Second, the correlated equilibrium set is a superset of the Nash equilibrium set, potentially offering solutions with higher returns.
 
 However, correlated equilibria require a **correlation device** -- a mechanism that samples a joint action and privately tells each agent its part. And the larger equilibrium set makes equilibrium selection even harder. Greenwald and Hall propose mechanisms such as maximizing the sum of agents' rewards, but **no formal convergence guarantees** are known for correlated Q-learning in general.
 `,
@@ -59,14 +59,14 @@ Can we design a JAL-GT algorithm that converges to an equilibrium in **any** gen
 
 The key insight involves **NoSDE games** -- games with "No Stationary Deterministic Equilibrium." Consider a turn-taking game with two states and two agents:
 
-| State | Agent | Action | Next State | Reward (a1, a2) |
+| State | Agent | Action | Next State | Reward $(a_1, a_2)$ |
 |---|---|---|---|---|
-| s_1 | Agent 1 | send | s_2 | (0, 0) |
-| s_1 | Agent 1 | keep | s_1 | (3, 1) |
-| s_2 | Agent 2 | send | s_1 | (0, 3) |
-| s_2 | Agent 2 | keep | s_2 | (1, 0) |
+| $s_1$ | Agent 1 | send | $s_2$ | $(0, 0)$ |
+| $s_1$ | Agent 1 | keep | $s_1$ | $(3, 1)$ |
+| $s_2$ | Agent 2 | send | $s_1$ | $(0, 3)$ |
+| $s_2$ | Agent 2 | keep | $s_2$ | $(1, 0)$ |
 
-In this game (with gamma = 3/4), **no deterministic** stationary joint policy is an equilibrium -- each agent always has an incentive to deviate. The unique equilibrium is **probabilistic**: pi*_1(send|s_1) = 2/3, pi*_2(send|s_2) = 5/12.
+In this game (with $\\gamma = 3/4$), **no deterministic** stationary joint policy is an equilibrium -- each agent always has an incentive to deviate. The unique equilibrium is **probabilistic**: $\\pi^*_1(\\text{send}\\mid s_1) = 2/3$, $\\pi^*_2(\\text{send}\\mid s_2) = 5/12$.
 
 Here is the problem: in a turn-taking game, only one agent has a choice in each state, so any equilibrium concept applied to Q-values reduces to a simple max operator. But a max operator produces **deterministic** policies. Since the only equilibrium is probabilistic, no JAL-GT algorithm can find it.
 

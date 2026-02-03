@@ -37,13 +37,13 @@ To properly characterize the complexity of computing Nash equilibria, we need a 
       title: 'PPAD-Completeness of Nash Equilibrium',
       content: `**PPAD** (Polynomial Parity Argument for Directed Graphs) is a complexity class designed for total search problems -- problems guaranteed to have solutions. It is defined via a complete problem called **END-OF-LINE**: given a directed graph where each node has at most one parent and one child, and given a source node (no parent), find a sink node (no child) or another source node.
 
-The "parity argument" guarantees a solution exists: any source must have a corresponding sink somewhere in the graph. The challenge is finding it efficiently. The graph has 2^k nodes, and the only obvious algorithm is to follow the path from the given source, which may require exponential time. The graph structure is given implicitly through Parent and Child functions (boolean circuits), not as an explicit edge list.
+The "parity argument" guarantees a solution exists: any source must have a corresponding sink somewhere in the graph. The challenge is finding it efficiently. The graph has $2^k$ nodes, and the only obvious algorithm is to follow the path from the given source, which may require exponential time. The graph structure is given implicitly through Parent and Child functions (boolean circuits), not as an explicit edge list.
 
-The landmark result for MARL is that computing a Nash equilibrium (NASH) is **PPAD-complete**. This was proven first for games with three or more agents (Daskalakis, Goldberg, and Papadimitriou, 2006, 2009) and then for two-agent games (Chen and Deng, 2006). More precisely, computing an **epsilon-Nash equilibrium** for certain bounds on epsilon is PPAD-complete, and computing exact equilibria in two-agent games is PPAD-complete.
+The landmark result for MARL is that computing a Nash equilibrium (NASH) is **PPAD-complete**. This was proven first for games with three or more agents (Daskalakis, Goldberg, and Papadimitriou, 2006, 2009) and then for two-agent games (Chen and Deng, 2006). More precisely, computing an **$\\epsilon$-Nash equilibrium** for certain bounds on $\\epsilon$ is PPAD-complete, and computing exact equilibria in two-agent games is PPAD-complete.
 
-Why does this matter? Just as it is unknown whether P = NP, it is unknown whether P = PPAD. No polynomial-time algorithms have been found for any PPAD-complete problem despite decades of effort, and PPAD has been shown to be hard under standard cryptographic assumptions. This is strong evidence -- though not proof -- that no efficient algorithm for NASH exists.
+Why does this matter? Just as it is unknown whether $\\text{P} = \\text{NP}$, it is unknown whether $\\text{P} = \\text{PPAD}$. No polynomial-time algorithms have been found for any PPAD-complete problem despite decades of effort, and PPAD has been shown to be hard under standard cryptographic assumptions. This is strong evidence -- though not proof -- that no efficient algorithm for NASH exists.
 
-The relationship between these complexity classes is: P is a subset of PPAD, which is a subset of NP. If P != NP (as universally conjectured), then PPAD-complete problems are genuinely hard.`,
+The relationship between these complexity classes is: $\\text{P} \\subseteq \\text{PPAD} \\subseteq \\text{NP}$. If $\\text{P} \\neq \\text{NP}$ (as universally conjectured), then PPAD-complete problems are genuinely hard.`,
       reviewCardIds: ['rc-marl-4.8-3', 'rc-marl-4.8-4'],
       illustrations: [],
     },
@@ -52,7 +52,7 @@ The relationship between these complexity classes is: P is a subset of PPAD, whi
       title: 'Practical Algorithms and Implications for MARL',
       content: `Despite the worst-case complexity, practical algorithms exist for computing equilibria in reasonably sized games. For **two-agent** normal-form games, two notable approaches are:
 
-**Support enumeration** works by guessing the *support* of each agent's equilibrium policy -- the set of actions played with positive probability. For each candidate support pair, the equilibrium conditions reduce to a system of linear equations (actions in the support must be equally good). If the system has a valid solution (non-negative probabilities summing to 1), we have found a Nash equilibrium. In the worst case, we may need to enumerate all 2^{k_1} * 2^{k_2} possible support combinations, which is exponential but works well for small games.
+**Support enumeration** works by guessing the *support* of each agent's equilibrium policy -- the set of actions played with positive probability. For each candidate support pair, the equilibrium conditions reduce to a system of linear equations (actions in the support must be equally good). If the system has a valid solution (non-negative probabilities summing to 1), we have found a Nash equilibrium. In the worst case, we may need to enumerate all $2^{k_1} \\times 2^{k_2}$ possible support combinations, which is exponential but works well for small games.
 
 The **Lemke-Howson algorithm** is a pivoting method (similar to the simplex algorithm for linear programming) specifically designed for two-agent games. It follows a path through the vertices of a polytope defined by the equilibrium conditions, guaranteed to terminate at a Nash equilibrium. While exponential in the worst case, it is often efficient in practice and is one of the most widely used algorithms for computing NE in bimatrix games.
 
@@ -60,7 +60,7 @@ For **correlated equilibrium**, the linear programming approach from Lesson 4.4 
 
 The PPAD-completeness of NASH has a direct implication for MARL: **there probably does not exist an efficient MARL algorithm that computes Nash equilibria for general games in polynomial time.** Much of MARL research focuses on identifying structure in specific game types -- such as zero-sum games, potential games, or games with specific network structures -- that can be exploited for improved performance. But the general result tells us that, without such structure, any MARL algorithm will require exponential time in the worst case.
 
-This does not mean MARL is hopeless -- far from it. Many practically important games have structure that algorithms can exploit, and approximate solutions (epsilon-NE) with small epsilon are often good enough. But the complexity landscape should calibrate our expectations about what is achievable in principle.`,
+This does not mean MARL is hopeless -- far from it. Many practically important games have structure that algorithms can exploit, and approximate solutions ($\\epsilon$-NE) with small $\\epsilon$ are often good enough. But the complexity landscape should calibrate our expectations about what is achievable in principle.`,
       reviewCardIds: ['rc-marl-4.8-5'],
       illustrations: [],
     },

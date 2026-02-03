@@ -60,7 +60,7 @@ print(response[0]["generated_text"][-1]["content"])`,
       content: `
 Fine-tuning all parameters of a 7-billion-parameter model requires enormous GPU memory (storing gradients for every weight). **LoRA** (Low-Rank Adaptation) offers an elegant alternative: instead of modifying the original weights, add small low-rank matrices alongside them.
 
-For a weight matrix W of shape 4096x4096 (16 million parameters), LoRA adds two small matrices: A (4096x8) and B (8x4096). The effective weight becomes W + A*B. Only A and B are trained -- just 65,536 new parameters instead of modifying 16 million.
+For a weight matrix $W$ of shape $4096 \\times 4096$ (16 million parameters), LoRA adds two small matrices: $A$ ($4096 \\times 8$) and $B$ ($8 \\times 4096$). The effective weight becomes $W + AB$. Only $A$ and $B$ are trained -- just 65,536 new parameters instead of modifying 16 million.
 
 \`\`\`python
 # Conceptual: LoRA modifies the effective weight

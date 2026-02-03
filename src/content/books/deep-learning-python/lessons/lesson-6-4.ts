@@ -20,11 +20,11 @@ const lesson: LessonContentData = {
 The breakthrough that made seq2seq practical is **attention**. Instead of compressing the entire input into a single vector (the RNN bottleneck), attention lets the model directly examine any part of the input when producing each output token.
 
 **Dot-product attention** works through three learned projections of each token:
-- **Query (Q)**: "what am I looking for?"
-- **Key (K)**: "what do I contain?"
-- **Value (V)**: "what information do I provide?"
+- **Query ($Q$)**: "what am I looking for?"
+- **Key ($K$)**: "what do I contain?"
+- **Value ($V$)**: "what information do I provide?"
 
-The attention score between tokens is computed as Q dot K^T, scaled by sqrt(d_key) to prevent softmax saturation. The output is a weighted sum of Values:
+The attention score between tokens is computed as $QK^T$, scaled by $\\sqrt{d_k}$ to prevent softmax saturation. The output is a weighted sum of Values:
 
 \`\`\`python
 scores = Q @ K.T / sqrt(d_key)     # How relevant is each key to each query
@@ -32,7 +32,7 @@ weights = softmax(scores)            # Normalize to probabilities
 output = weights @ V                 # Weighted sum of values
 \`\`\`
 
-**Multi-head attention** runs multiple attention mechanisms in parallel, each with different learned Q, K, V projections. One head might attend to syntactic relationships, another to semantic similarity, another to positional proximity. Their outputs are concatenated and linearly projected.
+**Multi-head attention** runs multiple attention mechanisms in parallel, each with different learned $Q$, $K$, $V$ projections. One head might attend to syntactic relationships, another to semantic similarity, another to positional proximity. Their outputs are concatenated and linearly projected.
 `,
       reviewCardIds: ['rc-6.4-1', 'rc-6.4-2', 'rc-6.4-3'],
       illustrations: ['attention-mechanism'],
@@ -142,7 +142,7 @@ model = Model(inputs, outputs)`,
     },
   ],
   summary: `**Key takeaways:**
-- Attention computes relevance scores between tokens via Query-Key dot products, then weights Values accordingly.
+- Attention computes relevance scores between tokens via $Q \\cdot K$ dot products, then weights $V$ accordingly.
 - Multi-head attention runs multiple parallel attention mechanisms to capture different types of relationships.
 - A Transformer encoder block: multi-head attention -> add & norm -> feed-forward -> add & norm.
 - Transformers process all tokens in parallel (unlike sequential RNNs), enabling much faster training.

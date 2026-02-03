@@ -108,7 +108,7 @@ Let's unpack the design choices:
 
 - **relu activation** in hidden layers. Without an activation function, stacking Dense layers would be equivalent to a single linear transformation (no matter how many layers). relu introduces non-linearity, allowing the model to learn complex patterns.
 
-- **sigmoid in the output layer.** Since this is binary classification, the output should be a single probability between 0 and 1. Sigmoid squashes any value into that range -- 0.9 means "90% confident this is positive."
+- **sigmoid in the output layer.** Since this is binary classification, the output should be a single probability between $0$ and $1$. Sigmoid squashes any value into that range -- $0.9$ means "90% confident this is positive."
 
 For the compile step, we pair sigmoid output with **binary crossentropy** loss:
 
@@ -209,7 +209,7 @@ predictions = model.predict(x_test)
 # array([[ 0.98], [ 0.99], [ 0.02], ...])
 \`\`\`
 
-Values near 1.0 indicate confident positive predictions; near 0.0 indicates confident negative. The model shows varying levels of confidence -- some reviews are obvious, others are ambiguous.
+Values near $1.0$ indicate confident positive predictions; near $0.0$ indicates confident negative. The model shows varying levels of confidence -- some reviews are obvious, others are ambiguous.
 
 **Key lessons from this project:**
 - Variable-length text can be encoded as fixed-size multi-hot vectors

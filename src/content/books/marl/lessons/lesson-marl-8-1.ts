@@ -51,17 +51,17 @@ The tradeoff is not free, however. Centralized information can increase variance
       content: `
 To keep algorithms precise, the book introduces notation that distinguishes what agents see during training versus execution.
 
-The parameters of agent i's **policy** and **value function** are denoted **phi_i** and **theta_i**, respectively. The policy is written as pi(. ; phi_i), the value function as V(. ; theta_i), and the action-value function as Q(. ; theta_i). When the parameterization makes the agent identity clear, the subscript i is dropped.
+The parameters of agent $i$'s **policy** and **value function** are denoted $\\phi_i$ and $\\theta_i$, respectively. The policy is written as $\\pi(\\cdot \\;; \\phi_i)$, the value function as $V(\\cdot \\;; \\theta_i)$, and the action-value function as $Q(\\cdot \\;; \\theta_i)$. When the parameterization makes the agent identity clear, the subscript $i$ is dropped.
 
-In partially observable games (POSGs), each agent i receives a local observation o_i^t at each time step. The **local observation history** of agent i up to time t is h_i^t = (o_i^0, o_i^1, ..., o_i^t). The **joint-observation history** is h^t = (o^0, o^1, ..., o^t) where o^t contains the observations of all agents. The full environment state s^t may also be available during centralized training.
+In partially observable games (POSGs), each agent $i$ receives a local observation $o_i^t$ at each time step. The **local observation history** of agent $i$ up to time $t$ is $h_i^t = (o_i^0, o_i^1, \\ldots, o_i^t)$. The **joint-observation history** is $h^t = (o^0, o^1, \\ldots, o^t)$ where $o^t$ contains the observations of all agents. The full environment state $s^t$ may also be available during centralized training.
 
 The key distinction for CTDE algorithms is:
 
-- **Execution:** The policy pi(a_i | h_i^t ; phi_i) is conditioned only on agent i's local observation history. This ensures decentralized execution -- the agent needs nothing beyond what it personally observes.
+- **Execution:** The policy $\\pi(a_i \\mid h_i^t \\;; \\phi_i)$ is conditioned only on agent $i$'s local observation history. This ensures decentralized execution -- the agent needs nothing beyond what it personally observes.
 
-- **Training:** Value functions and critics can be conditioned on **centralized information z**, which may include the observation histories of all agents, the full state, or any other shared data. A centralized critic might look like V(h_i^t, z^t ; theta_i).
+- **Training:** Value functions and critics can be conditioned on **centralized information** $z$, which may include the observation histories of all agents, the full state, or any other shared data. A centralized critic might look like $V(h_i^t, z^t \\;; \\theta_i)$.
 
-In practice, agents often use **recurrent neural networks** (GRUs or LSTMs) to process their observation histories. The RNN maintains a hidden state that summarizes past observations, so the agent does not need to store and re-process the entire history at each step. Many publications simplify notation by conditioning on just the latest observation o^t, but the underlying models process the full history through their hidden states.
+In practice, agents often use **recurrent neural networks** (GRUs or LSTMs) to process their observation histories. The RNN maintains a hidden state that summarizes past observations, so the agent does not need to store and re-process the entire history at each step. Many publications simplify notation by conditioning on just the latest observation $o^t$, but the underlying models process the full history through their hidden states.
 
 This asymmetry between training and execution information is what enables every CTDE algorithm we will study: the critic sees more than the actor during training, but only the actor is needed at deployment.
 `,
@@ -73,7 +73,7 @@ This asymmetry between training and execution information is what enables every 
 - MARL algorithms are categorized by information available during training (centralized vs decentralized) and execution (centralized vs decentralized).
 - Centralized training with decentralized execution (CTDE) is the dominant paradigm in deep MARL: critics access shared information during training, but policies depend only on local observations for execution.
 - Centralized training and execution suffers from exponential joint-action spaces and communication requirements; fully decentralized training suffers from non-stationarity and information loss.
-- Notation distinguishes agent policy parameters (phi_i), value parameters (theta_i), local observation histories (h_i^t), and centralized information (z^t).
+- Notation distinguishes agent policy parameters ($\\phi_i$), value parameters ($\\theta_i$), local observation histories ($h_i^t$), and centralized information ($z^t$).
 - Recurrent networks are commonly used to process observation histories, enabling agents to condition on history without explicit storage.`,
 };
 

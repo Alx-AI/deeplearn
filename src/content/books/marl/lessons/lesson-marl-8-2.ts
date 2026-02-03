@@ -17,19 +17,19 @@ const lesson: LessonContentData = {
       content: `
 The simplest way to do deep MARL is to pretend other agents do not exist. Each agent applies a standard single-agent deep RL algorithm -- treating every other agent as part of the environment dynamics. This is **independent learning**, and it is surprisingly effective in practice.
 
-**Independent Deep Q-Networks (IDQN)** gives each agent i its own action-value function Q(h_i^t, a_i ; theta_i), its own replay buffer D_i, and trains using standard DQN. The loss for agent i is:
+**Independent Deep Q-Networks (IDQN)** gives each agent $i$ its own action-value function $Q(h_i^t, a_i \\;; \\theta_i)$, its own replay buffer $D_i$, and trains using standard DQN. The loss for agent $i$ is:
 
-L(theta_i) = (1/B) * sum[ (r_i^t + gamma * max_{a_i} Q(h_i^{t+1}, a_i ; bar{theta}_i) - Q(h_i^t, a_i^t ; theta_i))^2 ]
+$$L(\\theta_i) = \\frac{1}{B} \\sum \\left( r_i^t + \\gamma \\max_{a_i} Q(h_i^{t+1}, a_i \\;; \\bar{\\theta}_i) - Q(h_i^t, a_i^t \\;; \\theta_i) \\right)^2$$
 
-where bar{theta}_i are the target network parameters. All agents' value functions are optimized simultaneously by minimizing the aggregate loss across agents. Crucially, each agent's loss depends only on its own observations, actions, and rewards -- it has no knowledge of what other agents are doing.
+where $\\bar{\\theta}_i$ are the target network parameters. All agents' value functions are optimized simultaneously by minimizing the aggregate loss across agents. Crucially, each agent's loss depends only on its own observations, actions, and rewards -- it has no knowledge of what other agents are doing.
 
-Similarly, **independent REINFORCE** and **independent A2C (IA2C)** apply policy gradient methods independently. Each agent maintains its own policy pi(. | h_i^t ; phi_i), computes its own policy gradient from its own experiences, and updates its own parameters. In independent REINFORCE, the gradient is:
+Similarly, **independent REINFORCE** and **independent A2C (IA2C)** apply policy gradient methods independently. Each agent maintains its own policy $\\pi(\\cdot \\mid h_i^t \\;; \\phi_i)$, computes its own policy gradient from its own experiences, and updates its own parameters. In independent REINFORCE, the gradient is:
 
-nabla_{phi_i} J(phi_i) = E_pi[ u_i^t * nabla_{phi_i} log pi(a_i^t | h_i^t ; phi_i) ]
+$$\\nabla_{\\phi_i} J(\\phi_i) = \\mathbb{E}_{\\pi}\\left[ u_i^t \\cdot \\nabla_{\\phi_i} \\log \\pi(a_i^t \\mid h_i^t \\;; \\phi_i) \\right]$$
 
-where u_i^t is agent i's return. IA2C extends this with a learned baseline (critic) V(h_i^t ; theta_i) to reduce variance. **Independent PPO (IPPO)** works analogously -- each agent applies PPO using only its own trajectory data.
+where $u_i^t$ is agent $i$'s return. IA2C extends this with a learned baseline (critic) $V(h_i^t \\;; \\theta_i)$ to reduce variance. **Independent PPO (IPPO)** works analogously -- each agent applies PPO using only its own trajectory data.
 
-For IA2C with **parallel environments** (K environments running simultaneously), the policy loss for agent i averages over environments: L(phi) = (1/K) * sum_i sum_k L(phi_i | k), where each term uses the advantage Adv(h_i^{t,k}, a_i^{t,k}) computed from agent i's critic.
+For IA2C with **parallel environments** ($K$ environments running simultaneously), the policy loss for agent $i$ averages over environments: $L(\\phi) = \\frac{1}{K} \\sum_i \\sum_k L(\\phi_i \\mid k)$, where each term uses the advantage $\\text{Adv}(h_i^{t,k}, a_i^{t,k})$ computed from agent $i$'s critic.
 `,
       reviewCardIds: ['rc-marl-8.2-1', 'rc-marl-8.2-2'],
       illustrations: [],
@@ -65,9 +65,9 @@ On-policy algorithms like REINFORCE and A2C avoid this problem entirely -- they 
       content: `
 Given its simplicity and theoretical limitations -- no explicit modeling of other agents, non-stationary environment dynamics, stale replay buffers -- you might expect independent learning to perform poorly. Yet empirically, it often works remarkably well.
 
-The book demonstrates this with **level-based foraging** experiments. In a 15x15 grid with random initial positions and levels, the state space explodes to approximately 5 billion combinations for two agents and two items. Tabular methods cannot handle this scale. But IA2C, using neural networks with just two hidden layers of 64 units each, learned policies that collect all available items (evaluation returns near 1.0) within 40 million environment time steps -- about three hours on a standard CPU.
+The book demonstrates this with **level-based foraging** experiments. In a $15 \\times 15$ grid with random initial positions and levels, the state space explodes to approximately 5 billion combinations for two agents and two items. Tabular methods cannot handle this scale. But IA2C, using neural networks with just two hidden layers of 64 units each, learned policies that collect all available items (evaluation returns near 1.0) within 40 million environment time steps -- about three hours on a standard CPU.
 
-Scaling up to three agents and three items yields roughly 3.6 x 10^14 possible states. IA2C still learned to collect about half the items on average, demonstrating that deep function approximation allows independent learning to generalize across enormous state spaces that would be completely intractable for tabular methods.
+Scaling up to three agents and three items yields roughly $3.6 \\times 10^{14}$ possible states. IA2C still learned to collect about half the items on average, demonstrating that deep function approximation allows independent learning to generalize across enormous state spaces that would be completely intractable for tabular methods.
 
 Several factors explain independent learning's surprising effectiveness:
 

@@ -19,7 +19,7 @@ const lesson: LessonContentData = {
 
 The text encoding is injected into the U-Net via **cross-attention**: at each denoising step, the model attends to the text embedding to ensure the generated image matches the description. This is the same cross-attention mechanism used in Transformer decoders for translation.
 
-**Latent diffusion** (used by Stable Diffusion) performs the diffusion process in a compressed latent space rather than pixel space. A 512x512 image (786,432 values) is first encoded into a much smaller latent representation (e.g., 64x64x4 = 16,384 values). Diffusion happens in this small space, then a decoder maps the final latent back to full resolution. This makes generation roughly 50x cheaper computationally.
+**Latent diffusion** (used by Stable Diffusion) performs the diffusion process in a compressed latent space rather than pixel space. A $512 \\times 512$ image (786,432 values) is first encoded into a much smaller latent representation (e.g., $64 \\times 64 \\times 4$ = 16,384 values). Diffusion happens in this small space, then a decoder maps the final latent back to full resolution. This makes generation roughly $50\\times$ cheaper computationally.
 
 **Classifier-free guidance** amplifies the text prompt's influence during generation. The model runs twice -- once with the prompt and once without. The difference between the two outputs indicates the "direction" of the prompt, and this direction is amplified to make the generated image more faithful to the description.
 
@@ -110,7 +110,7 @@ print(text_embeddings.shape)  # torch.Size([1, 77, 768])`,
   ],
   summary: `**Key takeaways:**
 - Text-to-image models use a text encoder (CLIP) and cross-attention to guide diffusion with text prompts.
-- Latent diffusion operates in compressed space for ~50x computational savings over pixel-space diffusion.
+- Latent diffusion operates in compressed space for ~$50\\times$ computational savings over pixel-space diffusion.
 - Classifier-free guidance amplifies the text prompt's influence for more faithful image generation.
 - Module 6 spans: tokenization -> embeddings -> Transformers -> LLMs -> RAG -> VAEs -> diffusion -> text-to-image.
 - All these systems fundamentally predict patterns in data; power comes from scale and architecture.`,

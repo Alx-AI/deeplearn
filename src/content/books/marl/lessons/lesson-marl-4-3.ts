@@ -16,11 +16,11 @@ const lesson: LessonContentData = {
       title: 'Definition of Nash Equilibrium',
       content: `The minimax solution concept only applies to two-agent zero-sum games. **Nash equilibrium** extends the mutual-best-response idea to general-sum games with any number of agents, making it the most widely used solution concept in game theory and MARL.
 
-A joint policy pi = (pi_1, ..., pi_n) is a **Nash equilibrium** if no agent can improve its expected return by unilaterally changing its own policy, while the other agents' policies remain fixed:
+A joint policy $\\pi = (\\pi_1, \\ldots, \\pi_n)$ is a **Nash equilibrium** if no agent can improve its expected return by unilaterally changing its own policy, while the other agents' policies remain fixed:
 
-For all agents i and all alternative policies pi'_i: U_i(pi'_i, pi_{-i}) <= U_i(pi)
+$$\\forall i,\\; \\forall \\pi'_i:\\quad U_i(\\pi'_i, \\pi_{-i}) \\leq U_i(\\pi)$$
 
-Equivalently, every agent's policy is a best response to the others: pi_i is in BR_i(pi_{-i}) for all i. In two-agent zero-sum games, the set of Nash equilibria coincides exactly with the set of minimax solutions, so Nash equilibrium truly is a generalization.
+Equivalently, every agent's policy is a best response to the others: $\\pi_i \\in BR_i(\\pi_{-i})$ for all $i$. In two-agent zero-sum games, the set of Nash equilibria coincides exactly with the set of minimax solutions, so Nash equilibrium truly is a generalization.
 
 Let us trace through some familiar matrix games. In the **Prisoner's Dilemma**:
 
@@ -51,24 +51,24 @@ This distinction matters for MARL because some algorithms can only represent det
 
 A game may have multiple Nash equilibria yielding different expected returns. In the Chicken game, the two pure equilibria (S, L) and (L, S) yield asymmetric returns of (7, 2) and (2, 7), while the mixed equilibrium gives roughly (4.66, 4.66) to each agent. This raises a critical question: which equilibrium should the agents converge to? This is the **equilibrium selection problem**, one of the deepest challenges in MARL. We will return to it in the discussion of limitations (Lesson 4.5).
 
-Nash equilibria also exist in stochastic games (Fink, 1964). For games with infinite sequential moves, **folk theorems** show that essentially *any* feasible and enforceable set of expected returns can be achieved by some equilibrium when agents are sufficiently far-sighted (discount factor gamma close to 1). "Feasible" means some joint policy achieves those returns; "enforceable" means each agent's return is at least as large as its minmax value. This makes the space of equilibria enormous, motivating the refinement concepts we will cover later.`,
+Nash equilibria also exist in stochastic games (Fink, 1964). For games with infinite sequential moves, **folk theorems** show that essentially *any* feasible and enforceable set of expected returns can be achieved by some equilibrium when agents are sufficiently far-sighted (discount factor $\\gamma$ close to 1). "Feasible" means some joint policy achieves those returns; "enforceable" means each agent's return is at least as large as its minmax value. This makes the space of equilibria enormous, motivating the refinement concepts we will cover later.`,
       reviewCardIds: ['rc-marl-4.3-3', 'rc-marl-4.3-4'],
       illustrations: [],
     },
     {
       id: 'marl-4.3.3',
       title: 'Finding Nash Equilibria and Epsilon-Nash Equilibrium',
-      content: `Given a joint policy pi, how do we check whether it is a Nash equilibrium? The definition suggests a procedure that reduces the multi-agent problem to n single-agent problems. For each agent i, hold the other policies pi_{-i} fixed and compute an optimal best-response policy pi'_i. If pi'_i achieves a higher expected return than pi_i -- that is, U_i(pi'_i, pi_{-i}) > U_i(pi_i, pi_{-i}) -- then pi is *not* a Nash equilibrium.
+      content: `Given a joint policy $\\pi$, how do we check whether it is a Nash equilibrium? The definition suggests a procedure that reduces the multi-agent problem to $n$ single-agent problems. For each agent $i$, hold the other policies $\\pi_{-i}$ fixed and compute an optimal best-response policy $\\pi'_i$. If $\\pi'_i$ achieves a higher expected return than $\\pi_i$ -- that is, $U_i(\\pi'_i, \\pi_{-i}) > U_i(\\pi_i, \\pi_{-i})$ -- then $\\pi$ is *not* a Nash equilibrium.
 
-For non-repeated normal-form games, each best-response computation can be done efficiently via linear programming. For sequential-move games, a suitable single-agent RL algorithm can be used to find pi'_i.
+For non-repeated normal-form games, each best-response computation can be done efficiently via linear programming. For sequential-move games, a suitable single-agent RL algorithm can be used to find $\\pi'_i$.
 
-In practice, exact Nash equilibria can be problematic for computational systems. Nash himself noted that for games with more than two agents, the probabilities in an equilibrium may be **irrational numbers** that cannot be represented exactly with finite-precision floating point. Moreover, reaching a strict equilibrium may be too computationally costly. This motivates the **epsilon-Nash equilibrium**: a joint policy pi is an epsilon-Nash equilibrium (for epsilon > 0) if:
+In practice, exact Nash equilibria can be problematic for computational systems. Nash himself noted that for games with more than two agents, the probabilities in an equilibrium may be **irrational numbers** that cannot be represented exactly with finite-precision floating point. Moreover, reaching a strict equilibrium may be too computationally costly. This motivates the **$\\epsilon$-Nash equilibrium**: a joint policy $\\pi$ is an $\\epsilon$-Nash equilibrium (for $\\epsilon > 0$) if:
 
-For all agents i and all pi'_i: U_i(pi'_i, pi_{-i}) - epsilon <= U_i(pi)
+$$\\forall i,\\; \\forall \\pi'_i:\\quad U_i(\\pi'_i, \\pi_{-i}) - \\epsilon \\leq U_i(\\pi)$$
 
-No agent can gain more than epsilon by deviating. Every exact Nash equilibrium is surrounded by a region of epsilon-Nash equilibria.
+No agent can gain more than $\\epsilon$ by deviating. Every exact Nash equilibrium is surrounded by a region of $\\epsilon$-Nash equilibria.
 
-However, a critical warning: an epsilon-Nash equilibrium may be *arbitrarily far* from any true Nash equilibrium in terms of expected returns. Consider a game with unique NE at (A, C) yielding (100, 100), and an epsilon-NE at (B, D) yielding (1, 1) for epsilon = 1. The epsilon-NE is not a meaningful approximation of the true NE at all. We can even increase the NE payoffs without affecting the epsilon-NE. So while epsilon-NE is a useful relaxation computationally, it should not be blindly treated as an approximation to exact Nash equilibrium.`,
+However, a critical warning: an $\\epsilon$-Nash equilibrium may be *arbitrarily far* from any true Nash equilibrium in terms of expected returns. Consider a game with unique NE at (A, C) yielding (100, 100), and an $\\epsilon$-NE at (B, D) yielding (1, 1) for $\\epsilon = 1$. The $\\epsilon$-NE is not a meaningful approximation of the true NE at all. We can even increase the NE payoffs without affecting the $\\epsilon$-NE. So while $\\epsilon$-NE is a useful relaxation computationally, it should not be blindly treated as an approximation to exact Nash equilibrium.`,
       reviewCardIds: ['rc-marl-4.3-5'],
       illustrations: [],
     },
@@ -77,8 +77,8 @@ However, a critical warning: an epsilon-Nash equilibrium may be *arbitrarily far
 - A **Nash equilibrium** is a joint policy where no agent can unilaterally improve its return -- every agent is best-responding to the others.
 - **Nash's theorem** (1950): every finite normal-form game has at least one Nash equilibrium, though it may be mixed (probabilistic).
 - Games can have multiple Nash equilibria with different payoffs, leading to the **equilibrium selection problem**.
-- **Epsilon-Nash equilibrium** relaxes NE by allowing deviations of at most epsilon, but an epsilon-NE can be arbitrarily far from any true NE in expected returns.
-- Checking whether a joint policy is NE reduces to n independent best-response computations.
+- **$\\epsilon$-Nash equilibrium** relaxes NE by allowing deviations of at most $\\epsilon$, but an $\\epsilon$-NE can be arbitrarily far from any true NE in expected returns.
+- Checking whether a joint policy is NE reduces to $n$ independent best-response computations.
 - **Folk theorems** show that in repeated games, the space of equilibria can be enormous.`,
 };
 

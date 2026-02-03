@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X } from 'lucide-react';
 import { duration, easingArray } from '@/lib/design-tokens';
 import type { QuizQuestion } from '@/lib/db/schema';
+import { FormattedText } from '@/components/ui/FormattedText';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -38,9 +39,7 @@ export function QuizCard({ question, onAnswer, className = '' }: QuizCardProps) 
     <div className={`rounded-xl border border-border bg-elevated overflow-hidden shadow-sm ${className}`}>
       <div className="p-5">
         {/* Question */}
-        <p className="text-base font-medium text-primary leading-relaxed font-reading mb-5">
-          {question.question}
-        </p>
+        <FormattedText text={question.question} as="p" className="text-base font-medium text-primary leading-relaxed font-reading mb-5" />
 
         {/* Multiple-choice options */}
         {question.type === 'multiple-choice' && question.options && (
@@ -106,7 +105,7 @@ export function QuizCard({ question, onAnswer, className = '' }: QuizCardProps) 
                       String.fromCharCode(65 + i)
                     )}
                   </span>
-                  <span className="text-sm text-primary">{option}</span>
+                  <FormattedText text={option} as="span" className="text-sm text-primary" />
                 </label>
               );
             })}
@@ -214,14 +213,12 @@ export function QuizCard({ question, onAnswer, className = '' }: QuizCardProps) 
                 </span>
               </div>
               {question.explanation && (
-                <p className="text-sm text-secondary leading-relaxed">
-                  {question.explanation}
-                </p>
+                <FormattedText text={question.explanation} as="p" className="text-sm text-secondary leading-relaxed" />
               )}
               {isIncorrect && (
                 <p className="mt-2 text-sm text-primary">
                   <span className="font-medium">Answer:</span>{' '}
-                  {question.correctAnswer}
+                  <FormattedText text={question.correctAnswer} />
                 </p>
               )}
             </motion.div>

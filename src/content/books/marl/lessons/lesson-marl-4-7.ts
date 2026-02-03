@@ -16,17 +16,17 @@ const lesson: LessonContentData = {
       title: 'External Regret: Comparing Against the Best Fixed Action',
       content: `The equilibrium concepts we have studied so far are all defined in terms of a single joint policy -- they describe a static configuration of mutual best responses. **No-regret** is a fundamentally different kind of solution concept: it considers an agent's performance *across multiple episodes* of play and asks whether the agent could have done better in hindsight.
 
-Let a^e denote the joint action from episode e = 1, ..., z. Agent i's **(external) regret** for not having played the best single action across all episodes is:
+Let $a^e$ denote the joint action from episode $e = 1, \\ldots, z$. Agent $i$'s **(external) regret** for not having played the best single action across all episodes is:
 
-Regret^z_i = max_{a_i} sum_{e=1}^{z} [R_i(a_i, a^e_{-i}) - R_i(a^e)]
+$$\\text{Regret}^z_i = \\max_{a_i} \\sum_{e=1}^{z} \\left[ R_i(a_i, a^e_{-i}) - R_i(a^e) \\right]$$
 
-This measures the gap between the total reward agent i actually received and the total reward it *would have* received had it played the single best action a_i in every episode, keeping the other agents' actions fixed as they actually occurred. The "best single action" is determined with full hindsight -- you look back at all z episodes and find which constant action would have been best.
+This measures the gap between the total reward agent $i$ actually received and the total reward it *would have* received had it played the single best action $a_i$ in every episode, keeping the other agents' actions fixed as they actually occurred. The "best single action" is determined with full hindsight -- you look back at all $z$ episodes and find which constant action would have been best.
 
 An agent has **no-regret** if its average regret vanishes as the number of episodes grows:
 
-lim_{z -> infinity} (1/z) * Regret^z_i <= 0
+$$\\lim_{z \\to \\infty} \\frac{1}{z} \\text{Regret}^z_i \\leq 0$$
 
-As a solution concept, **no-regret** requires that *all* agents achieve no-regret simultaneously. Similar to epsilon-Nash, we can define **epsilon-no-regret** by requiring that the limit is at most epsilon > 0 rather than zero.
+As a solution concept, **no-regret** requires that *all* agents achieve no-regret simultaneously. Similar to $\\epsilon$-Nash, we can define **$\\epsilon$-no-regret** by requiring that the limit is at most $\\epsilon > 0$ rather than zero.
 
 The name "external regret" distinguishes this from other regret variants. It is "external" because we compare against the best constant replacement for the agent's *entire* action sequence. This is the most common and simplest notion of regret, and it forms the basis for powerful algorithmic results that connect learning dynamics to equilibrium concepts.`,
       reviewCardIds: ['rc-marl-4.7-1', 'rc-marl-4.7-2'],
@@ -59,13 +59,13 @@ However, no-regret has a key conceptual limitation: it assumes the other agents'
 
 **No external regret implies convergence to coarse correlated equilibrium.** In any general-sum normal-form game, if all agents use no-external-regret learning algorithms, the empirical distribution of joint actions (the average frequency of each joint action across episodes) converges to the set of coarse correlated equilibria (CCE). This is a remarkable result: agents learning independently, each only trying to minimize their own regret, collectively produce behavior that converges to an equilibrium concept.
 
-**No internal regret implies convergence to correlated equilibrium.** Internal (or conditional) regret is a stronger notion than external regret. Rather than replacing the agent's *entire* action sequence with a single action, internal regret considers replacing every occurrence of a specific action a'_i with a different action a_i. If all agents have no internal regret, the empirical distribution of joint actions converges to the set of correlated equilibria (CE), which is a stricter subset than CCE.
+**No internal regret implies convergence to correlated equilibrium.** Internal (or conditional) regret is a stronger notion than external regret. Rather than replacing the agent's *entire* action sequence with a single action, internal regret considers replacing every occurrence of a specific action $a'_i$ with a different action $a_i$. If all agents have no internal regret, the empirical distribution of joint actions converges to the set of correlated equilibria (CE), which is a stricter subset than CCE.
 
 **In two-agent zero-sum games, no external regret implies convergence to minimax.** The empirical joint action distribution of no-external-regret learners converges to the set of minimax solutions. This is the theoretical foundation for algorithms like multiplicative weights and regret matching in zero-sum games.
 
 These results (Hart and Mas-Colell, 2000; Young, 2004) provide a powerful bridge between the learning dynamics perspective (how agents update their policies over time) and the equilibrium perspective (what static outcome is reached). They tell us that regret minimization algorithms are not just individually rational -- they collectively produce socially meaningful outcomes.
 
-For sequential-move games, regret generalizes from actions to policies. Agent i's regret is measured against the best policy from a finite policy space, keeping the other agents' policies fixed as observed. The same convergence results extend with appropriate modifications.`,
+For sequential-move games, regret generalizes from actions to policies. Agent $i$'s regret is measured against the best policy from a finite policy space, keeping the other agents' policies fixed as observed. The same convergence results extend with appropriate modifications.`,
       reviewCardIds: ['rc-marl-4.7-5'],
       illustrations: [],
     },

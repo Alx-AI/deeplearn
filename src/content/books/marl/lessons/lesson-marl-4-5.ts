@@ -49,7 +49,7 @@ This sub-optimality means that achieving an equilibrium solution should not be t
     {
       id: 'marl-4.5.3',
       title: 'Incompleteness and Off-Equilibrium Behavior',
-      content: `For games with sequential moves (stochastic games, POSGs), equilibrium solutions suffer from a third limitation: **incompleteness**. An equilibrium joint policy pi specifies behavior along the "equilibrium path" -- the trajectories that occur with positive probability under pi. But it says nothing about what agents should do if something unexpected happens and the game reaches a state that has zero probability under the equilibrium. These are called **off-equilibrium paths**.
+      content: `For games with sequential moves (stochastic games, POSGs), equilibrium solutions suffer from a third limitation: **incompleteness**. An equilibrium joint policy $\\pi$ specifies behavior along the "equilibrium path" -- the trajectories that occur with positive probability under $\\pi$. But it says nothing about what agents should do if something unexpected happens and the game reaches a state that has zero probability under the equilibrium. These are called **off-equilibrium paths**.
 
 Why would the game ever leave the equilibrium path? In practice, agents may experience temporary disturbances: exploration noise, communication errors, or simply bugs in implementation. If such a disturbance pushes the game onto an off-equilibrium path, the equilibrium policy provides no guidance for how to recover. The agents are effectively "off the map."
 

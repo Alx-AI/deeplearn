@@ -242,14 +242,14 @@ export const quizQuestions: QuizQuestion[] = [
       'Which of the following is NOT a component of a finite Markov decision process (MDP)?',
     type: 'multiple-choice',
     options: [
-      'Finite set of states S',
-      'Reward function R',
-      'Observation function O',
-      'State transition probability function T',
+      'Finite set of states $S$',
+      'Reward function $R$',
+      'Observation function $O$',
+      'State transition probability function $T$',
     ],
-    correctAnswer: 'Observation function O',
+    correctAnswer: 'Observation function $O$',
     explanation:
-      'A finite MDP consists of a finite set of states S, finite set of actions A, reward function R, state transition probability function T, and initial state distribution mu. Observation functions are part of POMDPs, not standard MDPs.',
+      'A finite MDP consists of a finite set of states $S$, finite set of actions $A$, reward function $R$, state transition probability function $T$, and initial state distribution $\\mu$. Observation functions are part of POMDPs, not standard MDPs.',
     relatedCardIds: ['rc-marl-2.2-1'],
     order: 1,
   },
@@ -284,7 +284,7 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-2.3-1',
     lessonId: 'marl-2.3',
     question:
-      'What is the purpose of the discount factor gamma in reinforcement learning?',
+      'What is the purpose of the discount factor $\\gamma$ in reinforcement learning?',
     type: 'multiple-choice',
     options: [
       'To ensure the agent always selects the action with the highest immediate reward',
@@ -295,7 +295,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctAnswer:
       'To guarantee finite returns and weight future rewards relative to immediate ones',
     explanation:
-      'The discount factor gamma ensures finite returns in non-terminating MDPs and controls how much the agent values future rewards. A gamma close to 0 makes the agent myopic, while gamma close to 1 makes it farsighted.',
+      'The discount factor $\\gamma$ ensures finite returns in non-terminating MDPs and controls how much the agent values future rewards. A $\\gamma$ close to 0 makes the agent myopic, while $\\gamma$ close to 1 makes it farsighted.',
     relatedCardIds: ['rc-marl-2.3-1'],
     order: 1,
   },
@@ -330,18 +330,18 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-2.4-1',
     lessonId: 'marl-2.4',
     question:
-      'What does the state-value function V^pi(s) represent?',
+      'What does the state-value function $V^\\pi(s)$ represent?',
     type: 'multiple-choice',
     options: [
-      'The immediate reward received in state s',
-      'The expected return when starting in state s and following policy pi',
-      'The probability of transitioning to state s',
+      'The immediate reward received in state $s$',
+      'The expected return when starting in state $s$ and following policy $\\pi$',
+      'The probability of transitioning to state $s$',
       'The maximum possible reward achievable in the entire MDP',
     ],
     correctAnswer:
-      'The expected return when starting in state s and following policy pi',
+      'The expected return when starting in state $s$ and following policy $\\pi$',
     explanation:
-      'The state-value function V^pi(s) gives the expected return when starting in state s and following policy pi to select actions. It quantifies how "good" it is to be in state s under policy pi.',
+      'The state-value function $V^\\pi(s)$ gives the expected return when starting in state $s$ and following policy $\\pi$ to select actions. It quantifies how "good" it is to be in state $s$ under policy $\\pi$.',
     relatedCardIds: ['rc-marl-2.4-1'],
     order: 1,
   },
@@ -354,7 +354,7 @@ export const quizQuestions: QuizQuestion[] = [
     options: ['True', 'False'],
     correctAnswer: 'False',
     explanation:
-      'The Bellman optimality equations define a system of non-linear equations due to the max operator. It is the regular Bellman equation for V^pi (for a fixed policy) that defines a system of linear equations.',
+      'The Bellman optimality equations define a system of non-linear equations due to the max operator. It is the regular Bellman equation for $V^\\pi$ (for a fixed policy) that defines a system of linear equations.',
     relatedCardIds: ['rc-marl-2.4-2'],
     order: 2,
   },
@@ -362,11 +362,11 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-2.4-3',
     lessonId: 'marl-2.4',
     question:
-      'The action-value function Q^pi(s, a) gives the expected return when selecting action a in state s and then following policy _____ to select actions subsequently.',
+      'The action-value function $Q^\\pi(s, a)$ gives the expected return when selecting action $a$ in state $s$ and then following policy _____ to select actions subsequently.',
     type: 'fill-blank',
     correctAnswer: 'pi',
     explanation:
-      'Q^pi(s, a) gives the expected return for taking action a in state s and then following policy pi for all subsequent actions. Once Q* is known, the optimal policy simply selects the action with maximum Q* value in each state.',
+      '$Q^\\pi(s, a)$ gives the expected return for taking action $a$ in state $s$ and then following policy $\\pi$ for all subsequent actions. Once $Q^*$ is known, the optimal policy simply selects the action with maximum $Q^*$ value in each state.',
     relatedCardIds: ['rc-marl-2.4-3'],
     order: 3,
   },
@@ -386,7 +386,7 @@ export const quizQuestions: QuizQuestion[] = [
     ],
     correctAnswer: 'Policy evaluation and policy improvement',
     explanation:
-      'Policy iteration alternates between policy evaluation (computing the value function V^pi for the current policy) and policy improvement (making the policy greedy with respect to V^pi). This converges to the optimal policy.',
+      'Policy iteration alternates between policy evaluation (computing the value function $V^\\pi$ for the current policy) and policy improvement (making the policy greedy with respect to $V^\\pi$). This converges to the optimal policy.',
     relatedCardIds: ['rc-marl-2.5-1'],
     order: 1,
   },
@@ -394,12 +394,12 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-2.5-2',
     lessonId: 'marl-2.5',
     question:
-      'Dynamic programming algorithms require complete knowledge of the MDP model, including the reward function R and state transition probabilities T.',
+      'Dynamic programming algorithms require complete knowledge of the MDP model, including the reward function $R$ and state transition probabilities $T$.',
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'True',
     explanation:
-      'DP algorithms use the Bellman equations as operators and require complete knowledge of R and T to perform the computations. This is in contrast to temporal-difference learning, which learns from sampled experiences.',
+      'DP algorithms use the Bellman equations as operators and require complete knowledge of $R$ and $T$ to perform the computations. This is in contrast to temporal-difference learning, which learns from sampled experiences.',
     relatedCardIds: ['rc-marl-2.5-2'],
     order: 2,
   },
@@ -411,7 +411,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'fill-blank',
     correctAnswer: 'Value',
     explanation:
-      'Value iteration uses the Bellman optimality equation as a single update operator, combining policy evaluation and improvement. It converges to the optimal value function V* because the Bellman optimality operator is a gamma-contraction mapping.',
+      'Value iteration uses the Bellman optimality equation as a single update operator, combining policy evaluation and improvement. It converges to the optimal value function $V^*$ because the Bellman optimality operator is a $\\gamma$-contraction mapping.',
     relatedCardIds: ['rc-marl-2.5-3'],
     order: 3,
   },
@@ -426,13 +426,13 @@ export const quizQuestions: QuizQuestion[] = [
     options: [
       'Q-learning uses a value function while Sarsa uses a policy function',
       'Q-learning is on-policy while Sarsa is off-policy',
-      'Q-learning uses the Bellman optimality equation (max over actions) while Sarsa uses the Bellman equation for Q^pi (samples next action from policy)',
+      'Q-learning uses the Bellman optimality equation (max over actions) while Sarsa uses the Bellman equation for $Q^\\pi$ (samples next action from policy)',
       'Q-learning can only work with discrete actions while Sarsa works with continuous actions',
     ],
     correctAnswer:
-      'Q-learning uses the Bellman optimality equation (max over actions) while Sarsa uses the Bellman equation for Q^pi (samples next action from policy)',
+      'Q-learning uses the Bellman optimality equation (max over actions) while Sarsa uses the Bellman equation for $Q^\\pi$ (samples next action from policy)',
     explanation:
-      'Q-learning constructs its update target using max over next actions (Bellman optimality equation), making it off-policy. Sarsa uses the actually sampled next action from the policy (Bellman equation for Q^pi), making it on-policy.',
+      'Q-learning constructs its update target using max over next actions (Bellman optimality equation), making it off-policy. Sarsa uses the actually sampled next action from the policy (Bellman equation for $Q^\\pi$), making it on-policy.',
     relatedCardIds: ['rc-marl-2.6-1'],
     order: 1,
   },
@@ -453,11 +453,11 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-2.6-3',
     lessonId: 'marl-2.6',
     question:
-      'An _____-greedy policy chooses the greedy action with probability 1 minus epsilon, and with probability epsilon chooses a random action.',
+      'An _____-greedy policy chooses the greedy action with probability $1 - \\epsilon$, and with probability $\\epsilon$ chooses a random action.',
     type: 'fill-blank',
     correctAnswer: 'epsilon',
     explanation:
-      'The epsilon-greedy policy balances exploitation (choosing the best-known action) with exploration (random action selection). By gradually reducing epsilon to 0, the policy converges toward the optimal greedy policy.',
+      'The $\\epsilon$-greedy policy balances exploitation (choosing the best-known action) with exploration (random action selection). By gradually reducing $\\epsilon$ to 0, the policy converges toward the optimal greedy policy.',
     relatedCardIds: ['rc-marl-2.6-3'],
     order: 3,
   },
@@ -491,7 +491,7 @@ export const quizQuestions: QuizQuestion[] = [
     options: ['True', 'False'],
     correctAnswer: 'False',
     explanation:
-      'Different discount factors can lead to different optimal policies. In the Mars Rover example, gamma=0.95 leads to choosing action left (V*=4.1) while gamma=0.5 leads to choosing action right (V*=0). The discount factor is part of the learning problem specification.',
+      'Different discount factors can lead to different optimal policies. In the Mars Rover example, $\\gamma = 0.95$ leads to choosing action left ($V^* = 4.1$) while $\\gamma = 0.5$ leads to choosing action right ($V^* = 0$). The discount factor is part of the learning problem specification.',
     relatedCardIds: ['rc-marl-2.7-2'],
     order: 2,
   },
@@ -499,7 +499,7 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-2.7-3',
     lessonId: 'marl-2.7',
     question:
-      'The term "evaluation return" means the returns are for the _____ policy with respect to the learned action values after T learning time steps.',
+      'The term "evaluation return" means the returns are for the _____ policy with respect to the learned action values after $T$ learning time steps.',
     type: 'fill-blank',
     correctAnswer: 'greedy',
     explanation:
@@ -528,7 +528,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctAnswer:
       'One agent\'s reward function is the negative of the other\'s',
     explanation:
-      'In zero-sum games with two agents, R_i = -R_j. The sum of the agents\' rewards is always 0 for every joint action. This means one agent\'s gain is exactly the other agent\'s loss.',
+      'In zero-sum games with two agents, $R_i = -R_j$. The sum of the agents\' rewards is always 0 for every joint action. This means one agent\'s gain is exactly the other agent\'s loss.',
     relatedCardIds: ['rc-marl-3.1-1'],
     order: 1,
   },
@@ -599,7 +599,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'fill-blank',
     correctAnswer: 'history',
     explanation:
-      'In repeated normal-form games, each agent\'s policy is conditioned on the joint-action history h_t = (a^0, ..., a^{t-1}), which contains all joint actions before the current time step. This allows agents to adapt based on past interactions.',
+      'In repeated normal-form games, each agent\'s policy is conditioned on the joint-action history $h_t = (a^0, \\ldots, a^{t-1})$, which contains all joint actions before the current time step. This allows agents to adapt based on past interactions.',
     relatedCardIds: ['rc-marl-3.2-3'],
     order: 3,
   },
@@ -666,7 +666,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctAnswer:
       'Observation functions that generate individual observations for each agent',
     explanation:
-      'A POSG extends a stochastic game with observation sets O_i and observation functions O_i for each agent. Instead of directly observing the full state, agents receive partial/noisy observations through these functions.',
+      'A POSG extends a stochastic game with observation sets $O_i$ and observation functions $O_i$ for each agent. Instead of directly observing the full state, agents receive partial/noisy observations through these functions.',
     relatedCardIds: ['rc-marl-3.4-1'],
     order: 1,
   },
@@ -815,12 +815,12 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-4.1-2',
     lessonId: 'marl-4.1',
     question:
-      'The expected return U_i(pi) for an agent can be equivalently defined using either a history-based enumeration or a recursive Bellman-style computation.',
+      'The expected return $U_i(\\pi)$ for an agent can be equivalently defined using either a history-based enumeration or a recursive Bellman-style computation.',
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'True',
     explanation:
-      'The book presents two equivalent definitions of expected return. The history-based definition sums returns across all possible full histories weighted by their probabilities. The recursive definition uses interlocked V and Q functions in a Bellman-style recursion.',
+      'The book presents two equivalent definitions of expected return. The history-based definition sums returns across all possible full histories weighted by their probabilities. The recursive definition uses interlocked $V$ and $Q$ functions in a Bellman-style recursion.',
     relatedCardIds: ['rc-marl-4.1-2'],
     order: 2,
   },
@@ -832,7 +832,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'fill-blank',
     correctAnswer: 'joint',
     explanation:
-      'A solution to a game is a joint policy pi = (pi_1, ..., pi_n), one policy per agent, that satisfies requirements defined by the solution concept in terms of expected returns yielded to each agent.',
+      'A solution to a game is a joint policy $\\pi = (\\pi_1, \\ldots, \\pi_n)$, one policy per agent, that satisfies requirements defined by the solution concept in terms of expected returns yielded to each agent.',
     relatedCardIds: ['rc-marl-4.1-3'],
     order: 3,
   },
@@ -842,18 +842,18 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-4.2-1',
     lessonId: 'marl-4.2',
     question:
-      'What is a best response for agent i to the policies of other agents pi_{-i}?',
+      'What is a best response for agent $i$ to the policies of other agents $\\pi_{-i}$?',
     type: 'multiple-choice',
     options: [
       'A policy that minimizes the expected returns of other agents',
-      'A policy that maximizes agent i\'s expected return when played against pi_{-i}',
+      'A policy that maximizes agent $i$\'s expected return when played against $\\pi_{-i}$',
       'A policy that achieves the same expected return as other agents',
       'A policy that cooperates with all other agents regardless of their policies',
     ],
     correctAnswer:
-      'A policy that maximizes agent i\'s expected return when played against pi_{-i}',
+      'A policy that maximizes agent $i$\'s expected return when played against $\\pi_{-i}$',
     explanation:
-      'A best response for agent i to pi_{-i} is a policy pi_i that maximizes i\'s expected return U_i when played against the given policies of all other agents. Best responses form the basis for defining most equilibrium solution concepts.',
+      'A best response for agent $i$ to $\\pi_{-i}$ is a policy $\\pi_i$ that maximizes $i$\'s expected return $U_i$ when played against the given policies of all other agents. Best responses form the basis for defining most equilibrium solution concepts.',
     relatedCardIds: ['rc-marl-4.2-1'],
     order: 1,
   },
@@ -874,7 +874,7 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-4.2-3',
     lessonId: 'marl-4.2',
     question:
-      'The set of best-response policies for agent i is defined as BR_i(pi_{-i}) = arg _____ U_i(pi_i, pi_{-i}).',
+      'The set of best-response policies for agent $i$ is defined as $BR_i(\\pi_{-i}) = \\arg$ _____ $U_i(\\pi_i, \\pi_{-i})$.',
     type: 'fill-blank',
     correctAnswer: 'max',
     explanation:
@@ -899,7 +899,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctAnswer:
       'All minimax solutions yield the same unique game value',
     explanation:
-      'While more than one minimax solution may exist, all minimax solutions yield the same unique value U_i(pi) for each agent. This uniqueness of the game value is an important property that simplifies learning in zero-sum games.',
+      'While more than one minimax solution may exist, all minimax solutions yield the same unique value $U_i(\\pi)$ for each agent. This uniqueness of the game value is an important property that simplifies learning in zero-sum games.',
     relatedCardIds: ['rc-marl-4.3-1'],
     order: 1,
   },
@@ -912,7 +912,7 @@ export const quizQuestions: QuizQuestion[] = [
     options: ['True', 'False'],
     correctAnswer: 'True',
     explanation:
-      'In Rock-Paper-Scissors, the only minimax solution is for both agents to assign equal probability (1/3) to each action. This gives an expected return of 0 to both agents. Any deviation would allow the opponent to exploit the bias.',
+      'In Rock-Paper-Scissors, the only minimax solution is for both agents to assign equal probability ($1/3$) to each action. This gives an expected return of 0 to both agents. Any deviation would allow the opponent to exploit the bias.',
     relatedCardIds: ['rc-marl-4.3-2'],
     order: 2,
   },
@@ -945,7 +945,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctAnswer:
       'No agent can improve its expected return by unilaterally changing its policy',
     explanation:
-      'In a Nash equilibrium, no agent i can improve its expected return by changing its own policy while the other agents\' policies remain fixed. Each agent\'s policy is a best response to the others, creating a stable outcome.',
+      'In a Nash equilibrium, no agent $i$ can improve its expected return by changing its own policy while the other agents\' policies remain fixed. Each agent\'s policy is a best response to the others, creating a stable outcome.',
     relatedCardIds: ['rc-marl-4.4-1'],
     order: 1,
   },
@@ -980,13 +980,13 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-4.5-1',
     lessonId: 'marl-4.5',
     question:
-      'Why is the epsilon-Nash equilibrium concept needed?',
+      'Why is the $\\epsilon$-Nash equilibrium concept needed?',
     type: 'multiple-choice',
     options: [
       'Because exact Nash equilibria never exist in practice',
       'Because the action probabilities in a Nash equilibrium may be irrational numbers that cannot be exactly represented in computer systems',
       'Because agents always prefer approximate solutions',
-      'Because epsilon-Nash equilibria are always unique while Nash equilibria are not',
+      'Because $\\epsilon$-Nash equilibria are always unique while Nash equilibria are not',
     ],
     correctAnswer:
       'Because the action probabilities in a Nash equilibrium may be irrational numbers that cannot be exactly represented in computer systems',
@@ -999,12 +999,12 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-4.5-2',
     lessonId: 'marl-4.5',
     question:
-      'An epsilon-Nash equilibrium is always close to an actual Nash equilibrium in terms of the expected returns it produces.',
+      'An $\\epsilon$-Nash equilibrium is always close to an actual Nash equilibrium in terms of the expected returns it produces.',
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'False',
     explanation:
-      'An epsilon-Nash equilibrium may not be close to any real Nash equilibrium. The expected returns under an epsilon-Nash equilibrium can be arbitrarily far from those of any Nash equilibrium, even when the Nash equilibrium is unique.',
+      'An $\\epsilon$-Nash equilibrium may not be close to any real Nash equilibrium. The expected returns under an $\\epsilon$-Nash equilibrium can be arbitrarily far from those of any Nash equilibrium, even when the Nash equilibrium is unique.',
     relatedCardIds: ['rc-marl-4.5-2'],
     order: 2,
   },
@@ -1012,11 +1012,11 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-4.5-3',
     lessonId: 'marl-4.5',
     question:
-      'In an epsilon-Nash equilibrium, no agent can improve its expected returns by more than _____ when deviating from its policy.',
+      'In an $\\epsilon$-Nash equilibrium, no agent can improve its expected returns by more than _____ when deviating from its policy.',
     type: 'fill-blank',
     correctAnswer: 'epsilon',
     explanation:
-      'The epsilon-Nash equilibrium relaxes strict Nash by allowing deviations that gain at most epsilon > 0 in expected return. The exact Nash equilibrium corresponds to epsilon = 0.',
+      'The $\\epsilon$-Nash equilibrium relaxes strict Nash by allowing deviations that gain at most $\\epsilon > 0$ in expected return. The exact Nash equilibrium corresponds to $\\epsilon = 0$.',
     relatedCardIds: ['rc-marl-4.5-3'],
     order: 3,
   },
@@ -1037,7 +1037,7 @@ export const quizQuestions: QuizQuestion[] = [
     correctAnswer:
       'By allowing correlation between agent policies through a joint policy over the joint-action space',
     explanation:
-      'Nash equilibrium requires independent agent policies. Correlated equilibrium allows a joint policy pi_c that assigns probabilities to joint actions, enabling correlation. Nash equilibrium is the special case where pi_c factors into independent policies.',
+      'Nash equilibrium requires independent agent policies. Correlated equilibrium allows a joint policy $\\pi_c$ that assigns probabilities to joint actions, enabling correlation. Nash equilibrium is the special case where $\\pi_c$ factors into independent policies.',
     relatedCardIds: ['rc-marl-4.6-1'],
     order: 1,
   },
@@ -1050,7 +1050,7 @@ export const quizQuestions: QuizQuestion[] = [
     options: ['True', 'False'],
     correctAnswer: 'True',
     explanation:
-      'The correlated equilibrium pi_c with equal probability on (L,L), (S,L), and (L,S) gives expected return of 5 to each agent. This exceeds the probabilistic Nash equilibrium return of approximately 4.66 for each agent.',
+      'The correlated equilibrium $\\pi_c$ with equal probability on (L,L), (S,L), and (L,S) gives expected return of 5 to each agent. This exceeds the probabilistic Nash equilibrium return of approximately 4.66 for each agent.',
     relatedCardIds: ['rc-marl-4.6-2'],
     order: 2,
   },
@@ -1104,11 +1104,11 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-4.7-3',
     lessonId: 'marl-4.7',
     question:
-      'Social _____ of a joint policy pi is defined as the sum of all agents\' expected returns: W(pi) = sum of U_i(pi).',
+      'Social _____ of a joint policy $\\pi$ is defined as the sum of all agents\' expected returns: $W(\\pi) = \\sum U_i(\\pi)$.',
     type: 'fill-blank',
     correctAnswer: 'welfare',
     explanation:
-      'Social welfare W(pi) = sum_i U_i(pi) measures the total expected return across all agents. A welfare-optimal policy maximizes this sum, which also implies Pareto optimality.',
+      'Social welfare $W(\\pi) = \\sum_i U_i(\\pi)$ measures the total expected return across all agents. A welfare-optimal policy maximizes this sum, which also implies Pareto optimality.',
     relatedCardIds: ['rc-marl-4.7-3'],
     order: 3,
   },
@@ -1190,7 +1190,7 @@ export const quizQuestions: QuizQuestion[] = [
     options: ['True', 'False'],
     correctAnswer: 'True',
     explanation:
-      'In centralized training with decentralized execution, the histories in D may contain full histories with all agents\' observations during learning, while the individual agent policies only have access to each agent\'s own local observations during execution.',
+      'In centralized training with decentralized execution, the histories in $D$ may contain full histories with all agents\' observations during learning, while the individual agent policies only have access to each agent\'s own local observations during execution.',
     relatedCardIds: ['rc-marl-5.1-2'],
     order: 2,
   },
@@ -1198,11 +1198,11 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-5.1-3',
     lessonId: 'marl-5.1',
     question:
-      'The learning algorithm L takes the collected data D and current joint policy pi, and produces a new joint policy via pi_{z+1} = L(D_z, _____)',
+      'The learning algorithm $L$ takes the collected data $D$ and current joint policy $\\pi$, and produces a new joint policy via $\\pi_{z+1} = L(D_z,$ _____$)$',
     type: 'fill-blank',
     correctAnswer: 'pi_z',
     explanation:
-      'The learning algorithm takes both the collected data and the current joint policy as inputs to produce an updated joint policy. The initial joint policy pi_0 is typically random, and the process iterates to converge toward a solution.',
+      'The learning algorithm takes both the collected data and the current joint policy as inputs to produce an updated joint policy. The initial joint policy $\\pi_0$ is typically random, and the process iterates to converge toward a solution.',
     relatedCardIds: ['rc-marl-5.1-3'],
     order: 3,
   },
@@ -1231,12 +1231,12 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-5.2-2',
     lessonId: 'marl-5.2',
     question:
-      'If the expected returns U_i(pi_z) for all agents converge after some finite z, then the joint policy pi_z must satisfy some convergence property such as being a Nash equilibrium.',
+      'If the expected returns $U_i(\\pi_z)$ for all agents converge after some finite $z$, then the joint policy $\\pi_z$ must satisfy some convergence property such as being a Nash equilibrium.',
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'False',
     explanation:
-      'Even if the expected returns converge in practice, this does not necessarily establish any relationship to a solution. The joint policy pi_z might not satisfy any of the formal convergence properties described in the theory.',
+      'Even if the expected returns converge in practice, this does not necessarily establish any relationship to a solution. The joint policy $\\pi_z$ might not satisfy any of the formal convergence properties described in the theory.',
     relatedCardIds: ['rc-marl-5.2-2'],
     order: 2,
   },
@@ -1281,7 +1281,7 @@ export const quizQuestions: QuizQuestion[] = [
     options: ['True', 'False'],
     correctAnswer: 'True',
     explanation:
-      'Since CQL applies single-agent RL to the joint-action space, it requires transforming the multi-agent joint reward (r_1,...,r_n) into a single scalar reward r. For common-reward games, r = r_i for any i works. For general-sum games, this transformation is less clear.',
+      'Since CQL applies single-agent RL to the joint-action space, it requires transforming the multi-agent joint reward $(r_1, \\ldots, r_n)$ into a single scalar reward $r$. For common-reward games, $r = r_i$ for any $i$ works. For general-sum games, this transformation is less clear.',
     relatedCardIds: ['rc-marl-5.3-2'],
     order: 2,
   },
@@ -1293,7 +1293,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'fill-blank',
     correctAnswer: 'exponentially',
     explanation:
-      'The joint-action space |A| = |A_1| * ... * |A_n| grows exponentially with the number of agents. For example, three agents with 6 actions each yields 216 joint actions. This makes standard RL algorithms impractical for many agents.',
+      'The joint-action space $|A| = |A_1| \\times \\cdots \\times |A_n|$ grows exponentially with the number of agents. For example, three agents with 6 actions each yields 216 joint actions. This makes standard RL algorithms impractical for many agents.',
     relatedCardIds: ['rc-marl-5.3-3'],
     order: 3,
   },
@@ -1309,7 +1309,7 @@ export const quizQuestions: QuizQuestion[] = [
       'Random initialization of value functions',
       'Changes in the environment\'s reward function over time',
       'The continually changing policies of other agents during learning',
-      'The use of epsilon-greedy exploration',
+      'The use of $\\epsilon$-greedy exploration',
     ],
     correctAnswer:
       'The continually changing policies of other agents during learning',
@@ -1335,7 +1335,7 @@ export const quizQuestions: QuizQuestion[] = [
     id: 'quiz-marl-5.4-3',
     lessonId: 'marl-5.4',
     question:
-      'In independent learning, each agent i learns its own policy using only its _____ history of own observations, actions, and rewards.',
+      'In independent learning, each agent $i$ learns its own policy using only its _____ history of own observations, actions, and rewards.',
     type: 'fill-blank',
     correctAnswer: 'local',
     explanation:
@@ -1492,12 +1492,12 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'multiple-choice',
     options: [
       'A min-operator over the opponent\'s actions',
-      'The Valuei-operator based on minimax solutions of normal-form games',
+      'The $\\text{Value}_i$-operator based on minimax solutions of normal-form games',
       'A Nash equilibrium solver applied to action-value pairs',
       'A random sampling operator over joint actions',
     ],
-    correctAnswer: 'The Valuei-operator based on minimax solutions of normal-form games',
-    explanation: 'Shapley\'s value iteration replaces the max-operator with the Valuei-operator, which computes minimax values of non-repeated normal-form games constructed from the state value matrices Ms,i for each state.',
+    correctAnswer: 'The $\\text{Value}_i$-operator based on minimax solutions of normal-form games',
+    explanation: 'Shapley\'s value iteration replaces the max-operator with the $\\text{Value}_i$-operator, which computes minimax values of non-repeated normal-form games constructed from the state value matrices $M_{s,i}$ for each state.',
     relatedCardIds: ['rc-marl-6.1-1'],
     order: 1,
   },
@@ -1519,7 +1519,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'fill-blank',
     options: [],
     correctAnswer: 'contraction',
-    explanation: 'By the Banach fixed-point theorem, the update operator in Equation 6.4 is a gamma-contraction mapping, which guarantees convergence to a unique fixed point representing the optimal values.',
+    explanation: 'By the Banach fixed-point theorem, the update operator in Equation 6.4 is a $\\gamma$-contraction mapping, which guarantees convergence to a unique fixed point representing the optimal values.',
     relatedCardIds: ['rc-marl-6.1-3'],
     order: 3,
   },
@@ -1537,7 +1537,7 @@ export const quizQuestions: QuizQuestion[] = [
       'Training a single neural network for all agents simultaneously',
     ],
     correctAnswer: 'Viewing the joint-action values as normal-form games and using solution concepts to derive policies and update targets',
-    explanation: 'JAL-GT algorithms treat the joint-action values Q1(s,.), ..., Qn(s,.) as a normal-form game for each state s, then apply game-theoretic solution concepts such as minimax or Nash equilibrium to compute policies and update targets.',
+    explanation: 'JAL-GT algorithms treat the joint-action values $Q_1(s, \\cdot), \\ldots, Q_n(s, \\cdot)$ as a normal-form game for each state $s$, then apply game-theoretic solution concepts such as minimax or Nash equilibrium to compute policies and update targets.',
     relatedCardIds: ['rc-marl-6.2-1'],
     order: 1,
   },
@@ -1548,7 +1548,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'False',
-    explanation: 'JAL-GT algorithms observe the actions AND rewards of all agents in each time step, and maintain joint-action value functions Qj for every agent j, in order to construct the normal-form games for each state.',
+    explanation: 'JAL-GT algorithms observe the actions AND rewards of all agents in each time step, and maintain joint-action value functions $Q_j$ for every agent $j$, in order to construct the normal-form games for each state.',
     relatedCardIds: ['rc-marl-6.2-2'],
     order: 2,
   },
@@ -1559,7 +1559,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'fill-blank',
     options: [],
     correctAnswer: 'joint',
-    explanation: 'As the name suggests, JAL algorithms learn joint-action value functions Qi(s, a1, ..., an) that estimate the expected returns of joint actions (all agents\' actions together) in any given state.',
+    explanation: 'As the name suggests, JAL algorithms learn joint-action value functions $Q_i(s, a_1, \\ldots, a_n)$ that estimate the expected returns of joint actions (all agents\' actions together) in any given state.',
     relatedCardIds: ['rc-marl-6.2-3'],
     order: 3,
   },
@@ -1748,7 +1748,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'False',
-    explanation: 'IGA does not guarantee that the actual policies converge in all cases. When the matrix F has purely imaginary eigenvalues, the joint policy may cycle indefinitely on an ellipse. However, the average rewards converge to Nash equilibrium expected rewards.',
+    explanation: 'IGA does not guarantee that the actual policies converge in all cases. When the matrix $F$ has purely imaginary eigenvalues, the joint policy may cycle indefinitely on an ellipse. However, the average rewards converge to Nash equilibrium expected rewards.',
     relatedCardIds: ['rc-marl-6.7-2'],
     order: 2,
   },
@@ -1908,22 +1908,22 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 'quiz-marl-7.1-2',
     lessonId: 'marl-7.1',
-    question: 'The state space of the board game Go is estimated to contain approximately 10^170 possible states.',
+    question: 'The state space of the board game Go is estimated to contain approximately $10^{170}$ possible states.',
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'True',
-    explanation: 'The state space of Go is estimated at approximately 10^170 possible states, which makes storing and managing a tabular value function completely infeasible for modern computers.',
+    explanation: 'The state space of Go is estimated at approximately $10^{170}$ possible states, which makes storing and managing a tabular value function completely infeasible for modern computers.',
     relatedCardIds: ['rc-marl-7.1-2'],
     order: 2,
   },
   {
     id: 'quiz-marl-7.1-3',
     lessonId: 'marl-7.1',
-    question: 'Function approximation learns a parameterized function f(x; theta) to approximate a target function f*(x), enabling _____ across states.',
+    question: 'Function approximation learns a parameterized function $f(x; \\theta)$ to approximate a target function $f^*(x)$, enabling _____ across states.',
     type: 'fill-blank',
     options: [],
     correctAnswer: 'generalization',
-    explanation: 'Function approximation enables generalization across states by learning shared parameters theta that can provide reasonable value estimates even for states that have not been directly encountered during training.',
+    explanation: 'Function approximation enables generalization across states by learning shared parameters $\\theta$ that can provide reasonable value estimates even for states that have not been directly encountered during training.',
     relatedCardIds: ['rc-marl-7.1-3'],
     order: 3,
   },
@@ -2132,16 +2132,16 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 'quiz-marl-7.7-1',
     lessonId: 'marl-7.7',
-    question: 'What does the advantage function Adv(s,a) in A2C measure?',
+    question: 'What does the advantage function $\\text{Adv}(s, a)$ in A2C measure?',
     type: 'multiple-choice',
     options: [
-      'The absolute expected return when taking action a in state s',
-      'The difference between the action value Q(s,a) and the state value V(s)',
-      'The probability of selecting action a in state s',
-      'The learning rate adjustment needed for action a',
+      'The absolute expected return when taking action $a$ in state $s$',
+      'The difference between the action value $Q(s, a)$ and the state value $V(s)$',
+      'The probability of selecting action $a$ in state $s$',
+      'The learning rate adjustment needed for action $a$',
     ],
-    correctAnswer: 'The difference between the action value Q(s,a) and the state value V(s)',
-    explanation: 'The advantage Adv(s,a) = Q(s,a) - V(s) quantifies how much higher the expected returns are when applying action a compared to following the current policy in state s. Positive advantage means the action is better than average.',
+    correctAnswer: 'The difference between the action value $Q(s, a)$ and the state value $V(s)$',
+    explanation: 'The advantage $\\text{Adv}(s, a) = Q(s, a) - V(s)$ quantifies how much higher the expected returns are when applying action $a$ compared to following the current policy in state $s$. Positive advantage means the action is better than average.',
     relatedCardIds: ['rc-marl-7.7-1'],
     order: 1,
   },
@@ -2159,7 +2159,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 'quiz-marl-7.7-3',
     lessonId: 'marl-7.7',
-    question: 'PPO clips the importance sampling ratio to stay within [1-epsilon, 1+epsilon] to prevent large policy _____ in a single update step.',
+    question: 'PPO clips the importance sampling ratio to stay within $[1 - \\epsilon, 1 + \\epsilon]$ to prevent large policy _____ in a single update step.',
     type: 'fill-blank',
     options: [],
     correctAnswer: 'changes',
@@ -2323,7 +2323,7 @@ export const quizQuestions: QuizQuestion[] = [
   {
     id: 'quiz-marl-8.2-3',
     lessonId: 'marl-8.2',
-    question: 'In IDQN, each agent trains its own action-value function Q(.; theta_i), maintains a replay buffer D_i, and learns only from its own observation history, actions, and _____.',
+    question: 'In IDQN, each agent trains its own action-value function $Q(\\cdot; \\theta_i)$, maintains a replay buffer $D_i$, and learns only from its own observation history, actions, and _____.',
     type: 'fill-blank',
     options: [],
     correctAnswer: 'rewards',
@@ -2339,7 +2339,7 @@ export const quizQuestions: QuizQuestion[] = [
     question: 'In the CTDE paradigm, what is the minimum input a centralized critic should be conditioned on?',
     type: 'multiple-choice',
     options: [
-      'Only the environment state s',
+      'Only the environment state $s$',
       'Only the current observation of the agent',
       'The agent\'s observation history, to avoid bias from having less information than the actor',
       'The joint action of all agents',
@@ -2380,12 +2380,12 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'multiple-choice',
     options: [
       'It compares the agent\'s reward to the average reward across all agents',
-      'It marginalizes out the action of agent i while holding other agents\' actions fixed to estimate advantage',
+      'It marginalizes out the action of agent $i$ while holding other agents\' actions fixed to estimate advantage',
       'It uses a separate neural network to predict what would happen in alternative scenarios',
       'It removes the agent from the environment to measure its contribution',
     ],
-    correctAnswer: 'It marginalizes out the action of agent i while holding other agents\' actions fixed to estimate advantage',
-    explanation: 'COMA\'s counterfactual baseline computes the expected value when agent i follows its policy while other agents\' actions are fixed, and subtracts this from the actual action value to estimate agent i\'s specific advantage.',
+    correctAnswer: 'It marginalizes out the action of agent $i$ while holding other agents\' actions fixed to estimate advantage',
+    explanation: 'COMA\'s counterfactual baseline computes the expected value when agent $i$ follows its policy while other agents\' actions are fixed, and subtracts this from the actual action value to estimate agent $i$\'s specific advantage.',
     relatedCardIds: ['rc-marl-8.4-1'],
     order: 1,
   },
@@ -2407,7 +2407,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'fill-blank',
     options: [],
     correctAnswer: 'difference',
-    explanation: 'The aristocrat utility computes the expected difference reward where the default action is sampled from the current policy, providing an indication of whether action ai leads to better or worse rewards than average.',
+    explanation: 'The aristocrat utility computes the expected difference reward where the default action is sampled from the current policy, providing an indication of whether action $a_i$ leads to better or worse rewards than average.',
     relatedCardIds: ['rc-marl-8.4-3'],
     order: 3,
   },
@@ -2436,7 +2436,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'True',
-    explanation: 'VDN assumes a linear decomposition where the centralized action-value function equals the sum of individual utility functions: Q(h,z,a) = sum of Q_i(h_i, a_i). This simple assumption satisfies the IGM property.',
+    explanation: 'VDN assumes a linear decomposition where the centralized action-value function equals the sum of individual utility functions: $Q(h, z, a) = \\sum Q_i(h_i, a_i)$. This simple assumption satisfies the IGM property.',
     relatedCardIds: ['rc-marl-8.5-2'],
     order: 2,
   },
@@ -2556,7 +2556,7 @@ export const quizQuestions: QuizQuestion[] = [
     type: 'true-false',
     options: ['True', 'False'],
     correctAnswer: 'True',
-    explanation: 'The original QMIX implementation shares utility network parameters across agents (theta_i = theta_j for all i,j) and provides a one-hot encoded agent ID as additional input to allow different utility functions despite parameter sharing.',
+    explanation: 'The original QMIX implementation shares utility network parameters across agents ($\\theta_i = \\theta_j$ for all $i, j$) and provides a one-hot encoded agent ID as additional input to allow different utility functions despite parameter sharing.',
     relatedCardIds: ['rc-marl-8.8-2'],
     order: 2,
   },

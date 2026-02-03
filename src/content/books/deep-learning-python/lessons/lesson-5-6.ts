@@ -15,7 +15,7 @@ const lesson: LessonContentData = {
       id: '5.6.1',
       title: 'How YOLO Works',
       content: `
-**YOLO** (You Only Look Once) divides the input image into an S x S grid (e.g., 13x13). Each grid cell is responsible for predicting bounding boxes for objects whose center falls within that cell. This distributes detection responsibility spatially and allows all predictions to happen in a single forward pass.
+**YOLO** (You Only Look Once) divides the input image into an $S \\times S$ grid (e.g., $13 \\times 13$). Each grid cell is responsible for predicting bounding boxes for objects whose center falls within that cell. This distributes detection responsibility spatially and allows all predictions to happen in a single forward pass.
 
 Each grid cell predicts several values:
 - **Bounding box coordinates**: offsets from the cell position plus width and height

@@ -27,7 +27,7 @@ The Transformer **decoder** differs from the encoder in two important ways: it u
 # Token 4 sees: [1, 1, 1, 1]
 \`\`\`
 
-**Cross-attention** connects the decoder to the encoder. In translation, each Spanish word being generated should "look at" the relevant English words. In cross-attention, Queries come from the decoder (the Spanish side), while Keys and Values come from the encoder (the English side). This is how the decoder retrieves information from the source sequence.
+**Cross-attention** connects the decoder to the encoder. In translation, each Spanish word being generated should "look at" the relevant English words. In cross-attention, $Q$ comes from the decoder (the Spanish side), while $K$ and $V$ come from the encoder (the English side). This is how the decoder retrieves information from the source sequence.
 
 A complete encoder-decoder Transformer for translation: the encoder processes the English sentence (bidirectional attention, no masking). The decoder generates the Spanish sentence token by token (causal self-attention + cross-attention to the encoder output).
 `,
@@ -126,7 +126,7 @@ x = token_embed + pos_embed  # Combine token + position info`,
   ],
   summary: `**Key takeaways:**
 - Causal masking in the decoder prevents tokens from attending to future positions, essential for autoregressive generation.
-- Cross-attention connects decoder to encoder: Queries from decoder, Keys and Values from encoder.
+- Cross-attention connects decoder to encoder: $Q$ from decoder, $K$ and $V$ from encoder.
 - Positional encoding is necessary because attention is inherently order-agnostic.
 - Sinusoidal encoding uses multi-frequency sine/cosine; learned encoding treats positions as learnable parameters.
 - Position information is added to token embeddings before entering the Transformer.`,

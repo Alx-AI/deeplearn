@@ -22,7 +22,7 @@ Consider the Level-Based Foraging example from the textbook. Three agents are on
 
 This problem is especially acute in **common-reward** settings where all agents receive identical rewards. The shared reward is applied indiscriminately to every agent, leaving it to the learning algorithm to disentangle who actually contributed. But even without common rewards, the problem persists. If only the two cooperating agents receive +1, they still need to understand that it was their *joint* collect action -- not either agent's individual action -- that produced the reward.
 
-One approach to resolving credit assignment is to use **joint-action value functions** Q(s, a_1, ..., a_n), as in Central Q-Learning. By assigning values to *combinations* of actions, the algorithm can distinguish cases like (Rock, Scissors) from (Rock, Paper) and correctly attribute value to each agent's contribution. Joint-action values also enable **counterfactual reasoning**: "What reward would I have received if agent j had done X instead of Y?" This idea underlies **difference rewards**, which measure each agent's marginal contribution by comparing the actual outcome to a counterfactual where the agent takes a "default" action.
+One approach to resolving credit assignment is to use **joint-action value functions** $Q(s, a_1, \\ldots, a_n)$, as in Central Q-Learning. By assigning values to *combinations* of actions, the algorithm can distinguish cases like (Rock, Scissors) from (Rock, Paper) and correctly attribute value to each agent's contribution. Joint-action values also enable **counterfactual reasoning**: "What reward would I have received if agent j had done X instead of Y?" This idea underlies **difference rewards**, which measure each agent's marginal contribution by comparing the actual outcome to a counterfactual where the agent takes a "default" action.
 `,
       reviewCardIds: ['rc-marl-5.5-1', 'rc-marl-5.5-2'],
       illustrations: [],
@@ -46,17 +46,17 @@ Both pathologies stem from the same root cause: agents cannot distinguish their 
       id: 'marl-5.5.3',
       title: 'Scalability Challenges',
       content: `
-Scaling MARL to many agents is fundamentally difficult because of the **exponential growth** of the joint-action space. The number of joint actions is |A| = |A_1| * |A_2| * ... * |A_n|. In Level-Based Foraging with 6 actions per agent, going from 3 agents to 5 agents increases the joint space from 216 to 7,776 actions. If the agents also contribute features to the state (like positions), the state space |S| grows exponentially too.
+Scaling MARL to many agents is fundamentally difficult because of the **exponential growth** of the joint-action space. The number of joint actions is $|\\mathbf{A}| = |A_1| \\times |A_2| \\times \\ldots \\times |A_n|$. In Level-Based Foraging with 6 actions per agent, going from 3 agents to 5 agents increases the joint space from 216 to 7,776 actions. If the agents also contribute features to the state (like positions), the state space $|S|$ grows exponentially too.
 
 This exponential growth affects different MARL approaches in different ways:
 
-**Algorithms using joint-action values** -- like Central Q-Learning and joint-action learning methods -- face exponential growth in the space needed to represent Q(s, a) as well as the number of observations needed to adequately estimate values for all joint actions. Every additional agent multiplies the table size by |A_i|.
+**Algorithms using joint-action values** -- like Central Q-Learning and joint-action learning methods -- face exponential growth in the space needed to represent $Q(s, \\mathbf{a})$ as well as the number of observations needed to adequately estimate values for all joint actions. Every additional agent multiplies the table size by $|A_i|$.
 
 **Independent learning algorithms** avoid the joint-action value table, but they are not immune. More agents mean more sources of non-stationarity, since each additional agent's changing policy adds another "moving part" to every other agent's perceived environment. Credit assignment also gets harder with more agents, as each additional agent is another potential cause for any observed reward.
 
-The textbook makes an important nuance: exponential growth is not always unique to MARL. Consider a power plant with 1,000 control variables, each taking k values. Whether we use one central controller (facing k^1000 actions) or decompose into n agents (each facing k^{1000/n} actions), the total joint-action space remains k^1000. Factoring the problem into agents does not magically shrink the problem -- it redistributes the complexity.
+The textbook makes an important nuance: exponential growth is not always unique to MARL. Consider a power plant with 1,000 control variables, each taking $k$ values. Whether we use one central controller (facing $k^{1000}$ actions) or decompose into $n$ agents (each facing $k^{1000/n}$ actions), the total joint-action space remains $k^{1000}$. Factoring the problem into agents does not magically shrink the problem -- it redistributes the complexity.
 
-Still, scaling efficiently with n is a core goal of MARL research. Part II of the textbook introduces **deep learning** techniques as one path to improved scalability, using function approximation to generalize across the vast joint-action space rather than enumerating it explicitly. Architectures like parameter sharing (where all agents use the same neural network), attention mechanisms, and mean-field approximations are among the tools developed to tackle this challenge.
+Still, scaling efficiently with $n$ is a core goal of MARL research. Part II of the textbook introduces **deep learning** techniques as one path to improved scalability, using function approximation to generalize across the vast joint-action space rather than enumerating it explicitly. Architectures like parameter sharing (where all agents use the same neural network), attention mechanisms, and mean-field approximations are among the tools developed to tackle this challenge.
 `,
       reviewCardIds: ['rc-marl-5.5-5'],
       illustrations: [],

@@ -17,7 +17,7 @@ const lesson: LessonContentData = {
       content: `
 **Hyperparameters** are the settings you choose before training begins: learning rate, number of layers, units per layer, dropout rate, batch size. Unlike model weights, they are not learned by gradient descent -- you must search for good values yourself.
 
-**Grid search** tries every combination of a predefined set of values. With 5 hyperparameters at 5 values each, that is 5^5 = 3,125 evaluations. It is thorough but expensive, and most of the budget is wasted on unimportant parameters.
+**Grid search** tries every combination of a predefined set of values. With 5 hyperparameters at 5 values each, that is $5^5 = 3{,}125$ evaluations. It is thorough but expensive, and most of the budget is wasted on unimportant parameters.
 
 **Random search** samples random combinations from the hyperparameter space. This is typically more efficient because not all hyperparameters are equally important. If only 2 of 5 parameters matter, random search explores many unique values of those 2, while grid search wastes evaluations on irrelevant combinations. Research by Bergstra and Bengio showed that random search finds good configurations with far fewer evaluations.
 

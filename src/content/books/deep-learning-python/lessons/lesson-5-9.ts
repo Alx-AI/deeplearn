@@ -17,7 +17,7 @@ const lesson: LessonContentData = {
       content: `
 Unlike Conv1D, which detects local patterns within a fixed window, **Recurrent Neural Networks** process sequences step by step, maintaining a **hidden state** that carries information from all previous timesteps.
 
-At each timestep t, the RNN takes two inputs: the current input x_t and the previous hidden state h_{t-1}. It produces a new hidden state h_t that is a compressed summary of everything seen so far:
+At each timestep $t$, the RNN takes two inputs: the current input $x_t$ and the previous hidden state $h_{t-1}$. It produces a new hidden state $h_t$ that is a compressed summary of everything seen so far:
 
 \`\`\`python
 h_t = activation(W_input @ x_t + W_hidden @ h_{t-1} + bias)

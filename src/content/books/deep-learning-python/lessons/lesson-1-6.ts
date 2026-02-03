@@ -211,7 +211,7 @@ print(f"Overfit gap:    {train_acc - test_acc:.4f}")`,
 - MNIST is the "Hello World" of deep learning: 70,000 grayscale images of handwritten digits.
 - A simple two-layer Dense network achieves ~97.8% accuracy on test data.
 - The compilation step specifies the loss function (feedback signal), optimizer (weight update strategy), and metrics.
-- Data preprocessing: flatten 28x28 images to 784-element vectors and scale pixel values to [0, 1].
+- Data preprocessing: flatten 28x28 images to 784-element vectors and scale pixel values to $[0, 1]$.
 - Softmax activation produces a probability distribution over the 10 digit classes.
 - Overfitting is visible in the gap between training accuracy (98.9%) and test accuracy (97.8%).`,
 };

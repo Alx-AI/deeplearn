@@ -234,7 +234,7 @@ To avoid ambiguity, we use:
 
 When someone says "the tensor has 3 dimensions," ask yourself: do they mean 3 axes (rank 3), or 3 entries along some axis? Context usually makes it clear, but when writing code or documentation, precision matters.
 
-The total number of scalar values in a tensor is the product of all numbers in its shape. A tensor of shape \`(3, 5, 2)\` contains 3 * 5 * 2 = 30 numbers. A shape \`(60000, 28, 28)\` tensor holds 60,000 * 28 * 28 = 47,040,000 numbers. These calculations become second nature quickly.
+The total number of scalar values in a tensor is the product of all numbers in its shape. A tensor of shape \`(3, 5, 2)\` contains $3 \\times 5 \\times 2 = 30$ numbers. A shape \`(60000, 28, 28)\` tensor holds $60{,}000 \\times 28 \\times 28 = 47{,}040{,}000$ numbers. These calculations become second nature quickly.
 `,
       reviewCardIds: ['rc-1.7-9', 'rc-1.7-10'],
       codeExamples: [

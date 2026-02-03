@@ -65,7 +65,7 @@ dataset = tf.data.Dataset.zip((input_ds, mask_ds))`,
       content: `
 Segmentation models need to produce an output with the same spatial resolution as the input image. The standard approach is the **encoder-decoder** architecture.
 
-The **encoder** is essentially a classification ConvNet: it progressively reduces spatial dimensions while building rich feature representations. A 224x224 image might be reduced to a 7x7 feature map.
+The **encoder** is essentially a classification ConvNet: it progressively reduces spatial dimensions while building rich feature representations. A $224 \\times 224$ image might be reduced to a $7 \\times 7$ feature map.
 
 The **decoder** then progressively **upsamples** these feature maps back to the original resolution. Upsampling can be done with transposed convolutions (\`Conv2DTranspose\`) or simple upsampling followed by regular convolutions.
 

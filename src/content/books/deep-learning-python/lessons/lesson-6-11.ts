@@ -17,7 +17,7 @@ const lesson: LessonContentData = {
       content: `
 **Diffusion models** generate images through a two-phase process: gradually adding noise (forward), then learning to remove it (reverse).
 
-**Forward diffusion** takes a real image and progressively adds Gaussian noise over T steps until it becomes pure random noise. Each step adds a small amount of noise according to a predefined schedule.
+**Forward diffusion** takes a real image and progressively adds Gaussian noise over $T$ steps until it becomes pure random noise. Each step adds a small amount of noise according to a predefined schedule.
 
 \`\`\`
 Step 0: Clean image
@@ -27,9 +27,9 @@ Step 2: More noisy image
 Step T: Pure random noise
 \`\`\`
 
-**Reverse diffusion** is what the model learns: given a noisy image at step t and the noise level t, predict the noise that was added (or equivalently, predict a slightly cleaner version). A neural network (typically a **U-Net** with skip connections) learns this denoising function.
+**Reverse diffusion** is what the model learns: given a noisy image at step $t$ and the noise level $t$, predict the noise that was added (or equivalently, predict a slightly cleaner version). A neural network (typically a **U-Net** with skip connections) learns this denoising function.
 
-Training is straightforward: take a clean image, add noise at a random step t, and train the model to predict the added noise:
+Training is straightforward: take a clean image, add noise at a random step $t$, and train the model to predict the added noise:
 
 \`\`\`python
 # Training pseudocode

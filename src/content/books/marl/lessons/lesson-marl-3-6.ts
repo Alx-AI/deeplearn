@@ -40,11 +40,11 @@ Keeping this dictionary in mind will make the transition between the two literat
       title: 'The Game Model Hierarchy',
       content: `Chapter 3 has introduced a hierarchy of game models, each one generalising the last. Let us consolidate the full picture.
 
-At the base sits the **normal-form game**: n agents, one simultaneous interaction, no state. Moving up, the **repeated normal-form game** replays the same one-shot game over T time steps, adding history-dependent policies but still no evolving state.
+At the base sits the **normal-form game**: $n$ agents, one simultaneous interaction, no state. Moving up, the **repeated normal-form game** replays the same one-shot game over $T$ time steps, adding history-dependent policies but still no evolving state.
 
-The **stochastic game** introduces a finite state space S with probabilistic transitions T(s' | s, a), reward functions that depend on states, and full observability. It subsumes both repeated normal-form games (set |S| = 1) and MDPs (set |I| = 1).
+The **stochastic game** introduces a finite state space $S$ with probabilistic transitions $T(s' \\mid s, a)$, reward functions that depend on states, and full observability. It subsumes both repeated normal-form games (set $|S| = 1$) and MDPs (set $|I| = 1$).
 
-At the top sits the **POSG**, which adds per-agent observation functions and removes the assumption that agents can see the full state. It subsumes stochastic games (set observations equal to (s_t, a^{t-1})), POMDPs (set |I| = 1), and Dec-POMDPs (POSG with common rewards).
+At the top sits the **POSG**, which adds per-agent observation functions and removes the assumption that agents can see the full state. It subsumes stochastic games (set observations equal to $(s_t, a^{t-1})$), POMDPs (set $|I| = 1$), and Dec-POMDPs (POSG with common rewards).
 
 This hierarchy is not just a taxonomy -- it is a practical guide for modelling. When you face a new multi-agent problem, ask yourself:
 

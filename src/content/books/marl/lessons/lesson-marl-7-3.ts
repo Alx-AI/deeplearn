@@ -15,21 +15,21 @@ const lesson: LessonContentData = {
       id: 'marl-7.3.1',
       title: 'Loss Functions: Defining What "Good" Means',
       content: `
-A neural network starts life with random parameters. To turn it into a useful function approximator, we need two things: a measure of how wrong the current parameters are, and a method to make them less wrong. The measure is the **loss function** L(theta), and the method is gradient-based optimisation.
+A neural network starts life with random parameters. To turn it into a useful function approximator, we need two things: a measure of how wrong the current parameters are, and a method to make them less wrong. The measure is the **loss function** $L(\\theta)$, and the method is gradient-based optimisation.
 
-The loss function must be **differentiable** with respect to the network parameters theta, because we need to compute gradients. The goal of training is to find parameters theta* that minimise the loss:
+The loss function must be **differentiable** with respect to the network parameters $\\theta$, because we need to compute gradients. The goal of training is to find parameters $\\theta^*$ that minimise the loss:
 
-theta* = arg min_theta L(theta)
+$$\\theta^* = \\arg\\min_{\\theta} L(\\theta)$$
 
-The choice of loss depends on what the network is approximating. For a **state-value function** trained with supervised targets (where we know the true values V^pi(s)), the standard choice is the **mean squared error (MSE)**:
+The choice of loss depends on what the network is approximating. For a **state-value function** trained with supervised targets (where we know the true values $V^\\pi(s)$), the standard choice is the **mean squared error (MSE)**:
 
-L(theta) = (1/B) * sum_{k=1}^{B} (V^pi(s_k) - V-hat(s_k; theta))^2
+$$L(\\theta) = \\frac{1}{B} \\sum_{k=1}^{B} \\left( V^\\pi(s_k) - \\hat{V}(s_k; \\theta) \\right)^2$$
 
-Here B is the batch size -- the number of state-value pairs used in a single update. In RL, we rarely know the true values, so we substitute bootstrapped estimates from temporal-difference learning:
+Here $B$ is the batch size -- the number of state-value pairs used in a single update. In RL, we rarely know the true values, so we substitute bootstrapped estimates from temporal-difference learning:
 
-L(theta) = (1/B) * sum_{i=1}^{B} (r_i + gamma * V-hat(s'_i; theta) - V-hat(s_i; theta))^2
+$$L(\\theta) = \\frac{1}{B} \\sum_{i=1}^{B} \\left( r_i + \\gamma \\hat{V}(s'_i; \\theta) - \\hat{V}(s_i; \\theta) \\right)^2$$
 
-This TD loss drives the value function toward self-consistency: for each transition, the predicted value of the current state should approximately equal the immediate reward plus the discounted value of the next state. The key subtlety is that the target r + gamma * V-hat(s') also depends on theta, which creates the moving-target problem we discussed previously.
+This TD loss drives the value function toward self-consistency: for each transition, the predicted value of the current state should approximately equal the immediate reward plus the discounted value of the next state. The key subtlety is that the target $r + \\gamma \\hat{V}(s')$ also depends on $\\theta$, which creates the moving-target problem we discussed previously.
 
 For **policy networks**, the loss is derived from the policy gradient theorem and typically involves the log-probability of the chosen action weighted by return estimates. We will formalise this in the policy gradient lessons. The important point for now is that every deep RL algorithm defines a differentiable loss, and training proceeds by repeatedly minimising it.
 `,
@@ -42,15 +42,15 @@ For **policy networks**, the loss is derived from the policy gradient theorem an
       content: `
 Once we have a differentiable loss, we can compute its **gradient** with respect to the parameters:
 
-nabla_theta L(theta) = (partial L / partial theta_1, ..., partial L / partial theta_d)
+$$\\nabla_{\\theta} L(\\theta) = \\left( \\frac{\\partial L}{\\partial \\theta_1}, \\ldots, \\frac{\\partial L}{\\partial \\theta_d} \\right)$$
 
 This gradient vector points in the direction of steepest increase of the loss. We update the parameters in the opposite direction -- **gradient descent** -- to reduce the loss:
 
-theta <- theta - alpha * nabla_theta L(theta)
+$$\\theta \\leftarrow \\theta - \\alpha \\nabla_{\\theta} L(\\theta)$$
 
-where alpha is the **learning rate**, a small positive constant typically between 10^{-5} and 10^{-2}.
+where $\\alpha$ is the **learning rate**, a small positive constant typically between $10^{-5}$ and $10^{-2}$.
 
-**Vanilla gradient descent** computes the gradient over the entire dataset. This is stable but slow and memory-intensive. **Stochastic gradient descent (SGD)** uses a single sample, which is fast but has high variance. The practical sweet spot is **mini-batch gradient descent**, which computes the gradient over a batch of B samples (commonly 32 to 1024). This gives a good tradeoff: lower variance than SGD, much less computation than full-batch.
+**Vanilla gradient descent** computes the gradient over the entire dataset. This is stable but slow and memory-intensive. **Stochastic gradient descent (SGD)** uses a single sample, which is fast but has high variance. The practical sweet spot is **mini-batch gradient descent**, which computes the gradient over a batch of $B$ samples (commonly 32 to 1024). This gives a good tradeoff: lower variance than SGD, much less computation than full-batch.
 
 Beyond vanilla SGD, the most widely used optimiser in deep RL is **Adam** (Kingma and Ba, 2015). Adam maintains running estimates of the first moment (mean) and second moment (uncentred variance) of the gradient, effectively adapting the learning rate for each parameter individually. This makes training less sensitive to the initial learning rate and accelerates convergence, especially in the non-stationary landscapes common in RL.
 
@@ -65,13 +65,13 @@ In practice, the choice of optimiser matters. Adam is a safe default for most de
       id: 'marl-7.3.3',
       title: 'Backpropagation: Computing Gradients Efficiently',
       content: `
-Gradient-based optimisation requires the gradient nabla_theta L(theta) -- the partial derivative of the loss with respect to every parameter in the network. A modern RL network may have thousands or millions of parameters spread across many layers. Computing each partial derivative from scratch would be prohibitively expensive. **Backpropagation** (Rumelhart, Hinton, and Williams, 1986) solves this problem by exploiting the compositional structure of the network.
+Gradient-based optimisation requires the gradient $\\nabla_{\\theta} L(\\theta)$ -- the partial derivative of the loss with respect to every parameter in the network. A modern RL network may have thousands or millions of parameters spread across many layers. Computing each partial derivative from scratch would be prohibitively expensive. **Backpropagation** (Rumelhart, Hinton, and Williams, 1986) solves this problem by exploiting the compositional structure of the network.
 
-Recall that a feedforward network is a composition of layer functions: f(x; theta) = f_K( ... f_2(f_1(x; theta_1); theta_2) ... ; theta_K). The **chain rule** of calculus tells us how to differentiate composite functions. For z = f(g(x)):
+Recall that a feedforward network is a composition of layer functions: $f(\\mathbf{x}; \\theta) = f_K( \\ldots f_2(f_1(\\mathbf{x}; \\theta_1); \\theta_2) \\ldots ; \\theta_K)$. The **chain rule** of calculus tells us how to differentiate composite functions. For $z = f(g(x))$:
 
-nabla_x z = (partial g / partial x)^T * nabla_{g(x)} z
+$$\\nabla_x z = \\left( \\frac{\\partial g}{\\partial x} \\right)^T \\nabla_{g(x)} z$$
 
-In words: to find how a change in x affects the final output z, multiply the Jacobian of the inner function g by the gradient of the outer function f.
+In words: to find how a change in $x$ affects the final output $z$, multiply the Jacobian of the inner function $g$ by the gradient of the outer function $f$.
 
 Backpropagation applies this rule layer by layer, starting from the loss at the output and working backward toward the input. This backward traversal is called the **backward pass**, in contrast to the **forward pass** that computes the network's output for a given input.
 

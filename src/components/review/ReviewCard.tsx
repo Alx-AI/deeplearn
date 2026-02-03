@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { duration, easingArray } from '@/lib/design-tokens';
 import type { ReviewCard as ReviewCardData } from '@/lib/db/schema';
+import { FormattedText } from '@/components/ui/FormattedText';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -123,9 +124,7 @@ export function ReviewCard({
 
       <div className="p-5">
         {/* Prompt */}
-        <p className="text-[var(--text-base)] font-reading text-[var(--color-text-primary)] leading-relaxed">
-          {card.prompt}
-        </p>
+        <FormattedText text={card.prompt} as="p" className="text-[var(--text-base)] font-reading text-[var(--color-text-primary)] leading-relaxed" />
 
         {/* Answer area */}
         <AnimatePresence mode="wait">
@@ -159,9 +158,7 @@ export function ReviewCard({
               <div className="border-t border-[var(--color-border-secondary)] my-4" />
 
               {/* Answer text */}
-              <p className="text-[var(--text-base)] font-reading text-[var(--color-text-primary)] leading-relaxed mb-4">
-                {card.answer}
-              </p>
+              <FormattedText text={card.answer} as="p" className="text-[var(--text-base)] font-reading text-[var(--color-text-primary)] leading-relaxed mb-4" />
 
               {/* Rating buttons */}
               <div className="flex items-center gap-2 flex-wrap">

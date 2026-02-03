@@ -18,7 +18,7 @@ const lesson: LessonContentData = {
       content: `
 Computer vision was deep learning's first breakthrough. At the heart of this success are **convolutional neural networks** (ConvNets or CNNs) -- a model architecture specifically designed to exploit the spatial structure of images.
 
-The key difference between a Dense layer and a convolution layer is this: Dense layers learn **global** patterns across the entire input, while convolution layers learn **local** patterns in small spatial windows. A Conv2D layer with a 3x3 kernel learns patterns found in 3x3 pixel patches, not patterns spanning the whole image.
+The key difference between a Dense layer and a convolution layer is this: Dense layers learn **global** patterns across the entire input, while convolution layers learn **local** patterns in small spatial windows. A Conv2D layer with a $3 \\times 3$ kernel learns patterns found in $3 \\times 3$ pixel patches, not patterns spanning the whole image.
 
 This gives ConvNets two powerful properties:
 
@@ -26,7 +26,7 @@ This gives ConvNets two powerful properties:
 
 2. **Spatial hierarchies**: layer 1 learns small patterns (edges), layer 2 combines those into medium patterns (textures, corners), layer 3 combines those into larger patterns (object parts). This mirrors the hierarchical structure of the visual world itself -- lines compose into shapes, shapes compose into objects.
 
-A basic ConvNet classifying MNIST digits reaches 99.1% accuracy, compared to 97.8% from a Dense network. That 60% reduction in error rate comes entirely from the architectural prior knowledge that ConvNets encode about how images work.
+A basic ConvNet classifying MNIST digits reaches $99.1\\%$ accuracy, compared to $97.8\\%$ from a Dense network. That $60\\%$ reduction in error rate comes entirely from the architectural prior knowledge that ConvNets encode about how images work.
 `,
       reviewCardIds: ['rc-4.5-1', 'rc-4.5-2', 'rc-4.5-3'],
       codeExamples: [
@@ -71,14 +71,14 @@ x = layers.Conv2D(filters=64, kernel_size=3, activation="relu")(inputs)
 
 This layer has three key parameters:
 - **filters=64**: the number of output channels. Each filter is a different pattern detector -- one might detect horizontal edges, another diagonal lines.
-- **kernel_size=3**: the spatial size of each window (3x3 pixels).
+- **kernel_size=3**: the spatial size of each window ($3 \\times 3$ pixels).
 - **activation="relu"**: applied to each output element.
 
-The output is another feature map. A 28x28x1 input processed by Conv2D(64, 3) produces a 26x26x64 output. The spatial dimensions shrink by 2 (one pixel lost on each side of each axis, because a 3x3 kernel cannot be centered on border pixels). The depth grows to 64 because the layer computes 64 different filters.
+The output is another feature map. A $28 \\times 28 \\times 1$ input processed by Conv2D(64, 3) produces a $26 \\times 26 \\times 64$ output. The spatial dimensions shrink by 2 (one pixel lost on each side of each axis, because a $3 \\times 3$ kernel cannot be centered on border pixels). The depth grows to 64 because the layer computes 64 different filters.
 
 Two important configuration options affect the output size. **Padding="same"** adds zeros around the input so the output keeps the same spatial dimensions. **Strides** control how far the kernel moves between positions -- stride 2 halves the spatial dimensions.
 
-The convolution kernel is reused at every spatial position. This weight sharing is what gives ConvNets their translation invariance and parameter efficiency. A 3x3 kernel with 64 input channels and 128 output filters has only 3x3x64x128 + 128 = 73,856 parameters, regardless of the image size.
+The convolution kernel is reused at every spatial position. This weight sharing is what gives ConvNets their translation invariance and parameter efficiency. A $3 \\times 3$ kernel with 64 input channels and 128 output filters has only $3 \\times 3 \\times 64 \\times 128 + 128 = 73{,}856$ parameters, regardless of the image size.
 `,
       reviewCardIds: ['rc-4.5-4', 'rc-4.5-5'],
       codeExamples: [
@@ -124,7 +124,7 @@ print(layer.count_params())  # 73856`,
   summary: `**Key takeaways:**
 - ConvNets learn local spatial patterns that are translation-invariant, unlike Dense layers which learn global patterns.
 - ConvNets naturally learn spatial hierarchies: edges -> textures -> object parts -> objects.
-- A convolution slides a small kernel (e.g., 3x3) over the input feature map, producing an output feature map with learned filters.
+- A convolution slides a small kernel (e.g., $3 \\times 3$) over the input feature map, producing an output feature map with learned filters.
 - Key parameters: filters (number of output channels), kernel_size (spatial window), padding, and strides.
 - Weight sharing across spatial positions makes ConvNets parameter-efficient and data-efficient for image tasks.`,
 };

@@ -668,6 +668,29 @@
 }
 
 /* ==========================================================================
+   KaTeX Overrides for Design System
+   ========================================================================== */
+
+.katex {
+  font-size: 1.05em;
+  color: var(--color-text-primary);
+}
+
+.math-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+.math-display .katex-display {
+  margin: 0;
+}
+
+.prose-reading .katex {
+  font-size: 1.0em;
+}
+
+/* ==========================================================================
    Utility Classes
    ========================================================================== */
 

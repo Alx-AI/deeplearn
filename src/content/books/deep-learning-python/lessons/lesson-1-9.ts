@@ -33,7 +33,7 @@ z = x + y              # Element-wise addition
 z = np.maximum(z, 0.)  # Element-wise relu: max(value, 0)
 \`\`\`
 
-The key word is *independently* -- what happens to element \`[i, j]\` depends only on the values at \`[i, j]\` in the inputs, not on any other elements. This makes element-wise operations trivially parallelizable -- you could compute all entries simultaneously on different processors.
+The key word is *independently* -- what happens to element $[i, j]$ depends only on the values at $[i, j]$ in the inputs, not on any other elements. This makes element-wise operations trivially parallelizable -- you could compute all entries simultaneously on different processors.
 
 In fact, that's exactly what happens. NumPy delegates to highly optimized BLAS libraries (written in Fortran/C), and on GPUs, these operations use vectorized CUDA implementations that exploit the GPU's thousands of cores. The difference is dramatic: NumPy's built-in \`+\` on two 20x100 matrices runs 1,000 iterations in 0.02 seconds; a naive Python \`for\`-loop implementation takes 2.45 seconds. That's over 100x faster.
 
@@ -104,7 +104,7 @@ y = np.random.random((32, 10))          # Shape (32, 10)
 z = np.maximum(x, y)  # y is broadcast to (64, 3, 32, 10)
 \`\`\`
 
-The general rule: if one tensor has shape \`(a, b, ..., n, n+1, ..., m)\` and another has shape \`(n, n+1, ..., m)\`, broadcasting happens automatically for axes \`a\` through \`n-1\`. The trailing dimensions must match.
+The general rule: if one tensor has shape $(a, b, \\ldots, n, n{+}1, \\ldots, m)$ and another has shape $(n, n{+}1, \\ldots, m)$, broadcasting happens automatically for axes $a$ through $n{-}1$. The trailing dimensions must match.
 `,
       reviewCardIds: ['rc-1.9-3', 'rc-1.9-4'],
       illustrations: ['broadcasting'],
@@ -183,7 +183,7 @@ output = input @ W + b
 # b:     (512,) -- broadcast across the batch
 \`\`\`
 
-The matmul transforms each 784-element input vector into a 512-element output vector, using the weight matrix W as the transformation. Every connection between input features and output features is encoded in W. This is why it's called a "fully connected" or "dense" layer -- every input connects to every output through the weight matrix.
+The matmul transforms each 784-element input vector into a 512-element output vector, using the weight matrix $W$ as the transformation. Every connection between input features and output features is encoded in $W$. This is why it's called a "fully connected" or "dense" layer -- every input connects to every output through the weight matrix.
 `,
       reviewCardIds: ['rc-1.9-5', 'rc-1.9-6', 'rc-1.9-7'],
       illustrations: ['tensor-product'],
@@ -241,7 +241,7 @@ x.reshape((6, 1))  # 6 rows, 1 column -- same 6 elements
 x.reshape((2, 3))  # 2 rows, 3 columns -- same 6 elements
 \`\`\`
 
-The total number of elements must stay the same: \`3 * 2 = 6 * 1 = 2 * 3 = 6\`. A common special case is **transposition** -- swapping rows and columns:
+The total number of elements must stay the same: $3 \\times 2 = 6 \\times 1 = 2 \\times 3 = 6$. A common special case is **transposition** -- swapping rows and columns:
 
 \`\`\`python
 x = np.zeros((300, 20))
@@ -255,10 +255,10 @@ Now here's a beautiful insight: all tensor operations have a **geometric interpr
 
 - **Addition** translates a point (moves it without distortion)
 - **Matrix multiplication** can implement rotation, scaling, or skewing
-- **Affine transform** (matrix multiply + addition) is exactly what a Dense layer does: \`y = W @ x + b\`
+- **Affine transform** (matrix multiply + addition) is exactly what a Dense layer does: $y = Wx + b$
 - **relu activation** introduces non-linearity by zeroing out negative values
 
-This is critical: without activation functions, stacking multiple Dense layers would be pointless. Why? Because \`affine(affine(x))\` is still just a single affine transform. \`W2 @ (W1 @ x + b1) + b2 = (W2 @ W1) @ x + (W2 @ b1 + b2)\` -- it collapses into one layer. Activation functions like relu break this linearity, enabling deep networks to learn complex, nonlinear transformations.
+This is critical: without activation functions, stacking multiple Dense layers would be pointless. Why? Because $\\text{affine}(\\text{affine}(x))$ is still just a single affine transform. $W_2(W_1 x + b_1) + b_2 = (W_2 W_1) x + (W_2 b_1 + b_2)$ -- it collapses into one layer. Activation functions like relu break this linearity, enabling deep networks to learn complex, nonlinear transformations.
 
 The beautiful mental model: a deep network uncrumples a ball of crumpled paper. Imagine two sheets (two classes) crumpled together. The network learns a sequence of gentle geometric transformations that smoothly separate them -- each layer uncrumples a little bit more.
 `,
@@ -309,7 +309,7 @@ print(np.allclose(y, y_single))  # True -- they are identical!`,
 - Element-wise operations (addition, relu) apply independently to each tensor element and are massively parallelizable.
 - Broadcasting automatically stretches smaller tensors to match larger ones -- it's virtual, not a memory copy.
 - The tensor product (matmul / @) is the core operation connecting layers: it contracts a shared dimension.
-- Shape compatibility for matmul: (a, b) @ (b, c) --> (a, c). The shared dimension b must match.
+- Shape compatibility for matmul: $(a, b) \\times (b, c) \\rightarrow (a, c)$. The shared dimension $b$ must match.
 - Reshaping changes tensor organization without altering data. Transposition swaps axes.
 - Tensor operations have geometric meanings: addition = translation, matmul = linear transform, Dense layer = affine transform.
 - Activation functions (relu) are essential -- without them, stacked Dense layers collapse into a single linear layer.`,

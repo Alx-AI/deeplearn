@@ -38,6 +38,8 @@ import type { ReviewCard, QuizQuestion } from '@/lib/db/schema';
 import { srsEngine } from '@/lib/srs/engine';
 import type { Grade } from '@/lib/srs/engine';
 import { getOrCreateCardState, updateCardAfterReview } from '@/lib/db/api-client';
+import { parseContentBlocks, isListBlock, formatParagraph, type ContentBlock } from '@/lib/format-text';
+import { FormattedText } from '@/components/ui/FormattedText';
 
 // ---------------------------------------------------------------------------
 // Loading Skeleton
@@ -204,9 +206,7 @@ function InlineCard({ card }: { card: ReviewCard }) {
 
         {/* Prompt */}
         <div className="px-5 py-4">
-          <p className="text-[15px] font-semibold text-primary leading-relaxed">
-            {card.prompt}
-          </p>
+          <FormattedText text={card.prompt} as="p" className="text-[15px] font-semibold text-primary leading-relaxed" />
         </div>
 
         {/* Answer (hidden or revealed) */}
@@ -234,9 +234,7 @@ function InlineCard({ card }: { card: ReviewCard }) {
               className="border-t border-accent/10"
             >
               <div className="px-5 py-4 bg-background/40">
-                <p className="text-[15px] text-secondary leading-relaxed font-reading">
-                  {card.answer}
-                </p>
+                <FormattedText text={card.answer} as="p" className="text-[15px] text-secondary leading-relaxed font-reading" />
               </div>
 
               {/* Simplified two-button rating */}
@@ -850,12 +848,6 @@ export default function LessonPage() {
 // Content parsing helpers
 // ---------------------------------------------------------------------------
 
-interface ContentBlock {
-  type: 'paragraph' | 'code';
-  content: string;
-  language?: string;
-}
-
 const LANGUAGE_LABELS: Record<string, string> = {
   python: 'Python',
   py: 'Python',
@@ -875,90 +867,4 @@ const LANGUAGE_LABELS: Record<string, string> = {
 function formatLanguageLabel(lang?: string): string {
   if (!lang) return 'Text';
   return LANGUAGE_LABELS[lang.toLowerCase()] ?? lang;
-}
-
-/**
- * Parse section content into blocks, properly handling fenced code blocks.
- * Code blocks (```lang ... ```) are extracted as separate blocks so they
- * don't get broken by paragraph splitting.
- */
-function parseContentBlocks(content: string): ContentBlock[] {
-  const blocks: ContentBlock[] = [];
-  const codeBlockRegex = /```(\w*)\s*\n([\s\S]*?)```/g;
-  let lastIndex = 0;
-  let match: RegExpExecArray | null;
-
-  while ((match = codeBlockRegex.exec(content)) !== null) {
-    // Add any text before this code block as paragraph blocks
-    const before = content.slice(lastIndex, match.index);
-    if (before.trim()) {
-      for (const para of before.split('\n\n')) {
-        if (para.trim()) {
-          blocks.push({ type: 'paragraph', content: para.trim() });
-        }
-      }
-    }
-
-    // Add the code block
-    blocks.push({
-      type: 'code',
-      content: match[2].replace(/\n$/, ''),
-      language: match[1] || 'text',
-    });
-
-    lastIndex = match.index + match[0].length;
-  }
-
-  // Add remaining text after the last code block
-  const remaining = content.slice(lastIndex);
-  if (remaining.trim()) {
-    for (const para of remaining.split('\n\n')) {
-      if (para.trim()) {
-        blocks.push({ type: 'paragraph', content: para.trim() });
-      }
-    }
-  }
-
-  return blocks;
-}
-
-function isListBlock(text: string): boolean {
-  const lines = text.split('\n');
-  const isUl = lines.every((l) => l.trim().startsWith('- ') || l.trim() === '') &&
-    lines.some((l) => l.trim().startsWith('- '));
-  const isOl = lines.every((l) => /^\d+\.\s/.test(l.trim()) || l.trim() === '') &&
-    lines.some((l) => /^\d+\.\s/.test(l.trim()));
-  return isUl || isOl;
-}
-
-function formatParagraph(text: string): string {
-  // Check if it's a list (starts with "- " or "1. " etc.)
-  const lines = text.split('\n');
-  const isUnorderedList = lines.every((l) => l.trim().startsWith('- ') || l.trim() === '');
-  const isOrderedList = lines.every((l) => /^\d+\.\s/.test(l.trim()) || l.trim() === '');
-
-  if (isUnorderedList && lines.some((l) => l.trim().startsWith('- '))) {
-    const items = lines
-      .filter((l) => l.trim().startsWith('- '))
-      .map((l) => `<li>${formatInline(l.trim().slice(2))}</li>`)
-      .join('');
-    return `<ul class="my-3 ml-4 space-y-1.5 list-disc list-outside">${items}</ul>`;
-  }
-
-  if (isOrderedList && lines.some((l) => /^\d+\.\s/.test(l.trim()))) {
-    const items = lines
-      .filter((l) => /^\d+\.\s/.test(l.trim()))
-      .map((l) => `<li>${formatInline(l.trim().replace(/^\d+\.\s/, ''))}</li>`)
-      .join('');
-    return `<ol class="my-3 ml-4 space-y-1.5 list-decimal list-outside">${items}</ol>`;
-  }
-
-  return formatInline(text);
-}
-
-function formatInline(text: string): string {
-  return text
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`(.+?)`/g, '<code class="rounded bg-surface px-1.5 py-0.5 text-sm font-mono text-accent">$1</code>');
 }

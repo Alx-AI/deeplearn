@@ -19,21 +19,21 @@ We have seen algorithms that target Nash equilibrium (JAL-GT, WoLF) and algorith
 
 **Regret matching** (Hart and Mas-Colell 2000) is a remarkably simple algorithm that achieves no-regret. It comes in two flavors:
 
-**Unconditional regret matching.** After z episodes with joint actions a^1, ..., a^z, agent i's unconditional regret for not having always played action a_i is:
+**Unconditional regret matching.** After $z$ episodes with joint actions $a^1, \\ldots, a^z$, agent $i$'s unconditional regret for not having always played action $a_i$ is:
 
-Regret^z_i(a_i) = sum_{e=1}^{z} [R_i(a_i, a^e_{-i}) - R_i(a^e)]
+$$\\text{Regret}^z_i(a_i) = \\sum_{e=1}^{z} \\bigl[R_i(a_i, a^e_{-i}) - R_i(a^e)\\bigr]$$
 
-This asks: "How much better off would I have been if I had played a_i in every episode, while the opponents played the same actions they actually did?" The average regret is R_bar^z_i(a_i) = (1/z) * Regret^z_i(a_i). The policy assigns probability proportional to positive average regrets:
+This asks: "How much better off would I have been if I had played $a_i$ in every episode, while the opponents played the same actions they actually did?" The average regret is $\\bar{R}^z_i(a_i) = (1/z) \\cdot \\text{Regret}^z_i(a_i)$. The policy assigns probability proportional to positive average regrets:
 
-pi^{z+1}_i(a_i) = [R_bar^z_i(a_i)]+ / (sum_{a'_i} [R_bar^z_i(a'_i)]+)
+$$\\pi^{z+1}_i(a_i) = \\frac{[\\bar{R}^z_i(a_i)]^+}{\\sum_{a'_i} [\\bar{R}^z_i(a'_i)]^+}$$
 
-where [x]+ = max(x, 0). If all regrets are non-positive, any distribution may be used.
+where $[x]^+ = \\max(x, 0)$. If all regrets are non-positive, any distribution may be used.
 
-**Conditional regret matching** refines this by conditioning on the agent's most recent action a^z_i. It asks: "Given that I played a'_i, how much better would a_i have been in those specific episodes?" The conditional regret for switching from a'_i to a_i is:
+**Conditional regret matching** refines this by conditioning on the agent's most recent action $a^z_i$. It asks: "Given that I played $a'_i$, how much better would $a_i$ have been in those specific episodes?" The conditional regret for switching from $a'_i$ to $a_i$ is:
 
-Regret^z_i(a'_i, a_i) = sum_{e: a^e_i = a'_i} [R_i(a_i, a^e_{-i}) - R_i(a^e)]
+$$\\text{Regret}^z_i(a'_i, a_i) = \\sum_{e:\\, a^e_i = a'_i} \\bigl[R_i(a_i, a^e_{-i}) - R_i(a^e)\\bigr]$$
 
-The policy update biases toward actions with high conditional regret relative to the most recent action, controlled by a parameter eta.
+The policy update biases toward actions with high conditional regret relative to the most recent action, controlled by a parameter $\\eta$.
 `,
       reviewCardIds: ['rc-marl-6.9-1', 'rc-marl-6.9-2'],
       illustrations: [],
@@ -42,7 +42,7 @@ The policy update biases toward actions with high conditional regret relative to
       id: 'marl-6.9.2',
       title: 'Convergence to Correlated Equilibria',
       content: `
-Both types of regret matching guarantee that average regrets converge to zero at a rate of O(1/sqrt(z)), regardless of what other agents do. This follows from Blackwell's **Approachability Theorem** (1956).
+Both types of regret matching guarantee that average regrets converge to zero at a rate of $O(1/\\sqrt{z})$, regardless of what other agents do. This follows from Blackwell's **Approachability Theorem** (1956).
 
 What does zero regret imply for the joint behavior of the agents? The answer connects beautifully to correlated equilibrium:
 
@@ -50,7 +50,7 @@ What does zero regret imply for the joint behavior of the agents? The answer con
 
 **Conditional regret matching** -- when all agents use it, the empirical distribution converges to the set of **correlated equilibria** (the stronger concept). This is because conditional regret exactly matches the deviation incentive structure in the definition of correlated equilibrium.
 
-In **Rock-Paper-Scissors**, the behavior is striking. The actual policies pi^z_i of the agents bounce chaotically around the probability simplex -- at any given episode, an agent might put 80% on Rock or 90% on Scissors. Yet the **empirical distributions** (what fraction of the time each action was played historically) converge steadily to the Nash equilibrium (1/3, 1/3, 1/3). Looking at the average regrets, they oscillate around zero in a swinging pattern: agent 1 shifts to high-regret actions, causing agent 2's regrets to shift, which feeds back, creating perpetual oscillations that cancel out on average.
+In **Rock-Paper-Scissors**, the behavior is striking. The actual policies $\\pi^z_i$ of the agents bounce chaotically around the probability simplex -- at any given episode, an agent might put 80% on Rock or 90% on Scissors. Yet the **empirical distributions** (what fraction of the time each action was played historically) converge steadily to the Nash equilibrium (1/3, 1/3, 1/3). Looking at the average regrets, they oscillate around zero in a swinging pattern: agent 1 shifts to high-regret actions, causing agent 2's regrets to shift, which feeds back, creating perpetual oscillations that cancel out on average.
 
 An important contrast with WoLF-PHC: WoLF-PHC achieves **policy convergence** (the policies themselves converge to Nash equilibrium), which is strictly stronger than the **empirical convergence** achieved by regret matching. In regret matching, the policies never settle down -- only their long-run averages converge.
 `,
@@ -65,7 +65,7 @@ Regret matching as defined above applies to normal-form games. To scale it to la
 
 CFR's impact on **poker** has been transformative. The algorithm (and its variants) produced the first superhuman poker AIs:
 
-**Libratus** (Brown and Sandholm 2018) defeated top professional players in heads-up no-limit Texas Hold'em, a game with approximately 10^161 information sets. Libratus used a combination of: (1) CFR-based blueprint strategy computation, (2) real-time subgame solving to refine the strategy during play, and (3) a self-improvement module that identified and patched exploitable aspects of the strategy.
+**Libratus** (Brown and Sandholm 2018) defeated top professional players in heads-up no-limit Texas Hold'em, a game with approximately $10^{161}$ information sets. Libratus used a combination of: (1) CFR-based blueprint strategy computation, (2) real-time subgame solving to refine the strategy during play, and (3) a self-improvement module that identified and patched exploitable aspects of the strategy.
 
 **Pluribus** (Brown and Sandholm 2019) extended this success to **six-player** no-limit Hold'em -- a much harder setting because there are multiple opponents who may collude or play unpredictably. Pluribus used a modified CFR algorithm to compute a blueprint strategy via self-play, then applied real-time search during actual play.
 
@@ -82,7 +82,7 @@ Regret-based methods have also been applied to other imperfect-information games
 - Unconditional regret matching leads to coarse correlated equilibrium; conditional regret matching leads to the stronger correlated equilibrium.
 - Actual policies in regret matching never converge -- they oscillate chaotically -- but the empirical distributions of actions converge to equilibrium.
 - Counterfactual Regret Minimization (CFR) extends regret matching to large sequential games by decomposing regret across information sets.
-- CFR-based methods produced Libratus and Pluribus, superhuman poker AIs, demonstrating the scalability of regret minimization to games with 10^161 information sets.`,
+- CFR-based methods produced Libratus and Pluribus, superhuman poker AIs, demonstrating the scalability of regret minimization to games with $10^{161}$ information sets.`,
 };
 
 export default lesson;

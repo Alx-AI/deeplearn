@@ -112,9 +112,9 @@ for agent in env.agent_iter():
       content: `
 With the interface understood, we can assemble a complete **MARL training loop**. The structure mirrors single-agent RL but must handle per-agent observations, actions, and network forward passes.
 
-The first implementation decision is the **neural network architecture**. In MARL, you typically create a \`MultiAgentFCNetwork\` that wraps n separate fully connected networks (one per agent), each mapping observations to outputs (Q-values for DQN, logits for policy gradient). The constructor takes lists of input sizes and output sizes, one entry per agent. For LBF with two agents and observation size 15 and 6 actions each, you would pass \`in_sizes=[15, 15]\` and \`out_sizes=[6, 6]\`.
+The first implementation decision is the **neural network architecture**. In MARL, you typically create a \`MultiAgentFCNetwork\` that wraps $n$ separate fully connected networks (one per agent), each mapping observations to outputs (Q-values for DQN, logits for policy gradient). The constructor takes lists of input sizes and output sizes, one entry per agent. For LBF with two agents and observation size 15 and 6 actions each, you would pass \`in_sizes=[15, 15]\` and \`out_sizes=[6, 6]\`.
 
-A powerful optimization is **parameter sharing** (Section 9.7.1). When agents are homogeneous -- same observation and action spaces, same role -- you can replace n separate networks with a single shared network. The \`MultiAgentFCNetwork_SharedParameters\` variant does exactly this: it creates one \`nn.Sequential\` and runs all agent inputs through it in parallel using \`torch.jit.fork\`. This dramatically reduces the number of trainable parameters and speeds up learning.
+A powerful optimization is **parameter sharing** (Section 9.7.1). When agents are homogeneous -- same observation and action spaces, same role -- you can replace $n$ separate networks with a single shared network. The \`MultiAgentFCNetwork_SharedParameters\` variant does exactly this: it creates one \`nn.Sequential\` and runs all agent inputs through it in parallel using \`torch.jit.fork\`. This dramatically reduces the number of trainable parameters and speeds up learning.
 
 The training loop itself follows a standard pattern: (1) reset the environment to get initial observations, (2) select actions using the current networks (e.g., epsilon-greedy for DQN), (3) step the environment to get next observations, rewards, and done flags, (4) store the transition in a **replay buffer**, and (5) sample a batch from the buffer to compute losses and update network parameters.
 
@@ -176,7 +176,7 @@ common_optimizer.step()`,
 - The multi-agent environment interface extends single-agent Gym with tuple-valued observations, actions, and rewards indexed by agent.
 - PettingZoo provides two APIs: the parallel API for simultaneous-move environments and the AEC API for turn-based games.
 - Neural networks in MARL are organized as per-agent modules (MultiAgentFCNetwork) or shared-parameter modules when agents are homogeneous.
-- Parameter sharing replaces n separate networks with one shared network, dramatically reducing trainable parameters.
+- Parameter sharing replaces $n$ separate networks with one shared network, dramatically reducing trainable parameters.
 - Using a single centralized optimizer that sums all agent losses is significantly faster than maintaining separate optimizers per agent.`,
 };
 

@@ -107,7 +107,7 @@ Why batches instead of one-at-a-time or all-at-once?
 - **All at once** uses too much memory: for large datasets, you simply can't fit everything into GPU memory at once, and you'd only update weights once per pass through the data.
 - **Batches** are the sweet spot: typically 32, 64, 128, or 256 samples. Large enough for stable gradient estimates and efficient GPU utilization, small enough to fit in memory and allow frequent weight updates.
 
-In the MNIST example, \`batch_size=128\` means the model processes 128 images at a time, makes predictions for all 128, computes the average loss across the batch, and updates its weights once. With 60,000 training images, each epoch has \`60000 / 128 = 469\` batches (and thus 469 weight updates).
+In the MNIST example, \`batch_size=128\` means the model processes 128 images at a time, makes predictions for all 128, computes the average loss across the batch, and updates its weights once. With 60,000 training images, each epoch has $60{,}000 / 128 = 469$ batches (and thus 469 weight updates).
 `,
       reviewCardIds: ['rc-1.8-3', 'rc-1.8-4', 'rc-1.8-5'],
       illustrations: ['data-batch'],

@@ -71,7 +71,7 @@ print(f"Train: {len(X_train)}, Val: {len(X_val)}, Test: {len(X_test)}")`,
       content: `
 Simple hold-out validation works well when you have plenty of data. But when your dataset is small, the validation and test splits may contain too few samples to be statistically representative. You will know this is happening if different random shuffles before splitting lead to very different performance estimates.
 
-**K-fold cross-validation** addresses this problem. You split the data into K equal-sized partitions (folds). Then you train K separate models: for each one, you hold out a different fold as the validation set and train on the remaining K-1 folds. The final score is the average across all K runs.
+**K-fold cross-validation** addresses this problem. You split the data into $K$ equal-sized partitions (folds). Then you train $K$ separate models: for each one, you hold out a different fold as the validation set and train on the remaining $K-1$ folds. The final score is the average across all $K$ runs.
 
 \`\`\`python
 k = 3
@@ -95,7 +95,7 @@ for fold in range(k):
 final_score = np.average(validation_scores)
 \`\`\`
 
-For even more reliable estimates with very small datasets, you can use **iterated K-fold validation with shuffling**: run K-fold validation multiple times, reshuffling the data each time, and average all scores. This is more expensive (you train P * K models total) but produces very stable estimates.
+For even more reliable estimates with very small datasets, you can use **iterated K-fold validation with shuffling**: run K-fold validation multiple times, reshuffling the data each time, and average all scores. This is more expensive (you train $P \\times K$ models total) but produces very stable estimates.
 `,
       reviewCardIds: ['rc-3.3-3', 'rc-3.3-4'],
       illustrations: ['k-fold-validation'],

@@ -108,7 +108,7 @@ model = keras.Sequential([
 
 This drops validation accuracy from ~80% to ~71% -- an 8% loss because the 4-dimensional bottleneck can't represent enough information about 46 distinct categories.
 
-The **softmax** activation in the output layer is what makes this multiclass. Unlike sigmoid (which outputs a single probability), softmax outputs a **probability distribution** over all 46 classes. The outputs are always positive and always sum to 1.0:
+The **softmax** activation in the output layer is what makes this multiclass. Unlike sigmoid (which outputs a single probability), softmax outputs a **probability distribution** over all 46 classes. The outputs are always positive and always sum to $1.0$:
 
 \`\`\`python
 # If model outputs [0.01, 0.02, ..., 0.71, ...]
@@ -197,10 +197,10 @@ predictions = model.predict(x_test)
 | Aspect | Binary (IMDb) | Multiclass (Reuters) |
 |---|---|---|
 | Output layer | Dense(1, activation="sigmoid") | Dense(N, activation="softmax") |
-| Output meaning | Single probability [0, 1] | N probabilities that sum to 1 |
+| Output meaning | Single probability $[0, 1]$ | $N$ probabilities that sum to $1$ |
 | Loss function | binary_crossentropy | categorical_crossentropy |
-| Prediction | threshold at 0.5 | argmax over N classes |
-| Hidden layer size | Can be small (e.g., 16) | Must be >= N classes to avoid bottleneck |
+| Prediction | threshold at $0.5$ | argmax over $N$ classes |
+| Hidden layer size | Can be small (e.g., 16) | Must be $\\geq N$ classes to avoid bottleneck |
 
 The pattern to remember: **sigmoid gives you independent probabilities; softmax gives you a probability distribution.** Use sigmoid when classes are independent (binary, or multi-label where an item can belong to multiple classes). Use softmax when exactly one class must be chosen.
 
@@ -250,8 +250,8 @@ model.compile(
     },
   ],
   summary: `**Key takeaways:**
-- Multiclass classification uses softmax activation (probability distribution over N classes) paired with categorical_crossentropy loss.
-- Softmax outputs N values that are positive and sum to 1.0; the predicted class is the argmax.
+- Multiclass classification uses softmax activation (probability distribution over $N$ classes) paired with categorical_crossentropy loss.
+- Softmax outputs $N$ values that are positive and sum to $1.0$; the predicted class is the argmax.
 - Labels can be one-hot encoded (use categorical_crossentropy) or left as integers (use sparse_categorical_crossentropy).
 - Information bottleneck: intermediate layers much smaller than the number of output classes lose critical information and hurt accuracy.
 - The Reuters model achieves ~80% accuracy on 46 classes (vs ~19% random baseline).

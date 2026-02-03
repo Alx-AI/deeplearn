@@ -16,9 +16,9 @@ const lesson: LessonContentData = {
       id: 'marl-5.2.1',
       title: 'Why Single-Agent Guarantees Break',
       content: `
-In single-agent RL, algorithms like Q-learning come with well-studied convergence guarantees: given enough exploration and appropriate learning rates, the learned value function converges to the optimal values. These guarantees rest on a critical assumption -- the environment is **stationary**. The transition dynamics T(s' | s, a) and reward function R(s, a) do not change over time.
+In single-agent RL, algorithms like Q-learning come with well-studied convergence guarantees: given enough exploration and appropriate learning rates, the learned value function converges to the optimal values. These guarantees rest on a critical assumption -- the environment is **stationary**. The transition dynamics $T(s' \\mid s, a)$ and reward function $R(s, a)$ do not change over time.
 
-In MARL, this assumption is **violated**. As we saw in the previous lesson, from each agent's perspective the other agents' evolving policies are part of the environment. When Agent 2 updates its policy, Agent 1's effective transition function T_1(s' | s, a_1) changes. The technical conditions required for single-agent convergence -- the **stochastic approximation conditions** -- are no longer sufficient.
+In MARL, this assumption is **violated**. As we saw in the previous lesson, from each agent's perspective the other agents' evolving policies are part of the environment. When Agent 2 updates its policy, Agent 1's effective transition function $T_1(s' \\mid s, a_1)$ changes. The technical conditions required for single-agent convergence -- the **stochastic approximation conditions** -- are no longer sufficient.
 
 The result is that even a simple algorithm like Independent Q-Learning (IQL), which applies standard Q-learning to each agent separately, may fail to converge. Research by Wunder, Littman, and Babes (2010) analyzed an idealized version of IQL with infinitesimal learning rates in two-player, two-action normal-form games. They found that IQL converges to a Nash equilibrium in some game classes but exhibits **chaotic, non-convergent behavior** in others -- including the famous Prisoner's Dilemma.
 
@@ -33,15 +33,15 @@ All known theoretical convergence results in MARL are limited to **restricted ga
       content: `
 Since standard convergence is hard to achieve in multi-agent settings, the MARL literature defines several **weaker** convergence criteria. Understanding these is essential for evaluating what any given MARL algorithm actually promises.
 
-The **standard criterion** is convergence of the joint policy itself: **lim_{z -> infinity} pi^z = pi***, where pi* is a solution (e.g., a Nash equilibrium). This is the strongest guarantee -- the learned policies literally approach a game solution.
+The **standard criterion** is convergence of the joint policy itself: $\\lim_{z \\to \\infty} \\pi^z = \\pi^*$, where $\\pi^*$ is a solution (e.g., a Nash equilibrium). This is the strongest guarantee -- the learned policies literally approach a game solution.
 
 When this is too strong, weaker alternatives include:
 
-**Convergence of expected return:** lim_{z -> infinity} U_i(pi^z) = U_i(pi*) for all agents i. The policies might not converge, but the *returns they produce* approach those of a solution. The IGA algorithm achieves this in two-player, two-action normal-form games.
+**Convergence of expected return:** $\\lim_{z \\to \\infty} U_i(\\pi^z) = U_i(\\pi^*)$ for all agents $i$. The policies might not converge, but the *returns they produce* approach those of a solution. The IGA algorithm achieves this in two-player, two-action normal-form games.
 
-**Convergence of empirical distribution:** lim_{z -> infinity} pi_bar^z = pi*, where pi_bar^z averages the policies across all episodes. This is useful when the policy itself oscillates but the *time-averaged behavior* stabilizes. The **fictitious play** algorithm converges in this sense in certain games, even though it uses deterministic policies that cannot directly represent probabilistic Nash equilibria.
+**Convergence of empirical distribution:** $\\lim_{z \\to \\infty} \\bar{\\pi}^z = \\pi^*$, where $\\bar{\\pi}^z$ averages the policies across all episodes. This is useful when the policy itself oscillates but the *time-averaged behavior* stabilizes. The **fictitious play** algorithm converges in this sense in certain games, even though it uses deterministic policies that cannot directly represent probabilistic Nash equilibria.
 
-**Convergence to the set of solutions:** For any epsilon > 0, eventually the empirical distribution stays within distance epsilon of *some* solution -- but it may wander within the solution set without settling on any single one. The **regret-matching** algorithms converge to the set of (coarse) correlated equilibria in this sense.
+**Convergence to the set of solutions:** For any $\\epsilon > 0$, eventually the empirical distribution stays within distance $\\epsilon$ of *some* solution -- but it may wander within the solution set without settling on any single one. The **regret-matching** algorithms converge to the set of (coarse) correlated equilibria in this sense.
 
 **Convergence of average return:** The averaged expected return across episodes converges to a solution's expected return.
 
@@ -60,7 +60,7 @@ But what happens when agents face **arbitrary opponents** who might use differen
 
 In practice, since we can never collect infinite data, learning typically stops when a computational budget is reached (a fixed number of episodes or time steps) or when policy changes fall below a threshold. Whether the learned policy is actually a game solution can be tested using the procedures from Chapter 4, such as checking for profitable unilateral deviations (the Nash equilibrium test).
 
-A common practical approach is to monitor **evaluation returns** -- the expected returns U_i(pi^z) achieved by the current joint policy -- plotted as learning curves over training time. These curves can show whether performance improves and stabilizes, but they do not guarantee convergence to a formal solution. Even if returns flatten out, the joint policy pi^z might not satisfy any of the convergence criteria defined above. This gap between practical evaluation and theoretical guarantees is a persistent theme in MARL research.
+A common practical approach is to monitor **evaluation returns** -- the expected returns $U_i(\\pi^z)$ achieved by the current joint policy -- plotted as learning curves over training time. These curves can show whether performance improves and stabilizes, but they do not guarantee convergence to a formal solution. Even if returns flatten out, the joint policy $\\pi^z$ might not satisfy any of the convergence criteria defined above. This gap between practical evaluation and theoretical guarantees is a persistent theme in MARL research.
 `,
       reviewCardIds: ['rc-marl-5.2-5'],
       illustrations: [],

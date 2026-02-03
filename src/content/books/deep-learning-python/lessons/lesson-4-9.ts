@@ -77,7 +77,7 @@ model.fit(train_dataset, epochs=10,
       id: '4.9.2',
       title: 'Why a Low Learning Rate Is Essential',
       content: `
-During fine-tuning, you must use a learning rate **much lower** than initial training -- typically 1e-5 instead of 1e-3. The pretrained weights are already good; they just need small, careful adjustments to adapt to the new task. A large learning rate would make dramatic changes that could undo the valuable knowledge stored in those weights.
+During fine-tuning, you must use a learning rate **much lower** than initial training -- typically $10^{-5}$ instead of $10^{-3}$. The pretrained weights are already good; they just need small, careful adjustments to adapt to the new task. A large learning rate would make dramatic changes that could undo the valuable knowledge stored in those weights.
 
 Think of it like tuning a piano that is already mostly in tune. You make tiny, precise adjustments. If you cranked the tuning pegs aggressively, you would make the piano worse, not better.
 
@@ -85,8 +85,8 @@ Think of it like tuning a piano that is already mostly in tune. You make tiny, p
 
 In practice, fine-tuning typically improves accuracy by several percentage points over feature extraction alone. The combination of pretrained features plus task-specific adaptation is extremely powerful:
 
-- Feature extraction alone: ~90% accuracy
-- Feature extraction + fine-tuning: ~95% accuracy
+- Feature extraction alone: $\\sim 90\\%$ accuracy
+- Feature extraction + fine-tuning: $\\sim 95\\%$ accuracy
 
 This is a common pattern in industry: start with feature extraction to get a baseline, then fine-tune to push performance higher. Many production image classifiers are built this way, even at large companies, because it is both effective and computationally efficient.
 `,
@@ -119,7 +119,7 @@ model.compile(optimizer=optimizer,
   summary: `**Key takeaways:**
 - Fine-tuning unfreezes some top layers of the pretrained base and retrains them alongside the classifier.
 - Always follow the two-phase procedure: train the classifier head first (frozen base), then unfreeze top layers and retrain.
-- Use a very low learning rate (e.g., 1e-5) to make careful adjustments without destroying pretrained representations.
+- Use a very low learning rate (e.g., $10^{-5}$) to make careful adjustments without destroying pretrained representations.
 - Keep early layers frozen -- they learn generic features that don't need adaptation.
 - Fine-tuning typically improves accuracy several percentage points beyond feature extraction alone.`,
 };

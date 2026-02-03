@@ -198,7 +198,7 @@ def compute_loss(state, inputs, targets):
 grad_fn = jax.value_and_grad(compute_loss)
 \`\`\`
 
-The training step must also be stateless -- it receives W and b, and *returns* their updated values:
+The training step must also be stateless -- it receives $W$ and $b$, and *returns* their updated values:
 
 \`\`\`python
 learning_rate = 0.1
@@ -212,7 +212,7 @@ def training_step(inputs, targets, W, b):
     return loss, W, b      # Must return updated state!
 \`\`\`
 
-Notice there's no \`assign_sub\` (TensorFlow) or \`torch.no_grad()\` (PyTorch). We simply compute new values for W and b and return them. The full training loop:
+Notice there's no \`assign_sub\` (TensorFlow) or \`torch.no_grad()\` (PyTorch). We simply compute new values for $W$ and $b$ and return them. The full training loop:
 
 \`\`\`python
 W = jnp.array(np.random.uniform(size=(2, 1)))

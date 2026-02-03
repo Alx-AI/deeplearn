@@ -18,7 +18,7 @@ const lesson: LessonContentData = {
 When a single GPU cannot train your model fast enough, **data parallelism** distributes the workload across multiple GPUs. Each GPU holds a complete copy of the model and processes a different mini-batch simultaneously.
 
 The process for each training step:
-1. Split the batch across N GPUs (each gets batch_size / N samples)
+1. Split the batch across $N$ GPUs (each gets $\\text{batch\\_size} / N$ samples)
 2. Each GPU computes a forward pass and local gradients independently
 3. All GPUs synchronize by **averaging** their gradients (all-reduce operation)
 4. Each GPU updates its model weights identically using the averaged gradient
@@ -29,9 +29,9 @@ The process for each training step:
 # Training is ~4x faster (minus communication overhead)
 \`\`\`
 
-The result is mathematically equivalent to single-GPU training with a larger batch size, but roughly N times faster.
+The result is mathematically equivalent to single-GPU training with a larger batch size, but roughly $N$ times faster.
 
-When scaling from 1 to N GPUs, the **learning rate** often needs adjustment. With N times more samples per gradient update, the gradient estimate is more reliable and can support a larger step. The common rule of thumb: scale the learning rate linearly with the number of GPUs, with a gradual **warmup** period at the start of training to avoid instability.
+When scaling from 1 to $N$ GPUs, the **learning rate** often needs adjustment. With $N$ times more samples per gradient update, the gradient estimate is more reliable and can support a larger step. The common rule of thumb: scale the learning rate linearly with the number of GPUs, with a gradual **warmup** period at the start of training to avoid instability.
 
 The main overhead is **gradient synchronization**: after each step, gradients must be transferred between GPUs. With fast interconnects (NVLink), this is manageable. Over slower connections (PCIe, network), it can become a bottleneck, especially for very large models.
 `,
@@ -141,7 +141,7 @@ tf.profiler.experimental.stop()
   ],
   summary: `**Key takeaways:**
 - Data parallelism distributes batches across GPUs; each GPU computes gradients that are averaged and synchronized.
-- Effective batch size = batch_per_GPU * number_of_GPUs; training is ~N times faster with N GPUs.
+- Effective batch size $= \\text{batch\\_per\\_GPU} \\times N$; training is ~$N$ times faster with $N$ GPUs.
 - Learning rate should be scaled up (often linearly) when adding GPUs, with a warmup period.
 - Communication overhead for gradient synchronization is the main bottleneck of multi-GPU training.
 - TPUs are optimized for tensor operations; GPUs are more flexible. Both train state-of-the-art models.`,

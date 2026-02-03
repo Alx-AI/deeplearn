@@ -25,13 +25,13 @@ RL occupies a unique position among the branches of machine learning. It is not 
       content: `
 Let's unpack the three quantities that flow through the agent-environment loop at every time step.
 
-**Observations** (or states, in the fully observable case) represent the current situation of the environment. In a board game, this might be the positions of all pieces. In a robotics task, it could be joint angles and sensor readings. The critical assumption for this chapter is full observability: the agent perceives the entire state s_t at each time step t, with nothing hidden.
+**Observations** (or states, in the fully observable case) represent the current situation of the environment. In a board game, this might be the positions of all pieces. In a robotics task, it could be joint angles and sensor readings. The critical assumption for this chapter is full observability: the agent perceives the entire state $s_t$ at each time step $t$, with nothing hidden.
 
-**Actions** are the decisions the agent can make. The set of available actions, A, may be the same in every state or may depend on the current state. Actions can be discrete (turn left, turn right, go straight) or continuous (apply 3.7 Newtons of force). A **policy**, denoted pi, is the agent's decision-making strategy: given a state s_t, the policy pi(a | s_t) assigns a probability to each possible action. Deterministic policies assign probability 1 to a single action, while **stochastic policies** spread probability across multiple actions.
+**Actions** are the decisions the agent can make. The set of available actions, $\\mathcal{A}$, may be the same in every state or may depend on the current state. Actions can be discrete (turn left, turn right, go straight) or continuous (apply 3.7 Newtons of force). A **policy**, denoted $\\pi$, is the agent's decision-making strategy: given a state $s_t$, the policy $\\pi(a \\mid s_t)$ assigns a probability to each possible action. Deterministic policies assign probability 1 to a single action, while **stochastic policies** spread probability across multiple actions.
 
-**Rewards** are scalar signals r_t that the environment sends back after the agent takes an action. The reward function R(s_t, a_t, s_{t+1}) depends on the current state, the chosen action, and the resulting next state. Rewards encode the goal: a Mars rover might receive +10 for reaching the base station and -10 for falling off a cliff. The fundamental assumption of RL is that whatever objective we care about can be expressed as the maximization of cumulative reward over time.
+**Rewards** are scalar signals $r_t$ that the environment sends back after the agent takes an action. The reward function $R(s_t, a_t, s_{t+1})$ depends on the current state, the chosen action, and the resulting next state. Rewards encode the goal: a Mars rover might receive +10 for reaching the base station and -10 for falling off a cliff. The fundamental assumption of RL is that whatever objective we care about can be expressed as the maximization of cumulative reward over time.
 
-The **solution** to an RL problem is an **optimal policy** pi* that selects actions in each state to maximize the expected cumulative reward. Note the word "expected" -- because transitions and policies may be stochastic, the agent cannot guarantee a specific outcome in every episode. It can only maximize its average performance across the randomness inherent in the process.
+The **solution** to an RL problem is an **optimal policy** $\\pi^*$ that selects actions in each state to maximize the expected cumulative reward. Note the word "expected" -- because transitions and policies may be stochastic, the agent cannot guarantee a specific outcome in every episode. It can only maximize its average performance across the randomness inherent in the process.
 
 A central challenge that arises from this setup is the **exploration-exploitation dilemma**: should the agent stick with actions it already believes are good (exploit), or try new actions to discover potentially better strategies (explore)? Exploration may discover superior actions but can accrue low rewards in the process, while exploitation achieves a certain level of return but may never find the truly optimal behavior.
 `,
@@ -44,7 +44,7 @@ A central challenge that arises from this setup is the **exploration-exploitatio
       content: `
 RL problems come in two broad flavors based on whether the interaction naturally ends.
 
-An **episode** is a single, independent run of the agent-environment loop from some initial state to a terminal condition. Think of one game of chess, one delivery route, or one attempt at navigating a maze. Each episode begins with an initial state s_0 sampled from an **initial state distribution** mu and proceeds until the environment reaches a **terminal state** (from the set of terminal states S-bar) or a maximum number of time steps T is reached. Once an episode ends, the environment resets and a new episode begins. Problems with this structure are called **episodic tasks**.
+An **episode** is a single, independent run of the agent-environment loop from some initial state to a terminal condition. Think of one game of chess, one delivery route, or one attempt at navigating a maze. Each episode begins with an initial state $s_0$ sampled from an **initial state distribution** $\\mu$ and proceeds until the environment reaches a **terminal state** (from the set of terminal states $\\bar{S}$) or a maximum number of time steps $T$ is reached. Once an episode ends, the environment resets and a new episode begins. Problems with this structure are called **episodic tasks**.
 
 In contrast, **continuing tasks** have no natural endpoint -- the agent-environment interaction goes on indefinitely. A thermostat controlling room temperature or a trading agent operating in a financial market are examples of continuing tasks. As we will see shortly, continuing tasks require special care when defining cumulative rewards, since the naive sum of rewards over an infinite horizon can diverge to infinity.
 
@@ -58,7 +58,7 @@ This unification is more than a notational trick -- it lets us write a single se
   ],
   summary: `**Key takeaways:**
 - RL algorithms learn by repeated interaction with an environment through an agent-environment loop of observations, actions, and rewards.
-- A policy pi(a | s) maps states to action probabilities; the goal is to find an optimal policy that maximizes expected cumulative reward.
+- A policy $\\pi(a \\mid s)$ maps states to action probabilities; the goal is to find an optimal policy that maximizes expected cumulative reward.
 - Episodic tasks terminate in a finite number of steps; continuing tasks run indefinitely. Absorbing states unify both settings.
 - The exploration-exploitation dilemma -- balancing discovery of new actions against leveraging known good ones -- is a central challenge in RL.
 - RL is distinct from supervised and unsupervised learning: reward signals guide but do not directly specify the correct action.`,

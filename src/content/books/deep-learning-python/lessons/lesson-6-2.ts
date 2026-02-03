@@ -26,7 +26,7 @@ embedding = layers.Embedding(input_dim=20000, output_dim=256)
 
 With vocabulary_size=20,000 and embedding_dim=256, the layer has 5,120,000 trainable parameters -- one 256-dim vector per token. During training, these vectors are adjusted so that semantically similar words end up with similar vectors. "Cat" and "kitten" might end up close together in embedding space, while "cat" and "airplane" are far apart.
 
-**Pretrained embeddings** like Word2Vec and GloVe were trained on billions of words and encode rich semantic relationships. The famous example: vector("king") - vector("man") + vector("woman") is close to vector("queen"). Use pretrained embeddings when your training data is limited; train from scratch when you have abundant domain-specific data.
+**Pretrained embeddings** like Word2Vec and GloVe were trained on billions of words and encode rich semantic relationships. The famous example: $\\vec{\\text{king}} - \\vec{\\text{man}} + \\vec{\\text{woman}} \\approx \\vec{\\text{queen}}$. Use pretrained embeddings when your training data is limited; train from scratch when you have abundant domain-specific data.
 `,
       reviewCardIds: ['rc-6.2-1', 'rc-6.2-2', 'rc-6.2-3'],
       illustrations: ['word-embedding'],

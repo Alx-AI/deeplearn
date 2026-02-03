@@ -16,7 +16,7 @@ const lesson: LessonContentData = {
       title: 'Stabilizing Training with Batch Normalization',
       illustrations: ['batch-norm'],
       content: `
-**Batch normalization** (BatchNorm) normalizes each layer's activations to have mean=0 and standard deviation=1 across the current batch. This addresses a problem called "internal covariate shift" -- where the distribution of inputs to each layer keeps changing as the preceding layers update their weights.
+**Batch normalization** (BatchNorm) normalizes each layer's activations to have mean $= 0$ and standard deviation $= 1$ across the current batch. This addresses a problem called "internal covariate shift" -- where the distribution of inputs to each layer keeps changing as the preceding layers update their weights.
 
 \`\`\`python
 x = layers.Conv2D(64, 3, padding="same")(x)
@@ -24,7 +24,7 @@ x = layers.BatchNormalization()(x)
 x = layers.ReLU()(x)
 \`\`\`
 
-The typical placement is: Conv -> BatchNorm -> Activation. After normalizing, BatchNorm applies learned **scale** (gamma) and **shift** (beta) parameters. This lets the network recover any distribution it needs -- the normalization provides a stable starting point, and the learned parameters fine-tune from there.
+The typical placement is: Conv -> BatchNorm -> Activation. After normalizing, BatchNorm applies learned **scale** ($\\gamma$) and **shift** ($\\beta$) parameters. This lets the network recover any distribution it needs -- the normalization provides a stable starting point, and the learned parameters fine-tune from there.
 
 BatchNorm provides several benefits:
 - **Stabilizes training**: prevents activations from exploding or vanishing through layers
@@ -64,11 +64,11 @@ logits = model(x_batch, training=False)  # inference mode`,
       content: `
 A standard convolution jointly learns spatial patterns AND channel mixing in a single operation. A **depthwise separable convolution** factorizes this into two separate steps, dramatically reducing parameters and computation.
 
-**Step 1 -- Depthwise convolution**: applies one spatial filter per input channel independently. A 3x3 depthwise conv on 32 input channels uses 3x3x32 = 288 parameters.
+**Step 1 -- Depthwise convolution**: applies one spatial filter per input channel independently. A $3 \\times 3$ depthwise conv on 32 input channels uses $3 \\times 3 \\times 32 = 288$ parameters.
 
-**Step 2 -- Pointwise convolution**: a 1x1 convolution that mixes information across channels. Going from 32 to 64 output channels uses 1x1x32x64 = 2,048 parameters.
+**Step 2 -- Pointwise convolution**: a $1 \\times 1$ convolution that mixes information across channels. Going from 32 to 64 output channels uses $1 \\times 1 \\times 32 \\times 64 = 2{,}048$ parameters.
 
-Compare this to a standard Conv2D(64, 3) on 32 input channels: 3x3x32x64 = 18,432 parameters. The separable version uses 2,336 parameters -- about 8x fewer.
+Compare this to a standard Conv2D(64, 3) on 32 input channels: $3 \\times 3 \\times 32 \\times 64 = 18{,}432$ parameters. The separable version uses $2{,}336$ parameters -- about $8\\times$ fewer.
 
 \`\`\`python
 # Standard convolution: 18,432 parameters
@@ -112,9 +112,9 @@ x = layers.SeparableConv2D(128, 3, padding="same", activation="relu")(x)`,
     },
   ],
   summary: `**Key takeaways:**
-- Batch normalization normalizes layer activations to mean=0, std=1, then applies learned scale and shift parameters.
+- Batch normalization normalizes layer activations to mean $= 0$, std $= 1$, then applies learned scale and shift parameters.
 - BatchNorm stabilizes training, enables higher learning rates, and acts as mild regularization.
-- Depthwise separable convolutions factorize spatial filtering and channel mixing into two steps, using ~8x fewer parameters.
+- Depthwise separable convolutions factorize spatial filtering and channel mixing into two steps, using $\\sim 8\\times$ fewer parameters.
 - SeparableConv2D in Keras implements depthwise separable convolutions as a drop-in replacement for Conv2D.
 - Modern architectures combine residual connections, batch normalization, and separable convolutions for maximum effectiveness.`,
 };

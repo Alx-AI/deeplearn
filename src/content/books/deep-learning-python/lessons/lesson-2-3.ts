@@ -47,14 +47,14 @@ W = tf.Variable(tf.random.uniform(shape=(2, 1)))
 b = tf.Variable(tf.zeros(shape=(1,)))
 \`\`\`
 
-The model is an **affine transformation**: prediction = matmul(input, W) + b. For a 2D input point [x, y], this computes \`w1*x + w2*y + b\`. Points where this value exceeds 0.5 are classified as class 1; below 0.5, class 0. The boundary between the two classes is literally a straight line in the plane.
+The model is an **affine transformation**: $\\text{prediction} = \\text{matmul}(\\text{input}, W) + b$. For a 2D input point $[x, y]$, this computes $w_1 x + w_2 y + b$. Points where this value exceeds $0.5$ are classified as class 1; below $0.5$, class 0. The boundary between the two classes is literally a straight line in the plane.
 
 \`\`\`python
 def model(inputs, W, b):
     return tf.matmul(inputs, W) + b
 \`\`\`
 
-Simple, right? The entire "intelligence" of this model lives in the three numbers W and b, which training will discover.
+Simple, right? The entire "intelligence" of this model lives in the three numbers $W$ and $b$, which training will discover.
 `,
       reviewCardIds: ['rc-2.3-1', 'rc-2.3-2'],
       illustrations: ['linear-classifier'],
@@ -117,7 +117,7 @@ def training_step(inputs, targets, W, b):
     return loss
 \`\`\`
 
-Notice the \`@tf.function(jit_compile=True)\` decorator -- we're compiling this function for speed since it will be called many times. The \`assign_sub\` method subtracts from the variable in place, implementing the gradient descent update rule: **new_weight = old_weight - learning_rate * gradient**.
+Notice the \`@tf.function(jit_compile=True)\` decorator -- we're compiling this function for speed since it will be called many times. The \`assign_sub\` method subtracts from the variable in place, implementing the gradient descent update rule: $$w_{\\text{new}} = w_{\\text{old}} - \\alpha \\cdot \\nabla w$$
 
 Running the loop for 40 steps is enough:
 
@@ -127,7 +127,7 @@ for step in range(40):
     print(f"Loss at step {step}: {loss:.4f}")
 \`\`\`
 
-After training, the loss stabilizes around 0.025. The model has found weight values that draw a line neatly separating our two point clouds. That line equation is \`w1*x + w2*y + b = 0.5\` -- a simple, interpretable boundary learned entirely from data.
+After training, the loss stabilizes around $0.025$. The model has found weight values that draw a line neatly separating our two point clouds. That line equation is $w_1 x + w_2 y + b = 0.5$ -- a simple, interpretable boundary learned entirely from data.
 
 This is the core pattern of all deep learning: define a model, define a loss, compute gradients, update weights, repeat. Everything else is elaboration on this theme.
 `,
@@ -225,7 +225,7 @@ for batch_inputs, batch_targets in dataset.take(1):
     },
   ],
   summary: `**Key takeaways:**
-- A linear classifier learns a line (or hyperplane) that separates two classes, defined by weights W and bias b.
+- A linear classifier learns a line (or hyperplane) that separates two classes, defined by weights $W$ and bias $b$.
 - The TensorFlow training loop: forward pass inside GradientTape, compute loss, get gradients, update weights with \`assign_sub\`.
 - TensorFlow excels at compiled performance, feature completeness, and production deployment.
 - The \`@tf.function\` decorator compiles functions for speed; XLA adds further optimization.

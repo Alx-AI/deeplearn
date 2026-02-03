@@ -21,13 +21,13 @@ Consider Minimax Q-learning, which assumes the opponent plays optimally (worst-c
 
 **Agent modeling** (also called **opponent modeling**) takes a different approach: instead of assuming how other agents behave, we **observe** their actions and build predictive models. An agent model takes past observations as input -- histories of states, actions, rewards -- and outputs **predictions** about the modeled agent's future behavior, such as the probability of each action.
 
-The most common form is **policy reconstruction**: learning a model pi_hat_j of agent j's policy based on observed state-action pairs {(s_tau, a^tau_j)}. This is essentially a **supervised learning** problem. We observe what agent j does in each state, and we fit a model to predict those choices. The model could be a lookup table, a finite state automaton, or a neural network.
+The most common form is **policy reconstruction**: learning a model $\\hat{\\pi}_j$ of agent $j$'s policy based on observed state-action pairs $\\{(s_\\tau, a^\\tau_j)\\}$. This is essentially a **supervised learning** problem. We observe what agent $j$ does in each state, and we fit a model to predict those choices. The model could be a lookup table, a finite state automaton, or a neural network.
 
-Given models pi_hat_{-i} = {pi_hat_j} for all other agents j != i, the modeling agent i can compute a **best-response policy**:
+Given models $\\hat{\\pi}_{-i} = \\{\\hat{\\pi}_j\\}$ for all other agents $j \\neq i$, the modeling agent $i$ can compute a **best-response policy**:
 
-pi_i in BR_i(pi_hat_{-i})
+$$\\pi_i \\in BR_i(\\hat{\\pi}_{-i})$$
 
-This is how best response -- previously a theoretical device for defining equilibria -- becomes an operational tool in reinforcement learning. Rather than solving a game-theoretic equilibrium, agent i simply optimizes against its learned predictions of others.
+This is how best response -- previously a theoretical device for defining equilibria -- becomes an operational tool in reinforcement learning. Rather than solving a game-theoretic equilibrium, agent $i$ simply optimizes against its learned predictions of others.
 `,
       reviewCardIds: ['rc-marl-6.4-1', 'rc-marl-6.4-2'],
       illustrations: [],
@@ -36,17 +36,17 @@ This is how best response -- previously a theoretical device for defining equili
       id: 'marl-6.4.2',
       title: 'The Fictitious Play Algorithm',
       content: `
-**Fictitious play** (Brown 1951; Robinson 1951) is one of the earliest and most elegant algorithms for learning in games. Each agent i models every other agent j as a stationary probability distribution pi_hat_j, estimated by the **empirical frequency** of agent j's past actions.
+**Fictitious play** (Brown 1951; Robinson 1951) is one of the earliest and most elegant algorithms for learning in games. Each agent $i$ models every other agent $j$ as a stationary probability distribution $\\hat{\\pi}_j$, estimated by the **empirical frequency** of agent $j$'s past actions.
 
-Let C(a_j) be the count of how many times agent j chose action a_j. Then the model is:
+Let $C(a_j)$ be the count of how many times agent $j$ chose action $a_j$. Then the model is:
 
-pi_hat_j(a_j) = C(a_j) / (sum over all a'_j of C(a'_j))
+$$\\hat{\\pi}_j(a_j) = \\frac{C(a_j)}{\\sum_{a'_j} C(a'_j)}$$
 
-Before any actions are observed, the model is initialized to a uniform distribution: pi_hat_j(a_j) = 1/|A_j|.
+Before any actions are observed, the model is initialized to a uniform distribution: $\\hat{\\pi}_j(a_j) = 1/|A_j|$.
 
-In each episode, agent i picks a **best-response action** against the current models:
+In each episode, agent $i$ picks a **best-response action** against the current models:
 
-BR_i(pi_hat_{-i}) = argmax_{a_i} sum_{a_{-i}} R_i(a_i, a_{-i}) * product_{j != i} pi_hat_j(a_j)
+$$BR_i(\\hat{\\pi}_{-i}) = \\arg\\max_{a_i} \\sum_{a_{-i}} R_i(a_i, a_{-i}) \\prod_{j \\neq i} \\hat{\\pi}_j(a_j)$$
 
 This is a deterministic best response -- it outputs a single action, not a probability distribution. This means fictitious play **cannot learn** equilibria that require randomization directly through its action choices. However, something remarkable happens with the **empirical distribution** of actions over time.
 

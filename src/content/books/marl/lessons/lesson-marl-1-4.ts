@@ -25,7 +25,7 @@ MARL inherits all the difficulties of single-agent RL and adds a set of challeng
 
 **Multi-agent credit assignment** compounds the temporal credit assignment problem familiar from single-agent RL. Not only must an agent figure out *which past actions* led to a reward, it must figure out *whose actions* mattered. In Level-Based Foraging, if all three agents choose "collect" and the team gets +1, it is not obvious that the agent on the left contributed nothing (its level was too low). Disentangling individual contributions from a shared outcome remains an open problem.
 
-**Scaling in the number of agents** is the fourth challenge. The total number of possible joint actions grows exponentially: with *n* agents each having *k* actions, there are k^n combinations. Even today's deep MARL algorithms are typically tested with 2 to 10 agents. How to efficiently and robustly handle many more agents is an active research frontier.
+**Scaling in the number of agents** is the fourth challenge. The total number of possible joint actions grows exponentially: with $n$ agents each having $k$ actions, there are $k^n$ combinations. Even today's deep MARL algorithms are typically tested with 2 to 10 agents. How to efficiently and robustly handle many more agents is an active research frontier.
 `,
       reviewCardIds: ['rc-marl-1.4-1', 'rc-marl-1.4-2'],
       illustrations: ['marl-challenges'],

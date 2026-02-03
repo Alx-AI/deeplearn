@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/Button';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { duration, easingArray } from '@/lib/design-tokens';
 import type { QuizQuestion } from '@/lib/db/schema';
+import { FormattedText } from '@/components/ui/FormattedText';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -99,9 +100,7 @@ function QuestionCard({
 
       <div className="px-5 py-5">
         {/* Question */}
-        <p className="text-base font-medium text-primary leading-relaxed font-reading">
-          {question.question}
-        </p>
+        <FormattedText text={question.question} as="p" className="text-base font-medium text-primary leading-relaxed font-reading" />
 
         {/* Multiple-choice options */}
         {question.type === 'multiple-choice' && question.options && (
@@ -149,11 +148,11 @@ function QuestionCard({
                       String.fromCharCode(65 + i)
                     )}
                   </span>
-                  <span
+                  <FormattedText
+                    text={option}
+                    as="span"
                     className={submitted ? '' : 'text-primary'}
-                  >
-                    {option}
-                  </span>
+                  />
                 </motion.button>
               );
             })}
@@ -195,9 +194,7 @@ function QuestionCard({
                     option !== question.correctAnswer && (
                       <X size={14} className="text-error" aria-hidden="true" />
                     )}
-                  <span className={submitted ? '' : 'text-primary'}>
-                    {option}
-                  </span>
+                  <FormattedText text={option} as="span" className={submitted ? '' : 'text-primary'} />
                 </motion.button>
               );
             })}
@@ -255,16 +252,14 @@ function QuestionCard({
 
               {/* Explanation */}
               {question.explanation && (
-                <p className="mt-3 text-sm text-secondary leading-relaxed font-reading">
-                  {question.explanation}
-                </p>
+                <FormattedText text={question.explanation} as="p" className="mt-3 text-sm text-secondary leading-relaxed font-reading" />
               )}
 
               {/* Correct answer (when wrong) */}
               {isIncorrect && (
                 <p className="mt-2 text-sm text-primary">
                   <span className="font-semibold">Answer:</span>{' '}
-                  {question.correctAnswer}
+                  <FormattedText text={question.correctAnswer} />
                 </p>
               )}
             </motion.div>
@@ -524,9 +519,7 @@ function FinalSummary({
                     )}
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm text-primary leading-snug line-clamp-2">
-                      {q.question}
-                    </p>
+                    <FormattedText text={q.question} as="p" className="text-sm text-primary leading-snug line-clamp-2" />
                     {!wasCorrectFirstTry && (
                       <p className="text-xs text-tertiary mt-0.5">
                         Correct after {totalAttempts} attempt

@@ -15,18 +15,18 @@ const lesson: LessonContentData = {
       id: 'marl-7.5.1',
       title: 'DQN Architecture and the Deep Q-Learning Loss',
       content: `
-**Deep Q-Networks (DQN)** (Mnih et al., 2015) is one of the most influential deep RL algorithms, and it serves as a foundation for many single-agent and multi-agent methods. The core idea is simple: replace the tabular Q-table with a neural network Q(s, a; theta) that takes a state as input and outputs an action-value estimate for every discrete action simultaneously.
+**Deep Q-Networks (DQN)** (Mnih et al., 2015) is one of the most influential deep RL algorithms, and it serves as a foundation for many single-agent and multi-agent methods. The core idea is simple: replace the tabular Q-table with a neural network $Q(s, a; \\theta)$ that takes a state as input and outputs an action-value estimate for every discrete action simultaneously.
 
 This architecture is computationally efficient -- a single forward pass through the network produces Q-values for all actions, and the agent simply selects the action with the highest value (or explores via epsilon-greedy). The loss function mirrors the tabular Q-learning update:
 
-L(theta) = (y_t - Q(s_t, a_t; theta))^2
+$$L(\\theta) = (y_t - Q(s_t, a_t; \\theta))^2$$
 
-where the target y_t is a bootstrapped estimate:
+where the target $y_t$ is a bootstrapped estimate:
 
-y_t = r_t (if s_{t+1} is terminal)
-y_t = r_t + gamma * max_{a'} Q(s_{t+1}, a'; theta) (otherwise)
+$$y_t = r_t \\quad \\text{(if } s_{t+1} \\text{ is terminal)}$$
+$$y_t = r_t + \\gamma \\max_{a'} Q(s_{t+1}, a'; \\theta) \\quad \\text{(otherwise)}$$
 
-An important implementation detail: the target y_t contains the value network Q itself (through the max over next-state values). When computing gradients via backpropagation, we must **stop the gradient** through the target to avoid updating the network toward a constantly shifting goal. In PyTorch, this is done with \`torch.no_grad()\` or \`.detach()\`.
+An important implementation detail: the target $y_t$ contains the value network $Q$ itself (through the max over next-state values). When computing gradients via backpropagation, we must **stop the gradient** through the target to avoid updating the network toward a constantly shifting goal. In PyTorch, this is done with \`torch.no_grad()\` or \`.detach()\`.
 
 Naive deep Q-learning -- just plugging a neural network into tabular Q-learning -- suffers from two critical problems that we previewed in the deadly triad discussion: the **moving target problem** (bootstrapped targets shift with every parameter update) and **correlated samples** (consecutive transitions are highly dependent). DQN addresses both with two stabilisation mechanisms: target networks and experience replay.
 `,
@@ -59,13 +59,13 @@ class DQNetwork(nn.Module):
       id: 'marl-7.5.2',
       title: 'Experience Replay: Breaking Temporal Correlations',
       content: `
-Standard machine learning assumes training data is **i.i.d.** -- independent and identically distributed. RL experience violates this assumption badly. Consecutive transitions (s_t, a_t, r_t, s_{t+1}) and (s_{t+1}, a_{t+1}, r_{t+1}, s_{t+2}) are obviously correlated: the next state of one is the current state of the other. Training on such correlated sequences causes the network to overfit to its most recent experience and forget earlier lessons -- a phenomenon called **catastrophic forgetting**.
+Standard machine learning assumes training data is **i.i.d.** -- independent and identically distributed. RL experience violates this assumption badly. Consecutive transitions $(s_t, a_t, r_t, s_{t+1})$ and $(s_{t+1}, a_{t+1}, r_{t+1}, s_{t+2})$ are obviously correlated: the next state of one is the current state of the other. Training on such correlated sequences causes the network to overfit to its most recent experience and forget earlier lessons -- a phenomenon called **catastrophic forgetting**.
 
 Consider an agent controlling a spaceship. If it approaches the landing zone from the right for several episodes, the value network specialises to right-side approaches. When it later needs to approach from the left, the network gives poor estimates and may fail entirely. Worse, re-training on left-side experience may erase what it learned about the right side.
 
-**Experience replay** solves this with a simple but powerful idea. Instead of training on each transition immediately, the agent stores transitions in a **replay buffer** D = {(s, a, r, s')}. At each training step, a mini-batch B of transitions is sampled **uniformly at random** from the buffer. This randomisation breaks temporal correlations and provides a diverse, approximately i.i.d. training set. The loss is then averaged over the batch:
+**Experience replay** solves this with a simple but powerful idea. Instead of training on each transition immediately, the agent stores transitions in a **replay buffer** $\\mathcal{D} = \\{(s, a, r, s')\\}$. At each training step, a mini-batch of $B$ transitions is sampled **uniformly at random** from the buffer. This randomisation breaks temporal correlations and provides a diverse, approximately i.i.d. training set. The loss is then averaged over the batch:
 
-L(theta) = (1/B) * sum_{k=1}^{B} (y_k - Q(s_k, a_k; theta))^2
+$$L(\\theta) = \\frac{1}{B} \\sum_{k=1}^{B} (y_k - Q(s_k, a_k; \\theta))^2$$
 
 The replay buffer is typically implemented as a fixed-capacity FIFO queue: once full, the oldest transitions are discarded as new ones arrive. Replay also improves **sample efficiency** because each transition can be reused in multiple training updates rather than being discarded after one use.
 
@@ -101,17 +101,17 @@ class ReplayBuffer:
       id: 'marl-7.5.3',
       title: 'Target Networks: Stabilising the Moving Target',
       content: `
-The second stabilisation mechanism in DQN is the **target network**. Recall that the Q-learning target is y_t = r_t + gamma * max_{a'} Q(s_{t+1}, a'; theta). Every time we update theta, the target values change -- even for transitions we have not trained on -- because the network generalises across states. This creates a moving-target problem far worse than in tabular RL, where updating one state leaves all others untouched.
+The second stabilisation mechanism in DQN is the **target network**. Recall that the Q-learning target is $y_t = r_t + \\gamma \\max_{a'} Q(s_{t+1}, a'; \\theta)$. Every time we update $\\theta$, the target values change -- even for transitions we have not trained on -- because the network generalises across states. This creates a moving-target problem far worse than in tabular RL, where updating one state leaves all others untouched.
 
-The fix is to maintain a separate copy of the Q-network called the **target network** with parameters theta-bar. This network has the same architecture but its parameters are updated much less frequently. The target becomes:
+The fix is to maintain a separate copy of the Q-network called the **target network** with parameters $\\bar{\\theta}$. This network has the same architecture but its parameters are updated much less frequently. The target becomes:
 
-y_t = r_t + gamma * max_{a'} Q(s_{t+1}, a'; theta-bar)
+$$y_t = r_t + \\gamma \\max_{a'} Q(s_{t+1}, a'; \\bar{\\theta})$$
 
-The main network theta is updated at every training step via gradient descent. The target network theta-bar is updated only periodically -- typically every C steps, the main network's parameters are copied wholesale: theta-bar <- theta. Between updates, the target network is frozen, providing a stable target for the loss computation.
+The main network $\\theta$ is updated at every training step via gradient descent. The target network $\\bar{\\theta}$ is updated only periodically -- typically every $C$ steps, the main network's parameters are copied wholesale: $\\bar{\\theta} \\leftarrow \\theta$. Between updates, the target network is frozen, providing a stable target for the loss computation.
 
 This decoupling means the targets no longer shift with every gradient step, dramatically reducing oscillation and divergence risks. Experiments in the textbook's level-based foraging environment show that naive deep Q-learning barely learns, adding only a target network or only a replay buffer gives modest improvement, but the **combination** of both -- the full DQN algorithm -- converges stably to near-optimal returns.
 
-An important extension is **Double DQN (DDQN)** (van Hasselt et al., 2016), which addresses the overestimation bias inherent in the max operator. DDQN uses the main network to select the greedy action and the target network to evaluate it: y_t = r_t + gamma * Q(s_{t+1}, argmax_{a'} Q(s_{t+1}, a'; theta); theta-bar). This decoupling of action selection and evaluation significantly reduces overestimation and is standard in modern DQN-based methods.
+An important extension is **Double DQN (DDQN)** (van Hasselt et al., 2016), which addresses the overestimation bias inherent in the max operator. DDQN uses the main network to select the greedy action and the target network to evaluate it: $y_t = r_t + \\gamma \\, Q(s_{t+1}, \\arg\\max_{a'} Q(s_{t+1}, a'; \\theta); \\bar{\\theta})$. This decoupling of action selection and evaluation significantly reduces overestimation and is standard in modern DQN-based methods.
 `,
       reviewCardIds: ['rc-marl-7.5-5'],
       illustrations: [],

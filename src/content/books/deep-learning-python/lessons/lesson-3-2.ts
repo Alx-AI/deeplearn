@@ -33,9 +33,9 @@ np.random.shuffle(random_train_labels)
 
 So if neural networks can memorize anything, why do they generalize at all on real data? The answer lies not in the models themselves but in the **structure of real-world data**.
 
-The **manifold hypothesis** states that all natural data lies on a low-dimensional surface (a "manifold") within the much larger high-dimensional space where it is encoded. Consider MNIST: an input image is a 28x28 grid of pixel values, so the space of all possible inputs has 256^784 configurations -- a number far exceeding the atoms in the universe. But the subset of those configurations that actually look like handwritten digits is astronomically small and highly structured.
+The **manifold hypothesis** states that all natural data lies on a low-dimensional surface (a "manifold") within the much larger high-dimensional space where it is encoded. Consider MNIST: an input image is a $28 \\times 28$ grid of pixel values, so the space of all possible inputs has $256^{784}$ configurations -- a number far exceeding the atoms in the universe. But the subset of those configurations that actually look like handwritten digits is astronomically small and highly structured.
 
-A **manifold** is a lower-dimensional surface that is locally similar to a flat Euclidean space. A curve is a 1D manifold in 2D space. A smooth surface is a 2D manifold in 3D space. The space of valid handwritten digits forms a manifold within the space of all possible 28x28 images, and this manifold has two key properties: it is *continuous* (small changes produce similar digits) and *connected* (you can smoothly morph one digit into another).
+A **manifold** is a lower-dimensional surface that is locally similar to a flat Euclidean space. A curve is a 1D manifold in 2D space. A smooth surface is a 2D manifold in 3D space. The space of valid handwritten digits forms a manifold within the space of all possible $28 \\times 28$ images, and this manifold has two key properties: it is *continuous* (small changes produce similar digits) and *connected* (you can smoothly morph one digit into another).
 `,
       reviewCardIds: ['rc-3.2-1', 'rc-3.2-2'],
       illustrations: ['manifold-hypothesis'],

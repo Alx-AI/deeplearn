@@ -426,7 +426,7 @@ const lesson: LessonContentData = {
 Your lesson prose goes here. Use **bold** for key terms on first use. Use
 *italics* for emphasis. Use \`inline code\` for technical identifiers.
 
-Math should be written as inline markdown, e.g., V(s) = E[R_t + gamma * V(s')].
+Math uses KaTeX LaTeX: inline $V(s) = \\mathbb{E}[R_t + \\gamma V(s')]$ or display $$V(s) = \\sum_a \\pi(a \\mid s) Q(s, a)$$
 
 Game/payoff matrices can be represented as markdown tables within the content
 string (they are rendered as HTML by the lesson page parser).
@@ -1152,10 +1152,25 @@ After all sub-agents complete their scratchpad files:
 ### Formatting Conventions
 
 - **Bold key terms on first use**: `**multi-agent system** (MAS)`
-- **Inline math as markdown**: `V(s) = E[R_t + gamma * V(s')]`
+- **Math via KaTeX LaTeX** (see Math Formatting below)
 - **Game/payoff matrices as markdown tables**: Rendered as HTML tables by the content parser
 - **Code in backticks**: `Q-learning`, `np.array`
 - **Lists for enumerated concepts**: Use `- ` for unordered, `1. ` for ordered
+
+### Math Formatting
+
+Use KaTeX LaTeX syntax for all mathematical expressions. The rendering pipeline (`src/lib/format-text.ts`) processes `$...$` as inline math and `$$...$$` as display (block) math.
+
+- **Inline math**: `$V^{\\pi}(s)$` renders as an inline equation
+- **Display math**: `$$V^{\\pi}(s) = \\sum_{a \\in A} \\pi(a \\mid s) Q^{\\pi}(s, a)$$` renders as a centered block
+- **Inside TypeScript template literals**: Escape all backslashes: `\\pi`, `\\gamma`, `\\sum`
+- **Inside single-quoted strings**: Also escape single quotes in LaTeX primes: `$a\'$` not `$a'$`
+- **Do NOT put LaTeX inside backtick code spans**: `$\\gamma$` is math, `` `gamma` `` is code
+- **Greek letters**: `\\alpha`, `\\beta`, `\\gamma`, `\\epsilon`, `\\pi`, `\\theta`, `\\phi`, `\\lambda`, `\\sigma`, `\\tau`
+- **Common operators**: `\\sum`, `\\prod`, `\\max`, `\\min`, `\\arg\\max`, `\\mathbb{E}`, `\\nabla`, `\\frac{a}{b}`
+- **Conditional notation**: Use `\\mid` not `|` for conditionals: `\\pi(a \\mid s)`
+- **Thousands separator**: Use `{,}` in LaTeX: `$5^5 = 3{,}125$`
+- **Code blocks are exempt**: Math inside `` ``` `` fenced code blocks or `codeExamples` arrays is NOT processed
 
 ### Code Examples
 

@@ -81,7 +81,7 @@ model = keras.Model(inputs, x)
 model.compile(optimizer=keras.optimizers.Adam(1e-5), loss="binary_crossentropy")
 \`\`\`
 
-The low learning rate is critical -- pretrained weights already encode valuable language knowledge. Large updates would destroy this knowledge. Typically 1e-5 to 3e-5 works well.
+The low learning rate is critical -- pretrained weights already encode valuable language knowledge. Large updates would destroy this knowledge. Typically $1 \\times 10^{-5}$ to $3 \\times 10^{-5}$ works well.
 
 Why are Transformers more effective than RNNs for most NLP tasks?
 1. **Self-attention captures any-distance dependencies** in one step (no vanishing gradients)

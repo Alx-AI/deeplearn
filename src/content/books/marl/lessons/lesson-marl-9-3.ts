@@ -55,9 +55,9 @@ plt.title("Learning curve with standard error (10 seeds)")`,
       content: `
 Before testing your MARL algorithm on complex environments with thousands of state dimensions, it pays to check whether it handles the *fundamentals* correctly. **Matrix games** -- normal-form games with just two agents and two actions each -- serve as ideal diagnostic benchmarks.
 
-Why are matrix games useful? Because their small size (a 2x2 reward table) means we can **compute exact solutions** analytically. We know the Nash equilibria, correlated equilibria, and minimax solutions. We can then check whether a learning algorithm converges to the correct solution concept, how quickly it converges, and whether it exhibits pathological behaviors like cycling.
+Why are matrix games useful? Because their small size (a $2 \\times 2$ reward table) means we can **compute exact solutions** analytically. We know the Nash equilibria, correlated equilibria, and minimax solutions. We can then check whether a learning algorithm converges to the correct solution concept, how quickly it converges, and whether it exhibits pathological behaviors like cycling.
 
-Chapter 11 presents a complete taxonomy of all **78 structurally distinct** strictly ordinal 2x2 games, based on the classification by Rapoport and Guyer (1966). "Structurally distinct" means no game can be transformed into another by swapping rows, columns, or agents. "Strictly ordinal" means each agent ranks the four outcomes from 1 (least preferred) to 4 (most preferred), with no ties. These 78 games are divided into **no-conflict games** and **conflict games**.
+Chapter 11 presents a complete taxonomy of all **78 structurally distinct** strictly ordinal $2 \\times 2$ games, based on the classification by Rapoport and Guyer (1966). "Structurally distinct" means no game can be transformed into another by swapping rows, columns, or agents. "Strictly ordinal" means each agent ranks the four outcomes from 1 (least preferred) to 4 (most preferred), with no ties. These 78 games are divided into **no-conflict games** and **conflict games**.
 
 In a **no-conflict game**, both agents agree on which outcomes are best -- they share the same set of most-preferred joint actions. These are the easiest to solve: if agents can find the mutually preferred outcome, they should converge to it. There are 21 no-conflict games in the taxonomy.
 
@@ -125,7 +125,7 @@ These games also help verify **hyperparameter sensitivity**. If your algorithm f
   summary: `**Key takeaways:**
 - Learning curves must be plotted across multiple seeds with standard error bands; in zero-sum games, evaluate against a fixed baseline rather than the co-learning opponent.
 - Condense curves into single metrics: maximum (did it ever solve the task?) or average (how fast and stable was learning?).
-- The 78 structurally distinct 2x2 matrix games provide a complete diagnostic test suite, split into 21 no-conflict games and 57 conflict games.
+- The 78 structurally distinct $2 \\times 2$ matrix games provide a complete diagnostic test suite, split into 21 no-conflict games and 57 conflict games.
 - Prisoner's Dilemma tests whether an algorithm finds Nash equilibria even when they are Pareto-dominated; Stag Hunt tests coordination under risk; Chicken tests symmetry-breaking.
 - Matrix games are MARL unit tests: they run in seconds and reveal fundamental issues before you invest in expensive complex-environment runs.`,
 };

@@ -17,7 +17,7 @@ const lesson: LessonContentData = {
       content: `
 Chapter 6 has introduced four major families of foundational MARL algorithms. Let us step back and organize them into a coherent picture.
 
-**1. Joint-Action Learning with Game Theory (JAL-GT).** These algorithms learn joint-action Q-values Q_i(s, a_1, ..., a_n) and solve stage games using game-theoretic solution concepts. Three instantiations differ in their choice of solver:
+**1. Joint-Action Learning with Game Theory (JAL-GT).** These algorithms learn joint-action Q-values $Q_i(s, a_1, \\ldots, a_n)$ and solve stage games using game-theoretic solution concepts. Three instantiations differ in their choice of solver:
 - **Minimax-Q**: Uses minimax, applies to zero-sum games, converges under standard conditions.
 - **Nash-Q**: Uses Nash equilibrium, applies to general-sum games, but requires very restrictive conditions (global optima or saddle points in all stage games).
 - **Correlated-Q**: Uses correlated equilibrium (LP-solvable), but has no formal convergence guarantees.
@@ -31,7 +31,7 @@ Chapter 6 has introduced four major families of foundational MARL algorithms. Le
 - **IGA**: Infinitesimal gradient ascent; guarantees average-reward convergence but policies may cycle.
 - **WoLF-IGA**: Variable learning rates; guarantees policy convergence in 2x2 games.
 - **WoLF-PHC**: Practical extension to general stochastic games using Q-learning and average policies.
-- **GIGA**: Generalized IGA achieving no-regret for n agents and actions.
+- **GIGA**: Generalized IGA achieving no-regret for $n$ agents and actions.
 
 **4. No-Regret Learning.** These algorithms minimize different notions of regret:
 - **Unconditional regret matching**: Converges to coarse correlated equilibrium.
@@ -57,7 +57,7 @@ Each algorithm family targets different solution concepts and offers different c
 - General-sum games are hard: Nash-Q needs unrealistic assumptions, correlated-Q has no guarantees, and JAL-GT fundamentally cannot solve NoSDE games.
 - For normal-form games, fictitious play and regret matching are often sufficient. For stochastic games, TD-based methods (JAL-GT, JAL-AM, WoLF-PHC) are needed.
 
-**Information requirements vary.** JAL-GT needs all agents' rewards and actions. JAL-AM needs only agent i's reward but all agents' actions. WoLF-PHC needs only agent i's reward and does not need to observe actions (it uses its own Q-values). Independent Q-learning needs the least information but has the weakest guarantees.
+**Information requirements vary.** JAL-GT needs all agents' rewards and actions. JAL-AM needs only agent $i$'s reward but all agents' actions. WoLF-PHC needs only agent $i$'s reward and does not need to observe actions (it uses its own Q-values). Independent Q-learning needs the least information but has the weakest guarantees.
 
 A recurring theme: **stronger guarantees require stronger assumptions.** Minimax-Q has the strongest convergence guarantee but only applies to zero-sum games. WoLF-PHC applies broadly but lacks formal guarantees in the general case. This tension between generality and guaranteed performance is a fundamental challenge in MARL.
 `,

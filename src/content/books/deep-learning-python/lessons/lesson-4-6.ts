@@ -16,7 +16,7 @@ const lesson: LessonContentData = {
       title: 'Downsampling with Max Pooling',
       illustrations: ['max-pooling'],
       content: `
-In the ConvNet from the previous lesson, you may have noticed MaxPooling2D layers halving the feature map dimensions at each step. **Max pooling** extracts windows from the input feature maps and outputs the maximum value in each window. Typically, a 2x2 pool with stride 2 is used, which cuts each spatial dimension in half.
+In the ConvNet from the previous lesson, you may have noticed MaxPooling2D layers halving the feature map dimensions at each step. **Max pooling** extracts windows from the input feature maps and outputs the maximum value in each window. Typically, a $2 \\times 2$ pool with stride 2 is used, which cuts each spatial dimension in half.
 
 \`\`\`python
 x = layers.Conv2D(64, 3, activation="relu")(inputs)   # 28x28 -> 26x26
@@ -25,7 +25,7 @@ x = layers.Conv2D(128, 3, activation="relu")(x)        # 13x13 -> 11x11
 x = layers.MaxPooling2D(pool_size=2)(x)                # 11x11 -> 5x5
 \`\`\`
 
-Why is this downsampling necessary? Without it, each convolution layer only "sees" a small 3x3 area of its input. After many layers without pooling, the network's receptive field barely grows, and it cannot detect large-scale structures. Pooling aggressively shrinks spatial dimensions so that deeper layers effectively see larger regions of the original image.
+Why is this downsampling necessary? Without it, each convolution layer only "sees" a small $3 \\times 3$ area of its input. After many layers without pooling, the network's receptive field barely grows, and it cannot detect large-scale structures. Pooling aggressively shrinks spatial dimensions so that deeper layers effectively see larger regions of the original image.
 
 There is also a computational argument: without pooling, feature maps stay large, leading to enormous numbers of parameters in later layers and excessive memory usage.
 
@@ -80,7 +80,7 @@ model = keras.Model(inputs=inputs, outputs=outputs)
 
 Notice the **pyramid pattern**: filter counts increase (64, 128, 256) while spatial dimensions decrease. As the feature maps shrink, each position represents a larger region of the original image with richer semantic meaning. More filters are needed to capture the greater variety of high-level patterns.
 
-**GlobalAveragePooling2D** at the end collapses each feature map into a single value by averaging all spatial positions. This converts a 3D tensor (e.g., 3x3x256) into a 1D vector (256), which is then fed to the Dense classifier. Global average pooling is often preferred over Flatten because it acts as a mild regularizer and does not depend on the exact spatial dimensions.
+**GlobalAveragePooling2D** at the end collapses each feature map into a single value by averaging all spatial positions. This converts a 3D tensor (e.g., $3 \\times 3 \\times 256$) into a 1D vector (256), which is then fed to the Dense classifier. Global average pooling is often preferred over Flatten because it acts as a mild regularizer and does not depend on the exact spatial dimensions.
 
 This pattern -- Conv, Pool, repeat, GlobalPool, Dense -- is the foundation of image classification. Everything from early LeNet to modern EfficientNet follows variations of this template.
 `,
@@ -131,7 +131,7 @@ print(gap.shape)  # (None, 64)`,
     },
   ],
   summary: `**Key takeaways:**
-- Max pooling downsamples feature maps by taking the maximum value in each spatial window (typically 2x2 with stride 2).
+- Max pooling downsamples feature maps by taking the maximum value in each spatial window (typically $2 \\times 2$ with stride 2).
 - Downsampling increases the effective receptive field and reduces computational cost.
 - The standard ConvNet follows a pyramid pattern: filter counts increase while spatial dimensions decrease.
 - GlobalAveragePooling2D converts 3D feature maps to 1D vectors for the final Dense classifier.

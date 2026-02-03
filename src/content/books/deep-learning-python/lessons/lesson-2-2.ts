@@ -110,7 +110,7 @@ with tf.GradientTape() as tape:
 gradient = tape.gradient(result, input_var)  # gradient = 6.0
 \`\`\`
 
-The math checks out: the derivative of x-squared is 2x, and at x=3 that gives 6.0. The GradientTape tracked the \`square\` operation and computed the gradient automatically.
+The math checks out: the derivative of $x^2$ is $2x$, and at $x = 3$ that gives $6.0$. The GradientTape tracked the \`square\` operation and computed the gradient automatically.
 
 By default, the tape only watches **trainable variables** (instances of \`tf.Variable\`). If you need gradients with respect to a constant tensor, you must explicitly tell the tape to watch it with \`tape.watch()\`:
 
@@ -183,7 +183,7 @@ XLA can replace two consecutive operations (like \`matmul\` followed by \`relu\`
 
 The practical advice: **develop and debug in eager mode, then add \`@tf.function\` for production.** Don't try to optimize before your code is correct -- that's a recipe for painful debugging sessions.
 
-You can also use the GradientTape to compute **second-order gradients** (the gradient of a gradient) by nesting two tapes. For example, if position varies as \`4.9 * time**2\`, the second derivative gives you acceleration:
+You can also use the GradientTape to compute **second-order gradients** (the gradient of a gradient) by nesting two tapes. For example, if position varies as $4.9 \\cdot t^2$, the second derivative gives you acceleration:
 
 \`\`\`python
 time = tf.Variable(0.0)

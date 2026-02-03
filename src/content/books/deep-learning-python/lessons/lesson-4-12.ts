@@ -94,7 +94,7 @@ Whenever you build a complex architecture, it is valuable to conduct **ablation 
 
 Deep learning architectures are often more evolved than designed. Without ablation studies, you risk cargo-culting: including components because everyone does, without understanding whether they help for your specific problem.
 
-Looking forward, **Vision Transformers (ViTs)** represent an emerging alternative to ConvNets for image tasks. Instead of convolutions, ViTs split an image into patches (e.g., 16x16), treat each patch as a "token" (like a word in NLP), and process them with the Transformer's self-attention mechanism.
+Looking forward, **Vision Transformers (ViTs)** represent an emerging alternative to ConvNets for image tasks. Instead of convolutions, ViTs split an image into patches (e.g., $16 \\times 16$), treat each patch as a "token" (like a word in NLP), and process them with the Transformer's self-attention mechanism.
 
 ViTs have no built-in spatial priors like translation invariance. This makes them more flexible but also more data-hungry -- they typically need much more training data than ConvNets to match performance. With enough data (millions of images), ViTs can outperform ConvNets, which is why they are increasingly popular in research.
 

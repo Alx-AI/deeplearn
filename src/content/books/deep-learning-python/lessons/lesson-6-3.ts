@@ -15,9 +15,9 @@ const lesson: LessonContentData = {
       id: '6.3.1',
       title: 'Predicting the Next Token',
       content: `
-A **language model** learns a deceptively simple probability distribution: given all tokens observed so far, what is the probability of each possible next token? Formally: p(token | past tokens).
+A **language model** learns a deceptively simple probability distribution: given all tokens observed so far, what is the probability of each possible next token? Formally: $p(\\text{token} | \\text{past tokens})$.
 
-Why predict one token at a time rather than entire sentences? Because the output space for even short sentences is astronomical. With a 20,000-word vocabulary, there are 20,000^4 (160 quadrillion) possible 4-word sequences. But predicting one token at a time requires only 20,000 outputs per step -- feasible for a softmax layer.
+Why predict one token at a time rather than entire sentences? Because the output space for even short sentences is astronomical. With a 20,000-word vocabulary, there are $20{,}000^4$ (160 quadrillion) possible 4-word sequences. But predicting one token at a time requires only 20,000 outputs per step -- feasible for a softmax layer.
 
 The training setup is elegant: given a text sequence, the label at each position is simply the **next token**. If the input is "First Citizen:", the label is "irst Citizen:\\n" -- the same text shifted by one position:
 
@@ -128,7 +128,7 @@ def sample_with_temperature(logits, temperature=1.0):
     },
   ],
   summary: `**Key takeaways:**
-- A language model predicts p(next_token | past_tokens) -- the probability distribution over possible next tokens.
+- A language model predicts $p(\\text{next\\_token} | \\text{past\\_tokens})$ -- the probability distribution over possible next tokens.
 - Training labels are simply the input sequence shifted by one position.
 - Autoregressive generation produces text by repeatedly predicting and appending the next token.
 - Even modest character-level models generate surprisingly coherent text due to language's statistical regularities.

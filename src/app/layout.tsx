@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { AppProviders } from "@/components/providers";
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
 /* ---------------------------------------------------------------------------

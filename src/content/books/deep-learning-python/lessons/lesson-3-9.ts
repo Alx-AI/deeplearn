@@ -160,7 +160,7 @@ print(f"Best epoch: {overfit_epoch}, val_loss: {val_loss[overfit_epoch]:.3f}")`,
 Try these approaches systematically:
 
 - **Add dropout** -- Start with 0.3-0.5 between dense layers. This is often the single most impactful regularization technique.
-- **Add weight regularization** -- L2 regularization (weight decay) for smaller models. Typical values: 1e-4 to 1e-2.
+- **Add weight regularization** -- L2 regularization (weight decay) for smaller models. Typical values: $10^{-4}$ to $10^{-2}$.
 - **Reduce model capacity** -- Remove layers or reduce layer sizes. Find the sweet spot between expressiveness and overfitting.
 - **Tune hyperparameters** -- Experiment with different learning rates, batch sizes, number of units, and number of layers.
 - **Iterate on data** -- Consider collecting more data, improving feature engineering, or removing noisy features.

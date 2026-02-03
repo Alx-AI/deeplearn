@@ -17,7 +17,7 @@ const lesson: LessonContentData = {
       content: `
 A GPT model is a stack of Transformer **decoder blocks** with causal masking. There is no encoder -- the model simply processes a sequence of tokens and predicts the next one at each position.
 
-Each block contains: causal self-attention, add & norm, feed-forward, add & norm. The model learns to predict p(next_token | all_previous_tokens) at every position simultaneously during training.
+Each block contains: causal self-attention, add & norm, feed-forward, add & norm. The model learns to predict $p(\\text{next\\_token} | \\text{all\\_previous\\_tokens})$ at every position simultaneously during training.
 
 The power of GPT comes from scale: a 4-million-parameter character model produces recognizable but imperfect text. GPT-3 has 175 billion parameters. GPT-4 is likely much larger. The same architecture, vastly different capacity.
 
@@ -63,11 +63,11 @@ probs = softmax(logits)
 next_token = random_sample(probs)
 \`\`\`
 
-**Top-k sampling**: sample only from the k most likely tokens. Top-k=40 means the 39,960 least likely tokens are excluded. This prevents absurd word choices while maintaining diversity among plausible options.
+**Top-$k$ sampling**: sample only from the $k$ most likely tokens. Top-$k$=40 means the 39,960 least likely tokens are excluded. This prevents absurd word choices while maintaining diversity among plausible options.
 
-**Top-p (nucleus) sampling**: sample from the smallest set of tokens whose cumulative probability exceeds p. If top-p=0.9, keep adding tokens (most-probable first) until their probabilities sum to 0.9, then sample from that set. This adapts to context: when the model is confident, few tokens are kept; when uncertain, more options remain.
+**Top-$p$ (nucleus) sampling**: sample from the smallest set of tokens whose cumulative probability exceeds $p$. If top-$p$=0.9, keep adding tokens (most-probable first) until their probabilities sum to 0.9, then sample from that set. This adapts to context: when the model is confident, few tokens are kept; when uncertain, more options remain.
 
-In practice, temperature around 0.7-1.0 combined with top-k=40 or top-p=0.9 produces natural-sounding text. The right settings depend on the application: creative writing benefits from higher temperature, while factual responses benefit from lower temperature.
+In practice, temperature around 0.7-1.0 combined with top-$k$=40 or top-$p$=0.9 produces natural-sounding text. The right settings depend on the application: creative writing benefits from higher temperature, while factual responses benefit from lower temperature.
 `,
       reviewCardIds: ['rc-6.7-3', 'rc-6.7-4', 'rc-6.7-5'],
       illustrations: ['sampling-strategies'],
@@ -109,7 +109,7 @@ print(tokenizer.decode(output[0]))`,
 - Model quality scales with parameters: 4M parameters produce basic text; billions produce ChatGPT.
 - Greedy decoding is deterministic but repetitive; sampling introduces necessary variety.
 - Temperature controls randomness: low = predictable, high = diverse but potentially incoherent.
-- Top-k and top-p sampling restrict choices to plausible tokens while maintaining diversity.`,
+- Top-$k$ and top-$p$ sampling restrict choices to plausible tokens while maintaining diversity.`,
 };
 
 export default lesson;

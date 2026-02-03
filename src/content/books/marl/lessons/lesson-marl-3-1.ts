@@ -19,11 +19,11 @@ const lesson: LessonContentData = {
 
 A **normal-form game** (also called a "strategic-form" game) defines a single, simultaneous interaction among two or more agents. Formally, it consists of three components:
 
-1. A finite set of **agents** I = {1, ..., n}.
-2. For each agent i, a finite set of **actions** A_i. The set of all possible **joint actions** is A = A_1 x ... x A_n.
-3. For each agent i, a **reward function** R_i : A -> R that maps every joint action to a scalar reward.
+1. A finite set of **agents** $I = \\{1, \\ldots, n\\}$.
+2. For each agent $i$, a finite set of **actions** $A_i$. The set of all possible **joint actions** is $A = A_1 \\times \\cdots \\times A_n$.
+3. For each agent $i$, a **reward function** $R_i : A \\to \\mathbb{R}$ that maps every joint action to a scalar reward.
 
-The game proceeds in one step. Each agent i independently selects a **policy** (also called a "strategy" in game-theory parlance) pi_i that assigns a probability to each of its available actions. The agents then simultaneously sample actions from their policies, producing a joint action a = (a_1, ..., a_n). Finally, each agent i receives a reward r_i = R_i(a) determined by the entire joint action -- not just its own choice.
+The game proceeds in one step. Each agent $i$ independently selects a **policy** (also called a "strategy" in game-theory parlance) $\\pi_i$ that assigns a probability to each of its available actions. The agents then simultaneously sample actions from their policies, producing a joint action $a = (a_1, \\ldots, a_n)$. Finally, each agent $i$ receives a reward $r_i = R_i(a)$ determined by the entire joint action -- not just its own choice.
 
 This last point is the crux of multi-agent reasoning: your reward depends on what everyone else does, and you don't know their choices in advance. Even in this stripped-down, single-shot setting, fascinating strategic tensions emerge -- as we will see in the examples that follow.
 
@@ -44,7 +44,7 @@ Here is the classic **Rock-Paper-Scissors** game:
 | **P** | 1, -1 | 0, 0 | -1, 1 |
 | **S** | -1, 1 | 1, -1 | 0, 0 |
 
-Each cell shows (r_1, r_2). Notice that one player's gain is always the other's loss -- the rewards always sum to zero.
+Each cell shows $(r_1, r_2)$. Notice that one player's gain is always the other's loss -- the rewards always sum to zero.
 
 Now consider the **Prisoner's Dilemma**, perhaps the most studied game in all of social science:
 
@@ -71,15 +71,15 @@ Here both agents receive the same reward (it is a **common-reward** game), so a 
       title: 'Game Classifications',
       content: `Normal-form games can be classified by the relationship among the agents' reward functions. This classification is important because it determines which algorithms and solution concepts apply.
 
-**Zero-sum games.** The agents' rewards always sum to zero for every joint action: for all a in A, the sum of R_i(a) over all agents i equals 0. In two-player zero-sum games this simplifies to R_1 = -R_2 -- one agent's gain is exactly the other's loss. Rock-Paper-Scissors is a classic example. Zero-sum games model purely competitive interactions, and they have especially clean mathematical properties (we will see this when we study minimax solutions in Chapter 4).
+**Zero-sum games.** The agents' rewards always sum to zero for every joint action: $\\forall a \\in A, \\sum_i R_i(a) = 0$. In two-player zero-sum games this simplifies to $R_1 = -R_2$ -- one agent's gain is exactly the other's loss. Rock-Paper-Scissors is a classic example. Zero-sum games model purely competitive interactions, and they have especially clean mathematical properties (we will see this when we study minimax solutions in Chapter 4).
 
-**Common-reward games.** All agents share the same reward function: R_i = R_j for every pair of agents i, j. The Coordination Game above is an example. Since everyone wants the same outcome, the challenge is not competition but *coordination* -- agents must align their actions without being able to communicate. Common-reward games model purely cooperative interactions.
+**Common-reward games.** All agents share the same reward function: $R_i = R_j$ for every pair of agents $i, j$. The Coordination Game above is an example. Since everyone wants the same outcome, the challenge is not competition but *coordination* -- agents must align their actions without being able to communicate. Common-reward games model purely cooperative interactions.
 
 **General-sum games.** There are no restrictions on how the reward functions relate to each other. The Prisoner's Dilemma is a general-sum game: the agents' interests are partially aligned (both prefer mutual cooperation over mutual defection) but also partially conflicting (each is tempted to defect). Most real-world multi-agent scenarios are general-sum, blending elements of competition and cooperation.
 
 These classifications carry over to every game model higher in the hierarchy -- repeated games, stochastic games, and POSGs can all be zero-sum, common-reward, or general-sum, depending on their reward structure.
 
-One additional note on terminology: some literature uses the term **constant-sum** for games where rewards always sum to some fixed constant c, which is a slight generalisation of zero-sum. Throughout this course, we follow the book's convention and use "zero-sum" as the primary label.`,
+One additional note on terminology: some literature uses the term **constant-sum** for games where rewards always sum to some fixed constant $c$, which is a slight generalisation of zero-sum. Throughout this course, we follow the book's convention and use "zero-sum" as the primary label.`,
       reviewCardIds: ['rc-marl-3.1-4', 'rc-marl-3.1-5'],
       illustrations: [],
     },

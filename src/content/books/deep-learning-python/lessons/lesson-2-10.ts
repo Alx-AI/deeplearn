@@ -33,7 +33,7 @@ Only 480 training samples -- that's tiny by deep learning standards. This introd
 
 **Feature normalization** is essential here. The eight features have wildly different scales: median income might range from 0 to 15, while total rooms could be in the thousands. If we feed these raw values into a network, features with large values would dominate the learning process, and gradient descent would be painfully slow.
 
-The fix: **subtract the mean and divide by the standard deviation** for each feature, centering everything around 0 with a standard deviation of 1:
+The fix: **subtract the mean and divide by the standard deviation** for each feature, centering everything around $0$ with a standard deviation of $1$:
 
 \`\`\`python
 mean = train_data.mean(axis=0)
@@ -91,7 +91,7 @@ print(f"  Total rooms:   mean={x_train[:, 4].mean():.2f}, std={x_train[:, 4].std
       content: `
 With only 480 training samples, a single train/validation split would give us a validation set of maybe 100 samples. That's so small that the validation score could vary dramatically depending on *which* 100 samples we happened to pick. Our evaluation would be unreliable.
 
-The solution is **K-fold cross-validation**. Split the data into K equal partitions (folds). Train K separate models, each time using K-1 folds for training and the remaining fold for validation. Average the K validation scores for a reliable estimate.
+The solution is **K-fold cross-validation**. Split the data into $K$ equal partitions (folds). Train $K$ separate models, each time using $K - 1$ folds for training and the remaining fold for validation. Average the $K$ validation scores for a reliable estimate.
 
 \`\`\`python
 k = 4
@@ -121,7 +121,7 @@ for i in range(k):
 
 With 4-fold validation, individual fold MAE scores might range from 0.23 to 0.35 (in units of $100K), but the average of ~0.30 is a much more reliable estimate. That average tells us we're off by about $30,000 per prediction -- significant when prices range from $60K to $500K, but far better than guessing.
 
-The key insight: **K-fold gives you a stable evaluation even when data is scarce.** Any single split could be misleadingly good or bad. Averaging across K splits smooths out that noise.
+The key insight: **K-fold gives you a stable evaluation even when data is scarce.** Any single split could be misleadingly good or bad. Averaging across $K$ splits smooths out that noise.
 `,
       reviewCardIds: ['rc-2.10-4', 'rc-2.10-5'],
       illustrations: ['k-fold-validation'],
@@ -177,7 +177,7 @@ def get_model():
 
 Three critical differences from classification:
 
-1. **No activation on the output layer.** The final Dense(1) has no activation function, making it a purely linear layer. This is essential because we need to output *any* continuous value. A sigmoid would constrain output to [0, 1]; a relu would prevent negative outputs. For regression, no constraint is correct.
+1. **No activation on the output layer.** The final Dense(1) has no activation function, making it a purely linear layer. This is essential because we need to output *any* continuous value. A sigmoid would constrain output to $[0, 1]$; a relu would prevent negative outputs. For regression, no constraint is correct.
 
 2. **Mean squared error (MSE) as the loss.** MSE is the standard regression loss -- it's the average of the squared differences between predictions and targets. Squaring penalizes large errors disproportionately.
 
@@ -253,7 +253,7 @@ print(f"Average error in dollars: ~{test_mae * 100000:,.0f}")`,
 - Regression predicts continuous values; use Dense(1) with no activation and mean_squared_error loss.
 - Feature normalization (subtract mean, divide by std) is essential when features have different scales.
 - Always compute normalization statistics from training data only -- using test data statistics is data leakage.
-- K-fold cross-validation provides reliable evaluation when datasets are small by averaging scores across K different splits.
+- K-fold cross-validation provides reliable evaluation when datasets are small by averaging scores across $K$ different splits.
 - MAE (mean absolute error) is the most interpretable regression metric -- it tells you average prediction error in original units.
 - Small datasets need small models to avoid overfitting.
 - Three common problem types each have their own activation/loss/metric recipe.`,
